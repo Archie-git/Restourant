@@ -1,8 +1,11 @@
 import React from 'react';
 import {Form,Input,Icon,Button,message} from 'antd';
+import {Redirect} from 'react-router-dom';
 import './login.less';
 import logo from './images/logo.png';
 import {reqLogin} from '../../api';
+import memoryUtils from '../../util/memoryUtils';
+import storageUtils from '../../util/storageUtils'
 //登录的路由组件
 class Login extends React.Component{
     handleSubmit=(e)=>{
@@ -13,6 +16,8 @@ class Login extends React.Component{
                 const ret=await reqLogin(username,password);
                 if(ret.status===0){
                     message.success('登录成功');
+                    memoryUtils.user=ret.data;
+                    storageUtils.saveUser(ret.data);
                     this.props.history.replace('/')
                 }else{
                     message.error(ret.msg)
@@ -49,6 +54,10 @@ class Login extends React.Component{
         }
     };
     render(){
+        const user=memoryUtils.user;
+        if(JSON.stringify(user)!=='{}'){
+            return <Redirect to="/" />
+        }
         const form=this.props.form;
         return (
             <div className="login">
