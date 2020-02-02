@@ -1,16 +1,22 @@
 import React from 'react';
-import {Form,Input,Icon,Button} from 'antd';
+import {Form,Input,Icon,Button,message} from 'antd';
 import './login.less';
-import logo from './images/logo.png'
+import logo from './images/logo.png';
+import {reqLogin} from '../../api';
 //登录的路由组件
 class Login extends React.Component{
     handleSubmit=(e)=>{
         e.preventDefault();
-        console.log(this.props.form.getFieldsValue());
-        this.props.form.validateFields((err,values)=>{
+        this.props.form.validateFields(async (err,values)=>{
             if(!err){
-                console.log("提交ajax")
-                console.log(values);
+                const {username,password}=values;
+                const ret=await reqLogin(username,password);
+                if(ret.status===0){
+                    message.success('登录成功');
+                    this.props.history.replace('/')
+                }else{
+                    message.error(ret.msg)
+                }
             }else{
                 console.log("校验失败")
             }
@@ -67,6 +73,7 @@ class Login extends React.Component{
                                 )
                             }
                         </Form.Item>
+                        
                         <Form.Item>
                             {
                                 form.getFieldDecorator('password',{
@@ -84,7 +91,7 @@ class Login extends React.Component{
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit" className="login-form-button">
-                                Login
+                                登录
                             </Button>
                         </Form.Item>
                     </Form>
