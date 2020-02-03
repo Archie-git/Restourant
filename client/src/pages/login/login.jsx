@@ -2,7 +2,7 @@ import React from 'react';
 import {Form,Input,Icon,Button,message} from 'antd';
 import {Redirect} from 'react-router-dom';
 import './login.less';
-import logo from './images/logo.png';
+import logo from '../../assets/images/logo.png';
 import {reqLogin} from '../../api';
 import memoryUtils from '../../util/memoryUtils';
 import storageUtils from '../../util/storageUtils'
