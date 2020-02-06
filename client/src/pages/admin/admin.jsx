@@ -1,6 +1,5 @@
 import React from 'react';
 import {Switch,Redirect,Route} from 'react-router-dom';
-import './admin.less';
 import memoryUtils from '../../util/memoryUtils';
 import {Layout} from 'antd';
 import Header from '../../components/header';
@@ -23,13 +22,13 @@ class Admin extends React.Component{
             return <Redirect to='/login' />
         }else{
             return (
-                <Layout className="container">
+                <Layout style={{height: "100%", backgroundColor: "#e5e5e5"}}>
                     <Sider>
                         <LeftNav />
                     </Sider>
-                    <Layout className='right-part'>
+                    <Layout>
                         <Header />
-                        <Content>
+                        <Content style={{margin: "0 20px", backgroundColor: "white"}}>
                             <Switch>
                                 <Route path='/home' component={Home} />
                                 <Route path='/product' component={Product} />
