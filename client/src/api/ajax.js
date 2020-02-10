@@ -8,7 +8,7 @@ import {message} from 'antd';
 export default function ajax(url,data={},type='GET') {
     return new Promise(resolve => {
         let promise = null;
-        if (type === 'GET') {
+        if(type === 'GET'){
             promise = axios.get(url, {
                 params: data
             });

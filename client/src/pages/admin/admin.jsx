@@ -22,13 +22,13 @@ class Admin extends React.Component{
             return <Redirect to='/login' />
         }else{
             return (
-                <Layout style={{height: "100%", backgroundColor: "#e5e5e5"}}>
-                    <Sider>
+                <Layout>
+                    <Sider style={{height: "100vh", position: "fixed"}}>
                         <LeftNav />
                     </Sider>
-                    <Layout>
+                    <Layout id="right" style={{marginLeft: "200px"}}>
                         <Header />
-                        <Content style={{margin: "0 20px", backgroundColor: "white"}}>
+                        <Content style={{margin: "0 20px", paddingBottom: "100px", backgroundColor: "white"}}>
                             <Switch>
                                 <Route path='/home' component={Home} />
                                 <Route path='/product' component={Product} />
@@ -41,7 +41,7 @@ class Admin extends React.Component{
                                 <Redirect to='/home' />
                             </Switch>
                         </Content>
-                        <Footer>推荐使用谷歌浏览器，可获得更佳的页面操作体验</Footer>
+                        <Footer>推荐使用谷歌浏览器，可获得更佳的页面操作体验(滚动条到底时显示该组件)</Footer>
                     </Layout>
                 </Layout>
             )

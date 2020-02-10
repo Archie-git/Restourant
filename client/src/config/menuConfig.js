@@ -26,11 +26,15 @@ const menuList=[
         children: [
             {
                 key: "/category",
-                title: "商品品类"
+                title: "商品分类"
             },
             {
                 key: "/product",
-                title: "商品信息"
+                title: "商品列表"
+            },
+            {
+                key: "/category-add",
+                title: "添加商品"
             }
         ]
     },

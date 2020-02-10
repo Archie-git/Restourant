@@ -10,7 +10,36 @@ const WEATHER_KEY="0894aab8b0394389a7ac887e32db9c30";
 const LOCATION_URL="https://apis.map.qq.com/ws/location/v1/ip";
 const LOCATION_KEY="LOABZ-ONL6F-CLXJZ-N4A2L-AB74O-ITFWZ";
 
-export const reqLogin = (username,password) => ajax('/login',{username, password},'POST');
-export const reqWeather = (location, key=WEATHER_KEY) => ajax(WEATHER_URL,{location, key}	,'GET');
+//basic requests;
+export const reqLogin = (username,password) => ajax('/login',{username: username, password: password},'POST');
+
+//header;
+export const reqWeather = (location, key=WEATHER_KEY) => ajax(WEATHER_URL,{location: location, key: key},'GET');
 export const reqCity = (key=LOCATION_KEY) => jsonp(LOCATION_URL, {key});
+
+//category;
+export const reqCategoryList = () => ajax('/category/list',null ,'GET');
+export const updateCategoryList = (data) => ajax('/category/update', data, 'POST');
+export const reqCategorySearch = (name) => ajax('/category/search', {name: name}, 'GET');
+export const reqCategoryDelete = (id) => ajax('/category/delete', {id: id}, 'GET');
+export const addCategoryList = (data) => ajax('/category/add',data, 'POST');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

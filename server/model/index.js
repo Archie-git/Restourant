@@ -4,9 +4,9 @@ let dbConfig=require('../config/dbConfig');
 
 let pool=mysql.createPool(dbConfig.mysql);
 
-exports.querySQL=function(sql){
-    return new Promise(function(resolve,reject){
-        pool.query(sql,function(err,ret){
+exports.querySQL = (sql) => {
+    return new Promise((resolve,reject) => {
+        pool.query(sql,(err,ret) => {
             if(err){
                 reject(err)
             }else{

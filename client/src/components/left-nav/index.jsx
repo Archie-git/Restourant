@@ -11,12 +11,10 @@ class LeftNav extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            openKeys: [this.getFirstPathname]
+            openKeys: [this.props.location.pathname]
         }
     }
-    rootSubmenuKeys = menuList.map(item => {
-        return item.key
-    });
+    rootSubmenuKeys = ['/order', '/product','/category','/stock', '/customer','/employee','/financial'];
     onOpenChange = openKeys => {
         const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
         if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
@@ -27,11 +25,8 @@ class LeftNav extends React.Component{
             });
         }
     };
-    getFirstPathname = () => {
-        return "/"+this.props.location.pathname.split('/')[1]
-    };
     closeSubmenuAll = () =>{
-       this.setState({openKeys:[]});
+        this.setState({openKeys:[]});
     };
     getMenuNodes = menuList =>{
         return menuList.map((item) => {
@@ -55,6 +50,7 @@ class LeftNav extends React.Component{
     };
     
     render(){
+        const path=this.props.location.pathname;
         return (
             <div className="left-nav">
                 <Link to="/">
@@ -64,7 +60,7 @@ class LeftNav extends React.Component{
                     </div>
                 </Link>
                 <Menu
-                    selectedKeys={this.getFirstPathname()}
+                    selectedKeys={[path]}
                     mode="inline"
                     openKeys={this.state.openKeys}
                     onOpenChange={this.onOpenChange}
@@ -74,8 +70,8 @@ class LeftNav extends React.Component{
                         this.getMenuNodes(menuList)
                     }
                 </Menu>
-                
-                
+            
+            
             </div>
         )
     }
