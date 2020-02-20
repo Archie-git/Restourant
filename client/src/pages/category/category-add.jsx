@@ -22,26 +22,28 @@ const AddCategoryModal = Form.create({ name: 'category-add' })(
                     cancelText="取消"
                     onOk={this.props.onOk}
                     // onOk={()=>{console.log(this.props)}}
-                    onCancel={this.props.onCancel}>
-                    <Form layout="vertical">
-                        <Form.Item label="品类名称：">
+                    onCancel={this.props.onCancel}
+                >
+                    <Form layout="inline">
+                        <Form.Item label="名称：">
                             {form.getFieldDecorator('name', {
                                 rules: [{ validator: this.validateName }],
-                            })(<Input type="text" />)}
+                            })(<Input style={{width: "414px", marginBottom: "20px"}}/>)}
                         </Form.Item>
                         <Form.Item label="描述：">
-                            {form.getFieldDecorator('description')(<Input type="textarea" />)}
+                            {form.getFieldDecorator('description')(
+                                <Input.TextArea style={{width:"414px",height:"100px",marginBottom:"20px"}}/>)}
                         </Form.Item>
-                        <Form.Item>排序：
+                        <Form.Item label="级别：">
                             {form.getFieldDecorator('level')(
                                 <Radio.Group buttonStyle="solid">
-                                    <Radio.Button value="1">一级</Radio.Button>
-                                    <Radio.Button value="2">二级</Radio.Button>
-                                    <Radio.Button value="3">三级</Radio.Button>
-                                    <Radio.Button value="4">四级</Radio.Button>
-                                    <Radio.Button value="5">五级</Radio.Button>
-                                    <Radio.Button value="6">六级</Radio.Button>
-                                    <Radio.Button value="7">七级</Radio.Button>
+                                    <Radio.Button value="0">一级</Radio.Button>
+                                    <Radio.Button value="1">二级</Radio.Button>
+                                    <Radio.Button value="2">三级</Radio.Button>
+                                    <Radio.Button value="3">四级</Radio.Button>
+                                    <Radio.Button value="4">五级</Radio.Button>
+                                    <Radio.Button value="5">六级</Radio.Button>
+                                    <Radio.Button value="6">七级</Radio.Button>
                                 </Radio.Group>,
                             )}
                         </Form.Item>

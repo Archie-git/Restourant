@@ -1,9 +1,11 @@
 import React from 'react';
 import {Table, Divider, Switch, message, Input, Button, Modal} from 'antd';
 import Loading from '../../components/loading/index';
+import TopNav from '../../components/top-nav/index'
 import './category.less';
 import {reqCategoryList, updateCategoryList, reqCategorySearch, reqCategoryDelete, addCategoryList} from '../../api/index';
 import AddCategoryModal from './category-add';
+import EditCategoryModal from './category-edit';
 
 class Category extends React.Component{
     constructor(props){
@@ -13,8 +15,8 @@ class Category extends React.Component{
             data: [],
             addVisible: false,
             editVisible: false,
+            editInfo: {},
             column: [],
-            visilble: false
         }
     }
     UNSAFE_componentWillMount = async () => {
@@ -28,7 +30,7 @@ class Category extends React.Component{
     categoryColumn = [
         {
             title: '编号',
-            key: 'index',
+            key: 'index.jsx',
             render: (text, record) => <span>{record.index+1}</span>
         },
         {
@@ -38,7 +40,7 @@ class Category extends React.Component{
             render: text => <Button type="link" onClick={this.testfunc}>{text}</Button>
         },
         {
-            title: '排序',
+            title: '级别',
             dataIndex: 'level',
             key: 'level',
             render: text => {
@@ -56,7 +58,7 @@ class Category extends React.Component{
                     default: level="十级"
                 }
                 // return <Button type="link" onClick={this.testfunc}>{level}</Button>
-                return level;
+                return <span>{level}</span>;
             }
         },
         {
@@ -73,24 +75,29 @@ class Category extends React.Component{
             title: '是否显示',
             dataIndex: 'isnav',
             key: 'isnav',
-            render: (text, record) => <Switch size="small" onClick={() => this.handleIsnavChange(record)} defaultChecked={text === 1}/>
+            render: (text, record) => <Switch
+                size="small"
+                onClick={()=>this.handleIsnavChange(record)}
+                defaultChecked={text === 1}/>
         },
         {
             title: '操作',
             key: 'action',
-            render: (text, record) => (
+            render: (record) => (
                 <span>
-                        <Button size="small"  onClick={this.testfunc}>编辑</Button>
-                        <Divider type="vertical" />
-                        <Button size="small" type="danger" onClick={() => this.handleDelete(record)}>删除</Button>
-                    </span>
+                    <Button size="small"  onClick={()=>this.handleEdit(record)}>编辑</Button>
+                    <Divider type="vertical" />
+                    <Button size="small"  onClick={this.testfunc}>排序</Button>
+                    <Divider type="vertical" />
+                    <Button size="small" type="danger" onClick={()=>this.handleDelete(record)}>删除</Button>
+                </span>
             )
         }
     ];
     productColumn = [
         {
             title: '编号',
-            key: 'index',
+            key: 'index.jsx',
             render: (text, record) => <span>{record.index+1}</span>
         },
         {
@@ -135,17 +142,21 @@ class Category extends React.Component{
             title: '是否显示',
             dataIndex: 'isnav',
             key: 'isnav',
-            render: (text, record) => <Switch size="small" onClick={() => this.handleIsnavChange(record)} defaultChecked={text === 1}/>
+            render: (text, record) => <Switch size="small"
+                                              onClick={() => this.handleIsnavChange(record)}
+                                              defaultChecked={text === 1}/>
         },
         {
             title: '操作',
             key: 'action',
             render: (text, record) => (
                 <span>
-                        <Button size="small"  onClick={this.testfunc}>编辑</Button>
-                        <Divider type="vertical" />
-                        <Button size="small" type="danger" onClick={() => this.handleDelete(record)}>删除</Button>
-                    </span>
+                    <Button size="small"  onClick={this.testfunc}>编辑</Button>
+                    <Divider type="vertical" />
+                    <Button size="small"  onClick={this.testfunc}>排序</Button>
+                    <Divider type="vertical" />
+                    <Button size="small" type="danger" onClick={()=>this.handleDelete(record)}>删除</Button>
+                </span>
             )
         }
     ];
@@ -165,10 +176,10 @@ class Category extends React.Component{
                 message.error(response.msg);
                 this.setState({isLoading: false, data: null})
             }
-        }, 500)
+        }, 200)
     };
     handleIsnavChange = async (record) =>{
-        const response = await updateCategoryList({id: record.id, isnav: record.isnav===0 ? 1 : 0});
+        const response = await updateCategoryList({id: record.id, isnav: 1-record.isnav});
         let data = this.state.data;
         if(response.status === 0){
             data.forEach(item => item.isnav = item.id===record.id ? 1-item.isnav : item.isnav);
@@ -207,7 +218,13 @@ class Category extends React.Component{
             onCancel: () => {}
         });
     };
-    showAddModal = () => {this.setState({ addVisible: true })};
+    handleAdd = () => {this.setState({ addVisible: true })};
+    handleEdit = (record) => {
+        this.setState({
+            editVisible: true,
+            editInfo: record
+        });
+    };
     handleAddCancel = () => {this.setState({ addVisible: false })};
     handleAddOk = () => {
         this.formRef.props.form.validateFields( async (err, values) => {
@@ -215,47 +232,74 @@ class Category extends React.Component{
                 let data=values;
                 data.level=data.level===undefined ? 7 : data.level;
                 data.description=data.description===undefined ? "无" : data.description;
-                const response = await addCategoryList(data);
-                if(response.status === 0){
+                const response1 = await addCategoryList(data);
+                if(response1.status === 0){
                     this.setState({ addVisible: false });
                 }
-                message.success(response.msg);
                 this.formRef.props.form.resetFields();
-                response=await reqCategoryList();
-                this.refreshTable(response);
-            }else{
-                console.log("校验失败");
+                const response2=await reqCategoryList();
+                this.refreshTable(response2);
             }
         });
+    };
+    handleEditCancel = () => {this.setState({editVisible: false})};
+    handleEditOk = () => {
+        this.formRef.props.form.validateFields( async (err, values) => {
+            if(!err){
+                let data = {};
+                data.id=this.state.editInfo.id;
+                for(let key in values){
+                    if(values.hasOwnProperty(key)){
+                        data[key]=values[key]
+                    }
+                }
+                const response1 = await updateCategoryList(data);
+                if(response1.status === 0){
+                    this.setState({editVisible: false})
+                }
+                this.formRef.props.form.resetFields();
+                const response2 = await reqCategoryList();
+                this.refreshTable(response2)
+            }
+        })
     };
     
     
     render(){
         return (
             <div className="category-container">
-                <Button type="primary" className="add-button" onClick={this.showAddModal}>新增品类</Button>
+                <TopNav nav={['商品管理', '商品分类']}/>
+                <Button type="primary" className="add-button" onClick={this.handleAdd}>新增品类</Button>
+                <Input.Search
+                    className="search-box"
+                    placeholder="查询品类信息"
+                    onSearch={(value) => this.handleSearch(value)}
+                    enterButton
+                />
+                {
+                    this.state.isLoading ? <Loading /> :
+                        <Table
+                            style={{margin: "20px"}}
+                            size="small"
+                            columns={this.state.column}
+                            dataSource={this.state.data}
+                            rowKey={record => record.id}
+                            bordered
+                        />
+                }
                 <AddCategoryModal
                     wrappedComponentRef={(formRef) => this.formRef = formRef}
                     visible={this.state.addVisible}
                     onCancel={this.handleAddCancel}
                     onOk={this.handleAddOk}
-                    // ref={this.saveFormRef}
                 />
-                <Input.Search
-                    className="search-box"
-                    placeholder="查询品类信息"
-                    onSearch={(value) => this.handleSearch(value)}
-                    enterButton/>
-                {
-                    this.state.isLoading ?
-                    <Loading /> :
-                    <Table
-                        style={{margin: "20px"}}
-                        columns={this.state.column}
-                        dataSource={this.state.data}
-                        rowKey={record => record.id}
-                        bordered/>
-                }
+                <EditCategoryModal
+                    wrappedComponentRef={(formRef) => this.formRef = formRef}
+                    visible={this.state.editVisible}
+                    onCancel={this.handleEditCancel}
+                    onOk={this.handleEditOk}
+                    info={this.state.editInfo}
+                />
             </div>
         )
     }

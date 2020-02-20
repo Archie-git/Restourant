@@ -58,19 +58,14 @@ class Header extends React.Component{
     render(){
         return (
             <div className="header">
-                <div className="header-top">
-                    <span>{this.state.date}</span>
-                    <span>{this.state.location}</span>
-                    <img src={"https://cdn.heweather.com/cond_icon/"+this.state.weather_code+".png"} alt="weather" />
-                    <span style={{marginRight: "100px"}}>{this.state.weather_txt}</span>
-                    <span style={{marginRight: "20px"}}>欢迎! {this.state.username}</span>
-                    <Popconfirm placement="bottomRight" title="确定要退出系统吗？" okType="danger" onConfirm={this.logout} okText="确认" cancelText="取消" >
-                        <Button style={{marginRight: "50px"}} type="primary" loading={this.state.loading}>退出</Button>
-                    </Popconfirm>
-                </div>
-                <div className="header-bottom">
-                    <span>{this.props.location.pathname}</span>
-                </div>
+                <span>{this.state.date}</span>
+                <span>{this.state.location}</span>
+                <img src={"https://cdn.heweather.com/cond_icon/"+this.state.weather_code+".png"} alt="weather" />
+                <span style={{marginRight: "100px"}}>{this.state.weather_txt}</span>
+                <span style={{marginRight: "20px"}}>欢迎! {this.state.username}</span>
+                <Popconfirm placement="bottomRight" title="确定要退出系统吗？" okType="danger" onConfirm={this.logout} okText="确认" cancelText="取消" >
+                    <Button style={{marginRight: "50px"}} type="primary" loading={this.state.loading}>退出</Button>
+                </Popconfirm>
             </div>
         )
     }

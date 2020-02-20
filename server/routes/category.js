@@ -14,19 +14,9 @@ router.get('/list', (req, res) => {
 
 //更新品类表中的数据
 router.post('/update', (req, res) => {
-    let updateSql = (keys, values) => {
-        let sql = [];
-        for (let i = 1; i < keys.length; i++) {
-            let value = typeof (values[i]) === "number" ? values[i] : "\"" + values[i] + "\"";
-            sql.push(keys[i] + "=" + value)
-        }
-        sql.join("  and  ");
-        return sql;
-    };
-    let sql="UPDATE category SET "+updateSql(Object.keys(req.body), Object.values(req.body))+" WHERE id="+req.body.id;
-    console.log(sql);
+    let sql=model.getUpdateSQL('category', req.body);
     model.querySQL(sql).then(ret => {
-        res.send({status: 0, msg: "设置成功"})
+        res.send({status: 0, msg: "更新成功"})
     }, err => {
         res.send({status: 1, msg: err})
     })
@@ -49,7 +39,6 @@ router.get('/search', (req, res) => {
 //删除品类列表中的某条记录
 router.get('/delete', (req,res) => {
     let sql = "DELETE FROM category WHERE id="+req.query.id;
-    console.log(sql);
     model.querySQL(sql).then(() => {
         res.send({status: 0, msg: "删除成功"})
     }, err => {
@@ -68,7 +57,16 @@ router.post('/add', (req, res) => {
    })
 });
 
-
+//编辑某一条品类记录
+router.post('/edit', (req, res) => {
+    let sql = model.getUpdateSQL('category', req.body);
+    console.log(sql);
+    model.querySQL(sql).then(() => {
+        res.send({ status: 0, msg: "更新成功" })
+    }, err => {
+        res.send({ status: 1, msg: err })
+    })
+});
 
 module.exports = router;
 

@@ -7,11 +7,15 @@ import LeftNav from '../../components/left-nav';
 import Home from '../../pages/home/home';
 import Category from '../../pages/category/category';
 import Product from '../../pages/product/product';
+import AddProduct from '../product/product-add';
+import EditProduct from '../product/product-edit';
+import ViewProduct from '../product/product-view';
 import Order from '../../pages/order/order';
 import Customer from '../../pages/customer/customer';
 import Employee from '../../pages/employee/employee';
 import Stock from '../../pages/stock/stock';
 import Finance from '../../pages/finance/finance';
+
 
 const {Sider,Content,Footer}=Layout;
 
@@ -31,8 +35,11 @@ class Admin extends React.Component{
                         <Content style={{margin: "0 20px", paddingBottom: "100px", backgroundColor: "white"}}>
                             <Switch>
                                 <Route path='/home' component={Home} />
-                                <Route path='/product' component={Product} />
                                 <Route path='/category' component={Category} />
+                                <Route path='/product' component={Product} />
+                                <Route path='/product-add' component={AddProduct} />
+                                <Route path='/product-edit' component={EditProduct} />
+                                <Route path='/product-view' component={ViewProduct} />
                                 <Route path='/order' component={Order} />
                                 <Route path='/stock' component={Stock} />
                                 <Route path='/customer' component={Customer} />
@@ -41,7 +48,7 @@ class Admin extends React.Component{
                                 <Redirect to='/home' />
                             </Switch>
                         </Content>
-                        <Footer>推荐使用谷歌浏览器，可获得更佳的页面操作体验(滚动条到底时显示该组件)</Footer>
+                        <Footer>推荐使用Chrome浏览器，可获得更佳的页面操作体验。</Footer>
                     </Layout>
                 </Layout>
             )

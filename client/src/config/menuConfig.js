@@ -33,7 +33,7 @@ const menuList=[
                 title: "商品列表"
             },
             {
-                key: "/category-add",
+                key: "/product-add",
                 title: "添加商品"
             }
         ]

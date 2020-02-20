@@ -22,9 +22,16 @@ export const reqCategoryList = () => ajax('/category/list',null ,'GET');
 export const updateCategoryList = (data) => ajax('/category/update', data, 'POST');
 export const reqCategorySearch = (name) => ajax('/category/search', {name: name}, 'GET');
 export const reqCategoryDelete = (id) => ajax('/category/delete', {id: id}, 'GET');
-export const addCategoryList = (data) => ajax('/category/add',data, 'POST');
+export const addCategoryList = (data) => ajax('/category/add', data, 'POST');
 
+//product
+export const reqProductList = () => ajax('/product/list', null, 'GET');
+export const reqProductDelete = (id) => ajax('/product/delete', {id: id}, 'GET');
+export const updateProductList = (data) => ajax('/product/update', data, 'POST');
+export const addProductList = (data) => ajax('/product/add', data, 'POST');
 
+//file
+export const reqImgDelete = (name) => ajax('/file/delete', {name: name}, 'GET');
 
 
 
