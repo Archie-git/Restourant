@@ -11,11 +11,11 @@ const menuList=[
         children: [
             {
                 key: "/order",
-                title: "订单管理1"
+                title: "订单详情"
             },
             {
                 key: "/order2",
-                title: "订单管理2"
+                title: "订单报表"
             }
         ]
     },

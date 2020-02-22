@@ -176,7 +176,7 @@ class Category extends React.Component{
                 message.error(response.msg);
                 this.setState({isLoading: false, data: null})
             }
-        }, 200)
+        }, 300)
     };
     handleIsnavChange = async (record) =>{
         const response = await updateCategoryList({id: record.id, isnav: 1-record.isnav});

@@ -26,9 +26,10 @@ export const addCategoryList = (data) => ajax('/category/add', data, 'POST');
 
 //product
 export const reqProductList = () => ajax('/product/list', null, 'GET');
-export const reqProductDelete = (id) => ajax('/product/delete', {id: id}, 'GET');
+export const reqProductDelete = (id) => ajax('/product/delete', {id: id}, 'POST');
 export const updateProductList = (data) => ajax('/product/update', data, 'POST');
 export const addProductList = (data) => ajax('/product/add', data, 'POST');
+export const reqProductSearch = (data) => ajax('/product/search', data, 'POST');
 
 //file
 export const reqImgDelete = (name) => ajax('/file/delete', {name: name}, 'GET');

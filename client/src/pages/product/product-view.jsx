@@ -12,7 +12,6 @@ class EditProduct extends React.Component{
     }
     UNSAFE_componentWillMount = async () => {
         let data = this.props.location.state.data;
-        console.log(data);
         this.setState({
             data: data
         })
@@ -28,7 +27,7 @@ class EditProduct extends React.Component{
             <div className="product-view-container">
                 <TopNav nav={['商品管理', '商品列表', '商品详情']}/>
                 <Card title="查看商品信息"
-                      extra={<Button type="primary" href="#">返回</Button>}
+                      extra={<Button type="primary" onClick={()=>this.props.history.push('/product')}>返回</Button>}
                       style={{ border: "none", width: "100%"}}
                 >
                     <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
@@ -39,7 +38,7 @@ class EditProduct extends React.Component{
                             <span className="ant-form-text">{this.state.data.name}</span>
                         </Form.Item>
                         <Form.Item label="所属分类" hasFeedback>
-                            <span className="ant-form-text">{this.state.data.category}</span>
+                            <span className="ant-form-text">{this.state.data.category_name}</span>
                         </Form.Item>
                         <Form.Item label="售价">
                             <span className="ant-form-text">{this.state.data.price}</span>
@@ -63,19 +62,30 @@ class EditProduct extends React.Component{
                         <Form.Item label="详细页描述">
                             <span className="ant-form-text">{this.state.data.description}</span>
                         </Form.Item>
-                        <Form.Item label="黄金会员折扣：">
+                        <Form.Item label="黄金会员折扣">
                             <span className="ant-form-text">
                                 {this.state.data.discount_gold===10 ? "无" : this.state.data.discount_gold+"折" }
                             </span>
                         </Form.Item>
-                        <Form.Item label="黄金会员折扣：">
+                        <Form.Item label="黄金会员折扣">
                             <span className="ant-form-text">
                                 {this.state.data.discount_platinum===10 ? "无" : this.state.data.discount_platinum+"折" }
                             </span>
                         </Form.Item>
-                        <Form.Item label="黄金会员折扣：">
+                        <Form.Item label="黄金会员折扣">
                             <span className="ant-form-text">
-                                {this.state.data.discount_diamond===10 ? "无" : this.state.data.diamond_diamond+"折" }
+                                {this.state.data.discount_diamond===10 ? "无" : this.state.data.discount_diamond+"折" }
+                            </span>
+                        </Form.Item>
+                        <Form.Item label="商品图片">
+                            <span className="ant-form-pictures">
+                                {
+                                    this.state.data.pictures.split(",").map((item, index) => {
+                                        return (
+                                            <img key={index} src={item} alt="商品图片"/>
+                                        )
+                                    })
+                                }
                             </span>
                         </Form.Item>
                         <Form.Item label="优惠信息备注">

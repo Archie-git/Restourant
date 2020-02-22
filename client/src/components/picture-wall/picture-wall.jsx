@@ -8,6 +8,21 @@ class PicturesWall extends React.Component {
         previewImage: '',
         fileList: [],
     };
+    UNSAFE_componentWillMount = () => {
+        if(this.props.imgs !== null){
+            let urlArr = this.props.imgs.split(',');
+            let fileList = [];
+            urlArr.forEach((item, index) => {
+                fileList.push({
+                    uid: -1-index,
+                    name: item.split('/upload')[1],
+                    status: 'done',
+                    url: item
+                })
+            });
+            this.setState({fileList: fileList})
+        }
+    };
     getBase64 = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -42,7 +57,7 @@ class PicturesWall extends React.Component {
            return item.url;
         });
         this.props.onChange(urls.join(','));
-        this.setState({ fileList });
+        this.setState({ fileList })
     };
     render() {
         const uploadButton = (

@@ -1,102 +1,42 @@
 .product-container{
     min-height: 400px;
-    //ProductHeader组件对应的css属性
     .product-header{
         padding-top: 10px;
-        .add-product{
-            display: inline-block;
-            position: relative;
+        > button{
             top: 10px;
             left: 20px;
         }
-        .ant-form{
+        :nth-child(2){
             display: inline-block;
             .ant-form-item{
-                width: 100px;
-                margin-left: -10px;
+                width: 140px;
+                margin-left: -12px;
             }
         }
-        .product-header-search{
-            margin-left: 70px
-        }
-    }
-}
-.product-edit-container{
-    min-height: 800px;
-    .ant-form{
-        width: 70%;
-        margin: 30px auto;
-        border: 1px solid lightgray;
-        border-radius: 10px;
-        .ant-form-item{
-            display: block;
-            margin: 10px;
-            .ant-form-item-label{
-                width: 100px;
-                text-align: right;
-                margin-left: 130px;
-            }
-            input{
-                display: block;
-                width: 300px
-            }
-            .submit-button{
-                margin: 30px 0 50px 290px
-            }
-        }
-        .item-switch{
+        :last-child{
             display: inline-block;
-            .ant-form-item-label{
-                width: 40px;
-                margin-left: 0;
+            .ant-form-item{
+                width: 105px;
+                margin-left: -12px;
             }
-        }
-        .product-category{
-            input{
-                width: 150px
-            }
-        }
-        .product-state{
-            .ant-form-item-label{
-                width: 115px;
-                text-align: left;
-                margin-left: 130px;
-            }
-            margin-left: 40px;
-            display: inline-block;
-        }
-        .product-discount-gold{
-            .ant-form-item-label{
-                width: 150px;
-                text-align: left;
-                margin-left: 160px;
-            }
-            input{
-                width: 120px
-            }
-        }
-        .product-discount-others{
-            .ant-form-item-label{
-                width: 75px;
-                text-align: left;
-                margin-left: 235px;
-            }
-            input{
-                width: 120px
-            }
-        }
-        >span{
-            margin: 30px auto 20px;
-            font-size: 25px;
-            display: block;
-            text-align: center;
-            color: @primary-color;
         }
     }
 }
 .product-view-container{
     .ant-form-text{
         text-indent: 20px;
+    }
+    .ant-form-pictures{
+        width: 320px;
+        margin-left: 20px;
+        img{
+            width: 100px;
+            height: 100px;
+            padding: 7px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid lightgray;
+        }
     }
 }
 

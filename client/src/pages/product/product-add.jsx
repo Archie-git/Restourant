@@ -1,11 +1,9 @@
 import React from 'react';
-import { reqCategoryList} from "../../api";
 import { Form, Select, InputNumber, Button, Checkbox, Row, Col, Card, Input, message } from 'antd';
 import TopNav from '../../components/top-nav';
 import PictureWall from '../../components/picture-wall/picture-wall';
-import { addProductList } from '../../api';
+import { addProductList, reqCategoryList } from '../../api';
 
-const { Option } = Select;
 
 class AddProduct extends React.Component {
     constructor(props){
@@ -124,7 +122,7 @@ class AddProduct extends React.Component {
             <div>
                 <TopNav nav={['商品管理', '添加商品']}/>
                 <Card title="新增商品信息"
-                      extra={<Button type="primary" href="#">返回</Button>}
+                      extra={<Button type="primary" onClick={()=>{this.props.history.push('/product')}}>返回</Button>}
                       style={{ border: "none", width: "100%"}}
                 >
                     <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
@@ -144,15 +142,15 @@ class AddProduct extends React.Component {
                             })(
                                 <Select onChange={this.handleChange}>
                                     { this.state.category_options.map((item) => {
-                                        return <Option key={item.value}>{item.key}</Option>
+                                        return <Select.Option key={item.value}>{item.key}</Select.Option>
                                     })}
                                 </Select>
                             )}
                         </Form.Item>
-                        <Form.Item label="售价">
+                        <Form.Item label="售价" hasFeedback>
                             { form.getFieldDecorator('price', {
                                 rules: [{required: true, message: "请输入商品售价",validate: this.validatePrice}]
-                            })(<Input addonAfter="元" placeholder="请输入商品售价"/>)}
+                            })(<Input addonAfter="元 &nbsp;&nbsp;&nbsp;" placeholder="请输入商品售价"/>)}
                         </Form.Item>
                         <Form.Item label="计量单位" hasFeedback>
                             { form.getFieldDecorator('unit', {
@@ -211,7 +209,7 @@ class AddProduct extends React.Component {
                         <Form.Item label="上传图片">
                             {form.getFieldDecorator('pictures', {
                                 rules: [{required: true, message: "请上传商品图片"}]
-                            })(<PictureWall />)}
+                            })(<PictureWall imgs={null} />)}
                         </Form.Item>
                         <Form.Item label="商品备注">
                             { form.getFieldDecorator('note')(
