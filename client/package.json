@@ -14,7 +14,8 @@
     "react": "^16.12.0",
     "react-app-rewired": "^2.1.5",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0"
+    "react-scripts": "3.3.0",
+      "@ant-design/icons": "latest"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -41,6 +42,7 @@
     "axios": "^0.19.2",
     "jquery": "^3.4.1",
     "jsonp": "^0.2.1",
+    "moment": "^2.24.0",
     "react-router-dom": "^5.1.2",
     "store": "^2.0.12"
   },

@@ -11,10 +11,14 @@ const menuList=[
         children: [
             {
                 key: "/order",
-                title: "订单详情"
+                title: "全部订单"
             },
             {
                 key: "/order2",
+                title: "前台管理"
+            },
+            {
+                key: "/order3",
                 title: "订单报表"
             }
         ]
@@ -48,16 +52,8 @@ const menuList=[
                 title: "库存信息"
             },
             {
-                key: "/stock2",
-                title: "盘点管理"
-            },
-            {
-                key: "/stock3",
-                title: "库存报警"
-            },
-            {
-                key: "/stock4",
-                title: "库存记录"
+                key: "/inventory",
+                title: "库存盘点"
             }
         ]
     },

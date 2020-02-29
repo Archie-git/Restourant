@@ -26,11 +26,11 @@ class EditProduct extends React.Component{
         return (
             <div className="product-view-container">
                 <TopNav nav={['商品管理', '商品列表', '商品详情']}/>
-                <Card title="查看商品信息"
+                <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>查看商品信息</span>}
                       extra={<Button type="primary" onClick={()=>this.props.history.push('/product')}>返回</Button>}
                       style={{ border: "none", width: "100%"}}
                 >
-                    <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
+                    <Form {...formItemLayout} style={{marginTop: "40px"}}>
                         <Form.Item label="商品货号" hasFeedback>
                             <span className="ant-form-text">{this.state.data.number}</span>
                         </Form.Item>
@@ -80,11 +80,10 @@ class EditProduct extends React.Component{
                         <Form.Item label="商品图片">
                             <span className="ant-form-pictures">
                                 {
-                                    this.state.data.pictures.split(",").map((item, index) => {
-                                        return (
-                                            <img key={index} src={item} alt="商品图片"/>
-                                        )
-                                    })
+                                    this.state.data.pictures==="" ? <span>无</span> :
+                                        this.state.data.pictures.split(",").map((item, index)=> {
+                                            return (<img key={index} src={item} alt="商品图片"/>)
+                                        })
                                 }
                             </span>
                         </Form.Item>

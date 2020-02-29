@@ -4,13 +4,17 @@ import './index.less';
 
 class TopNav extends React.Component{
     handleNavClick = (item) => {
-        console.log(item);
         let nav = "";
         switch(item){
             case "商品管理": nav="/category";break;
             case "商品分类": nav="/category";break;
             case "商品列表": nav="/product";break;
             case "添加商品": nav="/add-product";break;
+            case "库存管理": nav="/stock";break;
+            case "库存信息": nav="/stock";break;
+            case "库存盘点": nav="/inventory";break;
+            case "库存日志": nav="/stock-log";break;
+            case "编辑库存": nav="/stock-edit";break;
             default : nav="home";break;
         }
         this.props.history.replace(nav)

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Switch,Redirect,Route} from 'react-router-dom';
+import {Switch, Redirect, Route} from 'react-router-dom';
 import memoryUtils from '../../util/memoryUtils';
 import {Layout} from 'antd';
 import Header from '../../components/header';
@@ -14,6 +14,11 @@ import Order from '../../pages/order/order';
 import Customer from '../../pages/customer/customer';
 import Employee from '../../pages/employee/employee';
 import Stock from '../../pages/stock/stock';
+import AddStock from '../../pages/stock/stock-add';
+import StockLog from '../../pages/stock/stock-log';
+import ViewStock from '../../pages/stock/stock-view';
+import EditStock from '../../pages/stock/stock-edit';
+import Inventory from '../../pages/inventory/inventory';
 import Finance from '../../pages/finance/finance';
 
 
@@ -32,7 +37,7 @@ class Admin extends React.Component{
                     </Sider>
                     <Layout id="right" style={{marginLeft: "200px"}}>
                         <Header />
-                        <Content style={{margin: "0 20px", paddingBottom: "100px", backgroundColor: "white"}}>
+                        <Content style={{margin: "0 20px", paddingBottom: "100px", backgroundColor: "white", minHeight: "500px"}}>
                             <Switch>
                                 <Route path='/home' component={Home} />
                                 <Route path='/category' component={Category} />
@@ -42,6 +47,11 @@ class Admin extends React.Component{
                                 <Route path='/product-view' component={ViewProduct} />
                                 <Route path='/order' component={Order} />
                                 <Route path='/stock' component={Stock} />
+                                <Route path='/stock-add' component={AddStock} />
+                                <Route path='/stock-view' component={ViewStock} />
+                                <Route path='/stock-log' component={StockLog} />
+                                <Route path='/stock-edit' component={EditStock} />
+                                <Route path='/inventory' component={Inventory} />
                                 <Route path='/customer' component={Customer} />
                                 <Route path='/employee' component={Employee} />
                                 <Route path='/finance' component={Finance} />

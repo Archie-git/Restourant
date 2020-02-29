@@ -42,7 +42,6 @@ router.post('/upload', (req, res) => {
 router.get('/delete', (req, res) => {
     fs.unlink(path.join(dirPath, String(req.query.name)), err => {
         if (err) {
-            console.log(err);
             res.send({
                 status: 1,
                 msg: '删除文件失败'

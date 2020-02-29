@@ -105,7 +105,7 @@ class AddProduct extends React.Component {
                     message.success(response.msg+",即将返回商品列表", 2);
                     this.timerID = setTimeout(()=>{
                         this.props.history.replace('/product')
-                    }, 3000);
+                    }, 2000);
                 }
             }else{
                 console.log(err)
@@ -121,7 +121,7 @@ class AddProduct extends React.Component {
         return (
             <div>
                 <TopNav nav={['商品管理', '添加商品']}/>
-                <Card title="新增商品信息"
+                <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>新增商品信息</span>}
                       extra={<Button type="primary" onClick={()=>{this.props.history.push('/product')}}>返回</Button>}
                       style={{ border: "none", width: "100%"}}
                 >
@@ -140,7 +140,7 @@ class AddProduct extends React.Component {
                             { form.getFieldDecorator('category', {
                                 rules: [{ required: true, message: '请选择所属分类' }],
                             })(
-                                <Select onChange={this.handleChange}>
+                                <Select onChange={this.handleChange} placeholder="请选择所属分类">
                                     { this.state.category_options.map((item) => {
                                         return <Select.Option key={item.value}>{item.key}</Select.Option>
                                     })}
@@ -209,7 +209,7 @@ class AddProduct extends React.Component {
                         <Form.Item label="上传图片">
                             {form.getFieldDecorator('pictures', {
                                 rules: [{required: true, message: "请上传商品图片"}]
-                            })(<PictureWall imgs={null} />)}
+                            })(<PictureWall imgs="" />)}
                         </Form.Item>
                         <Form.Item label="商品备注">
                             { form.getFieldDecorator('note')(

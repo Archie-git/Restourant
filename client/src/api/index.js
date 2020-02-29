@@ -34,6 +34,17 @@ export const reqProductSearch = (data) => ajax('/product/search', data, 'POST');
 //file
 export const reqImgDelete = (name) => ajax('/file/delete', {name: name}, 'GET');
 
+//stock
+export const reqStockList = () => ajax('/stock/list', null, 'GET');
+export const reqStockCategory = () => ajax('/stock/category', null, 'GET');
+export const reqStockDelete = (id) => ajax('/stock/delete', {id: id}, 'GET');
+export const reqStockSearch = (name) => ajax('/stock/search', {name: name}, 'GET');
+export const addStockList = (data) => ajax('/stock/add', data, 'POST');
+export const updateStockList = (data) => ajax('/stock/update', data, 'POST');
+
+//stocklog
+export const reqStocklogList = (data) => ajax('/stock/stocklog-list', data, 'GET');
+export const addStocklogList = (data) => ajax('/stock/stocklog-add', data, 'POST');
 
 
 

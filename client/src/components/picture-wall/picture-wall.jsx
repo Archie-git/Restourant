@@ -9,7 +9,7 @@ class PicturesWall extends React.Component {
         fileList: [],
     };
     UNSAFE_componentWillMount = () => {
-        if(this.props.imgs !== null){
+        if(this.props.imgs !== ""){
             let urlArr = this.props.imgs.split(',');
             let fileList = [];
             urlArr.forEach((item, index) => {
@@ -50,7 +50,13 @@ class PicturesWall extends React.Component {
         } else if(file.status === 'removed'){
             let response = await reqImgDelete(file.name);
             if(response.status === 0){
-                console.log(response.msg);
+                let fileIndex = 0;
+                fileList.forEach((item, index) => {
+                    if(item.name === file.name){
+                        fileIndex = index
+                    }
+                });
+                fileList.splice(fileIndex, 1);
             }
         }
         let urls = fileList.map(item => {

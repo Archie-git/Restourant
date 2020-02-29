@@ -30,7 +30,7 @@ class Category extends React.Component{
     categoryColumn = [
         {
             title: '编号',
-            key: 'index.jsx',
+            key: 'index',
             render: (text, record) => <span>{record.index+1}</span>
         },
         {
@@ -59,17 +59,20 @@ class Category extends React.Component{
                 }
                 // return <Button type="link" onClick={this.testfunc}>{level}</Button>
                 return <span>{level}</span>;
-            }
+            },
+            sorter: (a, b) => a.level-b.level
         },
         {
             title: '子项数量',
             dataIndex: 'son',
-            key: 'son'
+            key: 'son',
+            sorter: (a, b) => a.son-b.son
         },
         {
             title: '商品总数(/件)',
             dataIndex: 'amount',
-            key: 'amount'
+            key: 'amount',
+            sorter: (a, b) => a.amount-b.amount
         },
         {
             title: '是否显示',
@@ -78,7 +81,9 @@ class Category extends React.Component{
             render: (text, record) => <Switch
                 size="small"
                 onClick={()=>this.handleIsnavChange(record)}
-                defaultChecked={text === 1}/>
+                defaultChecked={text === 1}/>,
+            filters: [{text: '已显示', value: 1}, {text: '未显示', value: 0}],
+            onFilter: (value, record) => value===record.isnav
         },
         {
             title: '操作',
@@ -86,8 +91,6 @@ class Category extends React.Component{
             render: (record) => (
                 <span>
                     <Button size="small"  onClick={()=>this.handleEdit(record)}>编辑</Button>
-                    <Divider type="vertical" />
-                    <Button size="small"  onClick={this.testfunc}>排序</Button>
                     <Divider type="vertical" />
                     <Button size="small" type="danger" onClick={()=>this.handleDelete(record)}>删除</Button>
                 </span>
@@ -131,7 +134,7 @@ class Category extends React.Component{
         {
             title: '子项数量',
             dataIndex: 'son',
-            key: 'son'
+            key: 'son',
         },
         {
             title: '商品总数',
@@ -269,13 +272,15 @@ class Category extends React.Component{
         return (
             <div className="category-container">
                 <TopNav nav={['商品管理', '商品分类']}/>
-                <Button type="primary" className="add-button" onClick={this.handleAdd}>新增品类</Button>
-                <Input.Search
-                    className="search-box"
-                    placeholder="查询品类信息"
-                    onSearch={(value) => this.handleSearch(value)}
-                    enterButton
-                />
+                <div className="category-header">
+                    <Button type="primary" onClick={this.handleAdd}>新增品类</Button>
+                    <Input.Search
+                        style={{width: "200px", float: "Right"}}
+                        placeholder="查询品类信息"
+                        onSearch={(value) => this.handleSearch(value)}
+                        enterButton
+                    />
+                </div>
                 {
                     this.state.isLoading ? <Loading /> :
                         <Table

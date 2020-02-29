@@ -112,11 +112,7 @@ class EditProduct extends React.Component {
                     this.timerID = setTimeout(()=>{
                         this.props.history.replace('/product')
                     }, 1000);
-                }else{
-                    console.log("kkk")
                 }
-            }else{
-                console.log(err)
             }
         });
     };
@@ -129,7 +125,7 @@ class EditProduct extends React.Component {
         return (
             <div>
                 <TopNav nav={['商品管理', '编辑商品']}/>
-                <Card title="编辑商品信息"
+                <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>编辑商品信息</span>}
                       extra={<Button type="primary" onClick={()=>{this.props.history.push('/product')}}>返回</Button>}
                       style={{ border: "none", width: "100%"}}
                 >
@@ -148,7 +144,7 @@ class EditProduct extends React.Component {
                         </Form.Item>
                         <Form.Item label="所属分类" hasFeedback>
                             { form.getFieldDecorator('category', {
-                                initialValue: this.state.data.category_name,
+                                initialValue: this.state.data.category,
                                 rules: [{ required: true, message: '请选择所属分类' }],
                             })(
                                 <Select onChange={this.handleChange}>
@@ -226,7 +222,9 @@ class EditProduct extends React.Component {
                             <span className="ant-form-text">折</span>
                         </Form.Item>
                         <Form.Item label="上传图片">
-                            {form.getFieldDecorator('pictures',)(<PictureWall imgs={this.state.data.pictures} />)}
+                            {form.getFieldDecorator('pictures', {
+                                initialValue: this.state.data.pictures
+                            })(<PictureWall imgs={this.state.data.pictures} />)}
                         </Form.Item>
                         <Form.Item label="商品备注" hasFeedback>
                             { form.getFieldDecorator('note', {
