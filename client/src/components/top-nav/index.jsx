@@ -15,6 +15,11 @@ class TopNav extends React.Component{
             case "库存盘点": nav="/inventory";break;
             case "库存日志": nav="/stock-log";break;
             case "编辑库存": nav="/stock-edit";break;
+            case "会员管理": nav="/customer";break;
+            case "会员列表": nav="/customer";break;
+            case "编辑会员": nav="/customer-edit";break;
+            case "新增会员": nav="/customer-add";break;
+            case "会员详情": nav="/customer-view";break;
             default : nav="home";break;
         }
         this.props.history.replace(nav)

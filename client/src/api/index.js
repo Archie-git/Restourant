@@ -46,6 +46,13 @@ export const updateStockList = (data) => ajax('/stock/update', data, 'POST');
 export const reqStocklogList = (data) => ajax('/stock/stocklog-list', data, 'GET');
 export const addStocklogList = (data) => ajax('/stock/stocklog-add', data, 'POST');
 
+//customer
+export const reqCustomerList = () => ajax('/customer/list', null, 'GET');
+export const reqCustomerSearch = (idOrName) => ajax('/customer/search', {idOrName: idOrName}, 'GET');
+export const reqCustomerDelete = (id) => ajax('/customer/delete', {id: id}, 'GET');
+export const reqCustomerAdd = (data) => ajax('/customer/add', data, 'POST');
+export const updateCustomerList = (data) => ajax('/customer/update', data, 'POST');
+
 
 
 

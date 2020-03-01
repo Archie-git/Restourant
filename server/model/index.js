@@ -56,7 +56,7 @@ exports.getAddSQL = (tableName, data) => {
     values = values.map(item => {
         return typeof(item)==="number" ? item : "\""+item+"\""
     });
-    return "INSERT INTO "+tableName+"("+keys.join(',')+")"+" values("+values.join(",")+")";
+    return "INSERT INTO "+tableName+"("+keys.join(',')+")"+" VALUES("+values.join(",")+")";
 };
 
 //获取查询语句;

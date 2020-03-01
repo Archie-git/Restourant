@@ -2,7 +2,6 @@ import React from 'react';
 import {Table, Divider, Switch, message, Input, Button, Modal} from 'antd';
 import Loading from '../../components/loading/index';
 import TopNav from '../../components/top-nav/index'
-import './category.less';
 import {reqCategoryList, updateCategoryList, reqCategorySearch, reqCategoryDelete, addCategoryList} from '../../api/index';
 import AddCategoryModal from './category-add';
 import EditCategoryModal from './category-edit';
@@ -272,7 +271,7 @@ class Category extends React.Component{
         return (
             <div className="category-container">
                 <TopNav nav={['商品管理', '商品分类']}/>
-                <div className="category-header">
+                <div style={{margin: "20px 22px 0 20px"}}>
                     <Button type="primary" onClick={this.handleAdd}>新增品类</Button>
                     <Input.Search
                         style={{width: "200px", float: "Right"}}

@@ -59,12 +59,16 @@ const menuList=[
     },
     {
         key: "/customer",
-        title: "客户管理",
+        title: "会员管理",
         icon: "smile",
         children: [
             {
                 key: "/customer",
-                title: "客户管理1"
+                title: "会员列表"
+            },
+            {
+                key: "/customer-setting",
+                title: "会员设置"
             }
         ]
     },
