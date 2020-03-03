@@ -20,25 +20,25 @@ export const reqCity = (key=LOCATION_KEY) => jsonp(LOCATION_URL, {key});
 //category;
 export const reqCategoryList = () => ajax('/category/list',null ,'GET');
 export const updateCategoryList = (data) => ajax('/category/update', data, 'POST');
-export const reqCategorySearch = (name) => ajax('/category/search', {name: name}, 'GET');
-export const reqCategoryDelete = (id) => ajax('/category/delete', {id: id}, 'GET');
+export const reqCategorySearch = (name) => ajax('/category/search', {name}, 'GET');
+export const reqCategoryDelete = (id) => ajax('/category/delete', {id}, 'GET');
 export const addCategoryList = (data) => ajax('/category/add', data, 'POST');
 
 //product
 export const reqProductList = () => ajax('/product/list', null, 'GET');
-export const reqProductDelete = (id) => ajax('/product/delete', {id: id}, 'POST');
+export const reqProductDelete = (id) => ajax('/product/delete', {id}, 'POST');
 export const updateProductList = (data) => ajax('/product/update', data, 'POST');
 export const addProductList = (data) => ajax('/product/add', data, 'POST');
 export const reqProductSearch = (data) => ajax('/product/search', data, 'POST');
 
 //file
-export const reqImgDelete = (name) => ajax('/file/delete', {name: name}, 'GET');
+export const reqImgDelete = (name) => ajax('/file/delete', {name}, 'GET');
 
 //stock
 export const reqStockList = () => ajax('/stock/list', null, 'GET');
 export const reqStockCategory = () => ajax('/stock/category', null, 'GET');
-export const reqStockDelete = (id) => ajax('/stock/delete', {id: id}, 'GET');
-export const reqStockSearch = (name) => ajax('/stock/search', {name: name}, 'GET');
+export const reqStockDelete = (id) => ajax('/stock/delete', {id}, 'GET');
+export const reqStockSearch = (name) => ajax('/stock/search', {name}, 'GET');
 export const addStockList = (data) => ajax('/stock/add', data, 'POST');
 export const updateStockList = (data) => ajax('/stock/update', data, 'POST');
 
@@ -48,12 +48,17 @@ export const addStocklogList = (data) => ajax('/stock/stocklog-add', data, 'POST
 
 //customer
 export const reqCustomerList = () => ajax('/customer/list', null, 'GET');
-export const reqCustomerSearch = (idOrName) => ajax('/customer/search', {idOrName: idOrName}, 'GET');
-export const reqCustomerDelete = (id) => ajax('/customer/delete', {id: id}, 'GET');
+export const reqCustomerSearch = (idOrName) => ajax('/customer/search', {idOrName}, 'GET');
+export const reqCustomerDelete = (id) => ajax('/customer/delete', {id}, 'GET');
 export const reqCustomerAdd = (data) => ajax('/customer/add', data, 'POST');
 export const updateCustomerList = (data) => ajax('/customer/update', data, 'POST');
 
-
+//employee
+export const reqEmployeeList = () => ajax('/employee/list', null, 'GET');
+export const reqEmployeeDelete = (id) => ajax('/employee/delete', {id}, 'GET');
+export const reqEmployeeSearch = (nameOrWorkid) => ajax('/employee/search', {nameOrWorkid}, 'GET');
+export const addEmployeeList = (data) => ajax('/employee/add', data, 'POST');
+export const updateEmployeeList = (data) => ajax('/employee/update', data, 'POST');
 
 
 

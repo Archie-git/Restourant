@@ -15,11 +15,7 @@ const menuList=[
             },
             {
                 key: "/order2",
-                title: "前台管理"
-            },
-            {
-                key: "/order3",
-                title: "订单报表"
+                title: "前台订单"
             }
         ]
     },
@@ -68,18 +64,22 @@ const menuList=[
             },
             {
                 key: "/customer-setting",
-                title: "会员设置"
+                title: "营销管理"
             }
         ]
     },
     {
         key: "/employee",
-        title: "员工管理",
+        title: "人事管理",
         icon: "smile",
         children: [
             {
                 key: "/employee",
-                title: "员工管理1"
+                title: "员工列表"
+            },
+            {
+                key: "/employee-permission",
+                title: "权限管理"
             }
         ]
     },

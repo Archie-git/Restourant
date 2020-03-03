@@ -6,6 +6,7 @@ class TopNav extends React.Component{
     handleNavClick = (item) => {
         let nav = "";
         switch(item){
+            case "首页": nav="/home";break;
             case "商品管理": nav="/category";break;
             case "商品分类": nav="/category";break;
             case "商品列表": nav="/product";break;
@@ -20,6 +21,12 @@ class TopNav extends React.Component{
             case "编辑会员": nav="/customer-edit";break;
             case "新增会员": nav="/customer-add";break;
             case "会员详情": nav="/customer-view";break;
+            case "人事管理": nav="/employee";break;
+            case "员工列表": nav="/employee";break;
+            case "新增员工": nav="/employee-add";break;
+            case "编辑员工": nav="/employee-edit";break;
+            case "员工详情": nav="/employee-view";break;
+            case "权限管理": nav="/employee-permission";break;
             default : nav="home";break;
         }
         this.props.history.replace(nav)

@@ -209,7 +209,7 @@ class AddProduct extends React.Component {
                         <Form.Item label="上传图片">
                             {form.getFieldDecorator('pictures', {
                                 rules: [{required: true, message: "请上传商品图片"}]
-                            })(<PictureWall imgs="" />)}
+                            })(<PictureWall/>)}
                         </Form.Item>
                         <Form.Item label="商品备注">
                             { form.getFieldDecorator('note')(

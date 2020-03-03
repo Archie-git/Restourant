@@ -153,7 +153,7 @@ const AddStock = Form.create({name: 'add-stock-form'})(
                                 {
                                     this.props.form.getFieldDecorator('pictures', {
                                         rules: [{required: true, message: "请上传商品图片"}]
-                                    })(<PictureWall imgs="" />)
+                                    })(<PictureWall />)
                                 }
                             </Form.Item>
                             <Form.Item label="备注">

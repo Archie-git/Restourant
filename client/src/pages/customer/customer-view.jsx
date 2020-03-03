@@ -1,6 +1,6 @@
 import React from 'react';
 import './customer.less';
-import {Button, Card, Form, Icon, Tag} from 'antd';
+import {Button, Card, Form, Tag} from 'antd';
 import TopNav from "../../components/top-nav";
 
 class ViewCustomer extends React.Component{

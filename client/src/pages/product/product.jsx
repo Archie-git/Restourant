@@ -252,6 +252,9 @@ class Product extends React.Component {
                 title: '名称',
                 dataIndex: 'name',
                 key: 'name',
+                render: (text, record) => (
+                    <Button type="link" onClick={()=>this.handleView(record)}>{text}</Button>
+                )
             },
             {
                 title: '分类',
@@ -321,17 +324,48 @@ class Product extends React.Component {
             
                 )
             },
+            // {
+            //     title: '上架',
+            //     key: 'onsale',
+            //     dataIndex: 'onsale',
+            //     render: (text, record) => (
+            //         <Switch size="small"
+            //                 defaultChecked={text=== 1}
+            //                 onClick={()=>this.handleStateChange(record, "onsale")}
+            //         />
+            //     )
+            // },
+            // {
+            //     title: '新品',
+            //     key: 'isnew',
+            //     dataIndex: 'isnew',
+            //     render: (text, record) => (
+            //         <Switch size="small"
+            //                 defaultChecked={text=== 1}
+            //                 onClick={()=>this.handleStateChange(record, "isnew")}
+            //         />
+            //     )
+            // },
+            // {
+            //     title: '推荐',
+            //     key: 'recommend',
+            //     dataIndex: 'recommend',
+            //     render: (text, record) => (
+            //         <Switch size="small"
+            //                 defaultChecked={text=== 1}
+            //                 onClick={()=>this.handleStateChange(record, "recommend")}
+            //         />
+            //     )
+            // },
             {
                 title: '操作',
                 key: 'action',
                 render: (record) => (
                     <span>
-                    <Button size="small" onClick={()=>this.handleView(record)}>详情</Button>
-                    <Divider type="vertical" />
-                    <Button size="small" onClick={()=>this.handleEdit(record)}>编辑</Button>
-                    <Divider type="vertical" />
-                    <Button size="small" type="danger" onClick={()=>this.handleDelete(record)}>删除</Button>
-                </span>
+                        <Button size="small" onClick={()=>this.handleEdit(record)}>编辑</Button>
+                        <Divider type="vertical" />
+                        <Button size="small" type="danger" onClick={()=>this.handleDelete(record)}>删除</Button>
+                    </span>
                 )
             }
         ];

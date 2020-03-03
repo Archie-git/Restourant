@@ -56,7 +56,7 @@ class LeftNav extends React.Component{
                 <Link to="/">
                     <div className="left-nav-header">
                         <img src={Logo} alt="logo"/>
-                        <h1>餐饮后台</h1>
+                        <h1>餐厅后台</h1>
                     </div>
                 </Link>
                 <Menu

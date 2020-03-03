@@ -9,7 +9,7 @@ class PicturesWall extends React.Component {
         fileList: [],
     };
     UNSAFE_componentWillMount = () => {
-        if(this.props.imgs !== ""){
+        if(this.props.hasOwnProperty("imgs")){
             let urlArr = this.props.imgs.split(',');
             let fileList = [];
             urlArr.forEach((item, index) => {

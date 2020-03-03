@@ -9,7 +9,7 @@ const ProductSearch = Form.create({name: 'product-operate-form'})(
                     <Form.Item>
                         { this.props.form.getFieldDecorator('status', {
                             initialValue: []
-                        })(<Select style={{width: "100px", textAlign: "left"}} placeholder="选择状态">
+                        })(<Select style={{width: "110px", textAlign: "left"}} placeholder="选择状态">
                             <Select.Option value="">全部</Select.Option>
                             <Select.Option value="onsale-1">已上架</Select.Option>
                             <Select.Option value="onsale-0">未上架</Select.Option>

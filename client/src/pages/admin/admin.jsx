@@ -16,6 +16,10 @@ import AddCustomer from '../../pages/customer/customer-add';
 import EditCustomer from '../../pages/customer/customer-edit';
 import ViewCustomer from '../../pages/customer/customer-view';
 import Employee from '../../pages/employee/employee';
+import AddEmployee from '../../pages/employee/employee-add';
+import ViewEmployee from '../../pages/employee/employee-view';
+import EditEmployee from '../../pages/employee/employee-edit';
+import EmployeePermission from '../../pages/employee/employee-permission';
 import Stock from '../../pages/stock/stock';
 import AddStock from '../../pages/stock/stock-add';
 import StockLog from '../../pages/stock/stock-log';
@@ -60,6 +64,10 @@ class Admin extends React.Component{
                                 <Route path='/customer-edit' component={EditCustomer} />
                                 <Route path='/customer-view' component={ViewCustomer} />
                                 <Route path='/employee' component={Employee} />
+                                <Route path='/employee-add' component={AddEmployee} />
+                                <Route path='/employee-view' component={ViewEmployee} />
+                                <Route path='/employee-edit' component={EditEmployee} />
+                                <Route path='/employee-permission' component={EmployeePermission} />
                                 <Route path='/finance' component={Finance} />
                                 <Redirect to='/home' />
                             </Switch>
