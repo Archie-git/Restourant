@@ -116,6 +116,14 @@ const AddStock = Form.create({name: 'add-stock-form'})(
                                     </div>
                                 }
                             </Form.Item>
+                            <Form.Item label="单价">
+                                {
+                                    this.props.form.getFieldDecorator('price', {
+                                        rules: [{required: true}]
+                                    })(<InputNumber />)
+                                }
+                                <span style={{marginLeft: "10px"}}>元</span>
+                            </Form.Item>
                             <Form.Item label="库存数量">
                                 {
                                     this.props.form.getFieldDecorator('amount', {

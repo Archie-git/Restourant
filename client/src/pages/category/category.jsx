@@ -2,9 +2,7 @@ import React from 'react';
 import {Table, Divider, Switch, message, Input, Button, Modal} from 'antd';
 import Loading from '../../components/loading/index';
 import TopNav from '../../components/top-nav/index'
-import {reqCategoryList, updateCategoryList, reqCategorySearch, reqCategoryDelete, addCategoryList} from '../../api/index';
-import AddCategoryModal from './category-add';
-import EditCategoryModal from './category-edit';
+import {reqCategoryList, updateCategoryList, reqCategorySearch, reqCategoryDelete} from '../../api/index';
 
 class Category extends React.Component{
     constructor(props){
@@ -12,19 +10,12 @@ class Category extends React.Component{
         this.state = {
             isLoading: true,
             data: [],
-            addVisible: false,
-            editVisible: false,
-            editInfo: {},
             column: [],
         }
     }
     UNSAFE_componentWillMount = async () => {
         const response=await reqCategoryList();
         this.refreshTable(response);
-    };
-    formRef = {};
-    componentWillUnmount =() => {
-        clearTimeout(this.timerID)
     };
     categoryColumn = [
         {
@@ -36,7 +27,7 @@ class Category extends React.Component{
             title: '品类名称',
             dataIndex: 'name',
             key: 'name',
-            render: text => <Button type="link" onClick={this.testfunc}>{text}</Button>
+            render: (text, record) => <Button type="link" onClick={()=>this.handleView(record)}>{text}</Button>
         },
         {
             title: '级别',
@@ -96,75 +87,6 @@ class Category extends React.Component{
             )
         }
     ];
-    productColumn = [
-        {
-            title: '编号',
-            key: 'index.jsx',
-            render: (text, record) => <span>{record.index+1}</span>
-        },
-        {
-            title: '品类名称',
-            dataIndex: 'name',
-            key: 'name',
-            render: text => <Button type="link" onClick={this.testfunc}>{text}</Button>
-        },
-        {
-            title: '排序',
-            dataIndex: 'level',
-            key: 'level',
-            render: text => {
-                let level="";
-                switch(text){
-                    case 1 : level="一级";break;
-                    case 2 : level="二级";break;
-                    case 3 : level="三级";break;
-                    case 4 : level="四级";break;
-                    case 5 : level="五级";break;
-                    case 6 : level="六级";break;
-                    case 7 : level="七级";break;
-                    case 8 : level="八级";break;
-                    case 9 : level="九级";break;
-                    default: level="十级"
-                }
-                // return <Button type="link" onClick={this.testfunc}>{level}</Button>
-                return level;
-            }
-        },
-        {
-            title: '子项数量',
-            dataIndex: 'son',
-            key: 'son',
-        },
-        {
-            title: '商品总数',
-            dataIndex: 'amount',
-            key: 'amount'
-        },
-        {
-            title: '是否显示',
-            dataIndex: 'isnav',
-            key: 'isnav',
-            render: (text, record) => <Switch size="small"
-                                              onClick={() => this.handleIsnavChange(record)}
-                                              defaultChecked={text === 1}/>
-        },
-        {
-            title: '操作',
-            key: 'action',
-            render: (text, record) => (
-                <span>
-                    <Button size="small"  onClick={this.testfunc}>编辑</Button>
-                    <Divider type="vertical" />
-                    <Button size="small"  onClick={this.testfunc}>排序</Button>
-                    <Divider type="vertical" />
-                    <Button size="small" type="danger" onClick={()=>this.handleDelete(record)}>删除</Button>
-                </span>
-            )
-        }
-    ];
-    testfunc = () => {
-        message.success("这是一个测试事件");
-    } ;
     refreshTable  = (response) => {
         this.setState({isLoading: true});
         this.timerID = setTimeout(() => {
@@ -220,53 +142,16 @@ class Category extends React.Component{
             onCancel: () => {}
         });
     };
-    handleAdd = () => {this.setState({ addVisible: true })};
+    handleAdd = () => {this.props.history.push('/category-add')};
     handleEdit = (record) => {
-        this.setState({
-            editVisible: true,
-            editInfo: record
-        });
-    };
-    handleAddCancel = () => {this.setState({ addVisible: false })};
-    handleAddOk = () => {
-        this.formRef.props.form.validateFields( async (err, values) => {
-            if(!err) {
-                let data=values;
-                data.level=data.level===undefined ? 7 : data.level;
-                data.description=data.description===undefined ? "无" : data.description;
-                const response1 = await addCategoryList(data);
-                if(response1.status === 0){
-                    this.setState({ addVisible: false });
-                }
-                this.formRef.props.form.resetFields();
-                const response2=await reqCategoryList();
-                this.refreshTable(response2);
-            }
-        });
-    };
-    handleEditCancel = () => {this.setState({editVisible: false})};
-    handleEditOk = () => {
-        this.formRef.props.form.validateFields( async (err, values) => {
-            if(!err){
-                let data = {};
-                data.id=this.state.editInfo.id;
-                for(let key in values){
-                    if(values.hasOwnProperty(key)){
-                        data[key]=values[key]
-                    }
-                }
-                const response1 = await updateCategoryList(data);
-                if(response1.status === 0){
-                    this.setState({editVisible: false})
-                }
-                this.formRef.props.form.resetFields();
-                const response2 = await reqCategoryList();
-                this.refreshTable(response2)
-            }
+        this.props.history.push({
+            pathname: '/category-edit',
+            state: {data: record}
         })
     };
-    
-    
+    handleView = (record) => {
+        this.props.history.push({pathname: '/category-view', state: {data: record}})
+    };
     render(){
         return (
             <div className="category-container">
@@ -291,19 +176,6 @@ class Category extends React.Component{
                             bordered
                         />
                 }
-                <AddCategoryModal
-                    wrappedComponentRef={(formRef) => this.formRef = formRef}
-                    visible={this.state.addVisible}
-                    onCancel={this.handleAddCancel}
-                    onOk={this.handleAddOk}
-                />
-                <EditCategoryModal
-                    wrappedComponentRef={(formRef) => this.formRef = formRef}
-                    visible={this.state.editVisible}
-                    onCancel={this.handleEditCancel}
-                    onOk={this.handleEditOk}
-                    info={this.state.editInfo}
-                />
             </div>
         )
     }

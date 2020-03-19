@@ -1,10 +1,10 @@
 import React from 'react';
 import TopNav from "../../components/top-nav";
-import {Input, Table, Button, Icon, Divider} from "antd";
+import {Input, Table, Button, message, Icon} from "antd";
 import Loading from "../../components/loading";
 import {reqOrderList, reqOrderSearch, reqProductList} from '../../api/index';
 
-class Order extends React.Component{
+class OrderStage extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -37,8 +37,16 @@ class Order extends React.Component{
         const response = id==="" ? await reqOrderList() : await reqOrderSearch(id);
         this.refreshTable(response)
     };
-    handleView = (record) => {
-        this.props.history.push({pathname: '/order-view', state: {data : record}});
+    // handleProductView = async (id) => {
+    //     console.log(id)
+    //     const response = await reqProductSearch(id);
+    //     console.log(response.data)
+    //     if(response.status === 0){
+    //         // this.props.history.push({pathname: '/product-view', state: {data: response.data}})
+    //     }
+    // };
+    handleView = (id) => {
+        message.success(id)
     };
     getTime = (time) => {
         let temp = new Date(time);
@@ -51,7 +59,7 @@ class Order extends React.Component{
                 title: '订单ID',
                 dataIndex: 'id',
                 key: 'id',
-                render: (text, record) => <Button type="link" onClick={()=>this.handleView(record)}>{text}</Button>
+                render: (text) => <Button type="link" onClick={()=>this.handleView(text)}>{text}</Button>
             },
             {
                 title: '顾客',
@@ -101,10 +109,8 @@ class Order extends React.Component{
                 key: 'operation',
                 render: (record) => (
                     <span>
-                        <Button size="small" type="primary"  onClick={()=>this.handleView(record)}>详情</Button>
-                        <Divider type="vertical"/>
-                        <Button size="small" type="primary">操作</Button>
-                    </span>
+                    <Button size="small" type="primary"  onClick={()=>this.handleView(record.id)}>查看详情</Button>
+                </span>
                 )
             }
 
@@ -112,7 +118,7 @@ class Order extends React.Component{
         return (
             <div>
                 <TopNav nav={['订单管理', '全部订单']} />
-                
+
                 <div style={{margin: "20px 22px 0 20px", overflow: "hidden"}}>
                     <Input.Search
                         style={{width: "200px", float: "Right"}}
@@ -137,7 +143,7 @@ class Order extends React.Component{
     }
 }
 
-export default Order;
+export default OrderStage;
 
 
 

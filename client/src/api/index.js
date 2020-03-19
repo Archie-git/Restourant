@@ -60,10 +60,17 @@ export const reqEmployeeSearch = (nameOrWorkid) => ajax('/employee/search', {nam
 export const addEmployeeList = (data) => ajax('/employee/add', data, 'POST');
 export const updateEmployeeList = (data) => ajax('/employee/update', data, 'POST');
 
+//inventory
+export const reqInventoryList = () => ajax('/inventory/list', null, 'GET');
+export const updateInventoryList = (data) => ajax('/inventory/update', data, 'POST');
 
 
+//user
+export const reqUserList = () => ajax('/user/list', null, 'GET');
 
-
+//order
+export const reqOrderList = () => ajax('/order/list', null, 'GET');
+export const reqOrderSearch = (id) => ajax('/order/search', {id}, 'GET');
 
 
 

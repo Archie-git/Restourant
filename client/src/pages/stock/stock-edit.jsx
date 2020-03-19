@@ -125,6 +125,15 @@ const EditStock = Form.create({name: 'edit-stock-form'})(
                                     </div>
                                 }
                             </Form.Item>
+                            <Form.Item label="库存单价">
+                                {
+                                    this.props.form.getFieldDecorator('price', {
+                                        initialValue: initialData.price,
+                                        rules: [{required: true}]
+                                    })(<InputNumber />)
+                                }
+                                <span style={{marginLeft: "10px"}}>元</span>
+                            </Form.Item>
                             <Form.Item label="库存数量">
                                 {
                                     this.props.form.getFieldDecorator('amount', {

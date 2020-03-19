@@ -48,8 +48,8 @@ router.get('/delete', (req,res) => {
 
 //新增品类记录
 router.post('/add', (req, res) => {
-   let sql = "INSERT INTO category(name,level,son,amount,isnav,description) values (\""+req.body.name+"\","+req.body.level+","+"0,0,1,\""+req.body.description+"\")";
-   console.log(sql);
+   let sql = model.getAddSQL('category', req.body);
+    console.log(sql);
    model.querySQL(sql).then(() => {
        res.send({status: 0, msg: "添加成功"})
    }, err => {

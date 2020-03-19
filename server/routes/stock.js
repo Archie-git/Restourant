@@ -51,6 +51,7 @@ router.get('/stocklog-list', (req, res) => {
 //新增库存记录
 router.post('/add', (req, res) => {
     let sql = model.getAddSQL('stock', req.body);
+    console.log(sql);
     model.querySQL(sql).then(ret => {
         res.send({status: 0, data: ret})
     }, err => {

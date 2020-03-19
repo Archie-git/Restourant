@@ -151,6 +151,9 @@ class ViewStock extends React.Component{
                         <Form.Item label="货物种类">
                             <span className="ant-form-text">{this.state.data.category}</span>
                         </Form.Item>
+                        <Form.Item label="单价">
+                            <span className="ant-form-text">￥{this.state.data.price}</span>
+                        </Form.Item>
                         <Form.Item label="库存数量">
                             <span className="ant-form-text">{this.state.data.amount}</span>
                         </Form.Item>

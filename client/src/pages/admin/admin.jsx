@@ -6,11 +6,16 @@ import Header from '../../components/header';
 import LeftNav from '../../components/left-nav';
 import Home from '../../pages/home/home';
 import Category from '../../pages/category/category';
+import AddCategory from '../../pages/category/category-add';
+import EditCategory from '../../pages/category/category-edit';
+import ViewCategory from '../../pages/category/category-view';
 import Product from '../../pages/product/product';
 import AddProduct from '../product/product-add';
 import EditProduct from '../product/product-edit';
 import ViewProduct from '../product/product-view';
 import Order from '../../pages/order/order';
+import ViewOrder from '../../pages/order/order-view';
+import OrderStage from '../../pages/order/order-stage';
 import Customer from '../../pages/customer/customer';
 import AddCustomer from '../../pages/customer/customer-add';
 import EditCustomer from '../../pages/customer/customer-edit';
@@ -26,6 +31,8 @@ import StockLog from '../../pages/stock/stock-log';
 import ViewStock from '../../pages/stock/stock-view';
 import EditStock from '../../pages/stock/stock-edit';
 import Inventory from '../../pages/inventory/inventory';
+import ViewInventory from "../inventory/inventory-view";
+import AddInventory from '../inventory/inventory-add';
 import Finance from '../../pages/finance/finance';
 
 
@@ -48,6 +55,9 @@ class Admin extends React.Component{
                             <Switch>
                                 <Route path='/home' component={Home} />
                                 <Route path='/category' component={Category} />
+                                <Route path='/category-add' component={AddCategory} />
+                                <Route path='/category-edit' component={EditCategory} />
+                                <Route path='/category-view' component={ViewCategory} />
                                 <Route path='/product' component={Product} />
                                 <Route path='/product-add' component={AddProduct} />
                                 <Route path='/product-edit' component={EditProduct} />
@@ -59,6 +69,8 @@ class Admin extends React.Component{
                                 <Route path='/stock-log' component={StockLog} />
                                 <Route path='/stock-edit' component={EditStock} />
                                 <Route path='/inventory' component={Inventory} />
+                                <Route path='/inventory-view' component={ViewInventory} />
+                                <Route path='/inventory-add' component={AddInventory} />
                                 <Route path='/customer' component={Customer} />
                                 <Route path='/customer-add' component={AddCustomer} />
                                 <Route path='/customer-edit' component={EditCustomer} />
@@ -68,6 +80,9 @@ class Admin extends React.Component{
                                 <Route path='/employee-view' component={ViewEmployee} />
                                 <Route path='/employee-edit' component={EditEmployee} />
                                 <Route path='/employee-permission' component={EmployeePermission} />
+                                <Route path='/order' component={Order} />
+                                <Route path='/order-view' component={ViewOrder} />
+                                <Route path='/order-stage' component={OrderStage} />
                                 <Route path='/finance' component={Finance} />
                                 <Redirect to='/home' />
                             </Switch>

@@ -14,8 +14,8 @@ const menuList=[
                 title: "全部订单"
             },
             {
-                key: "/order2",
-                title: "前台订单"
+                key: "/order-stage",
+                title: "前台管理"
             }
         ]
     },
@@ -78,6 +78,10 @@ const menuList=[
                 title: "员工列表"
             },
             {
+                key: "/employee-role",
+                title: "角色管理"
+            },
+            {
                 key: "/employee-permission",
                 title: "权限管理"
             }
@@ -95,5 +99,8 @@ const menuList=[
         ]
     }
 ];
+
+
+
 
 export default menuList;

@@ -141,6 +141,13 @@ class Stock extends React.Component{
                 onFilter: (value, record) => value===record.category
             },
             {
+                title: '单价',
+                dataIndex: 'price',
+                key: 'price',
+                render: (text) => <span>￥{text}</span>,
+                sorter: (a, b) => a.price-b.price
+            },
+            {
                 title: '库存量',
                 dataIndex: 'amount',
                 key: 'amount',

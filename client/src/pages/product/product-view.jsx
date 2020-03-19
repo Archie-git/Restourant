@@ -3,7 +3,7 @@ import './product.less';
 import {Form, Button, Card, Icon} from 'antd';
 import TopNav from "../../components/top-nav";
 
-class EditProduct extends React.Component{
+class ViewProduct extends React.Component{
     constructor(props){
         super(props);
         this.state=({
@@ -97,4 +97,4 @@ class EditProduct extends React.Component{
     }
 }
 
-export default Form.create({name:'product-add-form'})(EditProduct);
+export default Form.create({name:'product-add-form'})(ViewProduct);

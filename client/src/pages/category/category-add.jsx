@@ -1,7 +1,9 @@
 import React from 'react';
-import {Modal, Form, Input, Radio} from 'antd';
+import {Form, Input, Card, Button, message, Switch, Select} from 'antd';
+import TopNav from "../../components/top-nav";
+import { addCategoryList } from "../../api";
 
-const AddCategoryModal = Form.create({ name: 'category-add' })(
+const AddCategory = Form.create({ name: 'category-add' })(
     class extends React.Component {
         validateName = (rule, value, callback) =>{
             if(!value){
@@ -12,49 +14,82 @@ const AddCategoryModal = Form.create({ name: 'category-add' })(
                 callback()
             }
         };
+        handleSubmit = (e) => {
+            e.preventDefault();
+            this.props.form.validateFields( async (err, values) => {
+                if(!err) {
+                    let data=values;
+                    data.level = Number(data.level);
+                    data.isnav = data.isnav ? 1 : 0;
+                    const response = await addCategoryList(data);
+                    if(response.status === 0){
+                        message.success("新增成功,即将返回品类列表", 2);
+                        this.timerID = setTimeout(()=>{
+                            this.props.history.push('/category')
+                        }, 2000);
+                    }
+                }
+            });
+        };
         render() {
-            const { form } = this.props;
+            const formItemLayout = {
+                labelCol: {span: 8},
+                wrapperCol: {span: 10}
+            };
+            const form = this.props.form;
             return (
-                <Modal
-                    visible={this.props.visible}
-                    title="新增商品品类"
-                    okText="确认"
-                    cancelText="取消"
-                    onOk={this.props.onOk}
-                    // onOk={()=>{console.log(this.props)}}
-                    onCancel={this.props.onCancel}
-                >
-                    <Form layout="inline">
-                        <Form.Item label="名称：">
-                            {form.getFieldDecorator('name', {
-                                rules: [{ validator: this.validateName }],
-                            })(<Input style={{width: "414px", marginBottom: "20px"}}/>)}
-                        </Form.Item>
-                        <Form.Item label="描述：">
-                            {form.getFieldDecorator('description')(
-                                <Input.TextArea style={{width:"414px",height:"100px",marginBottom:"20px"}}/>)}
-                        </Form.Item>
-                        <Form.Item label="级别：">
-                            {form.getFieldDecorator('level')(
-                                <Radio.Group buttonStyle="solid">
-                                    <Radio.Button value="0">一级</Radio.Button>
-                                    <Radio.Button value="1">二级</Radio.Button>
-                                    <Radio.Button value="2">三级</Radio.Button>
-                                    <Radio.Button value="3">四级</Radio.Button>
-                                    <Radio.Button value="4">五级</Radio.Button>
-                                    <Radio.Button value="5">六级</Radio.Button>
-                                    <Radio.Button value="6">七级</Radio.Button>
-                                </Radio.Group>,
-                            )}
-                        </Form.Item>
-                    </Form>
-                </Modal>
-            );
+                <div>
+                    <TopNav nav={['商品管理', '商品分类', '新增品类']}/>
+                    <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>新增商品品类</span>}
+                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/category')}}>返回</Button>}
+                          style={{width: "100%", border: "none"}}
+                    >
+                        <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
+                            <Form.Item label="名称：">
+                                {form.getFieldDecorator('name', {
+                                    rules: [{required: true, validator: this.validateName }],
+                                })(<Input />)}
+                            </Form.Item>
+                            <Form.Item label="级别：">
+                                {form.getFieldDecorator('level', {
+                                    rules: [{required: true}]
+                                })(
+                                    <Select>
+                                        <Select.Option key={0}>第一级</Select.Option>
+                                        <Select.Option key={1}>第二级</Select.Option>
+                                        <Select.Option key={2}>第三级</Select.Option>
+                                        <Select.Option key={3}>第四级</Select.Option>
+                                        <Select.Option key={4}>第五级</Select.Option>
+                                        <Select.Option key={5}>第六级</Select.Option>
+                                        <Select.Option key={6}>第七级</Select.Option>
+                                        <Select.Option key={7}>第八级</Select.Option>
+                                    </Select>
+                                )}
+                            </Form.Item>
+                            <Form.Item label="是否显示">
+                                {form.getFieldDecorator('isnav', {
+                                    rules: [{required: true}],
+                                    valuePropName: "checked",
+                                    initialValue: false
+                                })(<Switch />)}
+                            </Form.Item>
+                            <Form.Item label="备注：">
+                                {form.getFieldDecorator('note', {
+                                    initialValue: ""
+                                })(<Input.TextArea rows={4}/>)}
+                            </Form.Item>
+                            <Form.Item>
+                                <Button style={{margin: "50px 0 0 460px"}} type="primary" htmlType="submit">完成，提交</Button>
+                            </Form.Item>
+                        </Form>
+                    </Card>
+                </div>
+            )
         }
     },
 );
 
-export default AddCategoryModal;
+export default AddCategory;
 
 
 

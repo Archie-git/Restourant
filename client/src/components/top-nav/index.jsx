@@ -9,11 +9,16 @@ class TopNav extends React.Component{
             case "首页": nav="/home";break;
             case "商品管理": nav="/category";break;
             case "商品分类": nav="/category";break;
+            case "新增品类": nav="/category-add";break;
+            case "编辑品类": nav="/category-edit";break;
+            case "品类详情": nav="/category-view";break;
             case "商品列表": nav="/product";break;
-            case "添加商品": nav="/add-product";break;
+            case "添加商品": nav="/product-add";break;
+            case "编辑商品": nav="/product-edit";break;
             case "库存管理": nav="/stock";break;
             case "库存信息": nav="/stock";break;
             case "库存盘点": nav="/inventory";break;
+            case "盘点详情": nav="/inventory-view";break;
             case "库存日志": nav="/stock-log";break;
             case "编辑库存": nav="/stock-edit";break;
             case "会员管理": nav="/customer";break;
@@ -27,6 +32,10 @@ class TopNav extends React.Component{
             case "编辑员工": nav="/employee-edit";break;
             case "员工详情": nav="/employee-view";break;
             case "权限管理": nav="/employee-permission";break;
+            case "订单管理": nav="/order";break;
+            case "全部订单": nav="/order";break;
+            case "订单详情": nav="/order-view";break;
+            case "前台管理": nav="/order-stage";break;
             default : nav="home";break;
         }
         this.props.history.replace(nav)

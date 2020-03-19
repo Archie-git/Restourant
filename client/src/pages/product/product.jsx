@@ -16,7 +16,8 @@ class Product extends React.Component {
             options2: [],
             selectedRowKeys: [],
             operation: "",
-            selectedCategory: []
+            selectedCategory: [],
+            categoryFilters: []
         })
     }
     UNSAFE_componentWillMount = async () => {
@@ -67,14 +68,19 @@ class Product extends React.Component {
                 }
             ];
             let options2 = [];
+            let categoryFilters = [];
             response2.data.forEach(item1 => {
                 options2.push({label: item1.name, value: item1.id});
                 data.map(item2 => {
+                    categoryFilters.indexOf(item1.name)===-1 ? categoryFilters.push(item1.name) : categoryFilters.push();
                     if(item2.category === item1.id){
                         item2.category_name = item1.name
                     }
                     return item2;
                 })
+            });
+            categoryFilters = categoryFilters.map(item => {
+                return {text: item, value: item}
             });
             options1.push({
                 label: '移至',
@@ -84,7 +90,8 @@ class Product extends React.Component {
             this.setState({
                 isLoading: true,
                 options1: options1,
-                options2: options2
+                options2: options2,
+                categoryFilters: categoryFilters
             });
             this.timeID = setTimeout(() => {
                 this.setState({
@@ -260,6 +267,8 @@ class Product extends React.Component {
                 title: '分类',
                 key: 'category_name',
                 dataIndex: 'category_name',
+                filters: this.state.categoryFilters,
+                onFilter: (value, record) => value===record.category_name
             },
             {
                 title: '售价',

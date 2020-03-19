@@ -13,6 +13,8 @@ let fileRouter = require('./routes/file');
 let stockRouter = require('./routes/stock');
 let customerRouter = require('./routes/customer');
 let employeeRouter = require('./routes/employee');
+let inventoryRouter = require('./routes/inventory');
+let orderRouter = require('./routes/order');
 
 let app = express();
 
@@ -38,6 +40,8 @@ app.use('/file', fileRouter);
 app.use('/stock', stockRouter);
 app.use('/customer', customerRouter);
 app.use('/employee', employeeRouter);
+app.use('/inventory', inventoryRouter);
+app.use('/order', orderRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
