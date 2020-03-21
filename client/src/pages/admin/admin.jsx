@@ -5,17 +5,17 @@ import {Layout} from 'antd';
 import Header from '../../components/header';
 import LeftNav from '../../components/left-nav';
 import Home from '../../pages/home/home';
-import Category from '../../pages/category/category';
-import AddCategory from '../../pages/category/category-add';
-import EditCategory from '../../pages/category/category-edit';
-import ViewCategory from '../../pages/category/category-view';
+import Category from '../product/category';
+import AddCategory from '../product/category-add';
+import EditCategory from '../product/category-edit';
+import ViewCategory from '../product/category-view';
 import Product from '../../pages/product/product';
 import AddProduct from '../product/product-add';
 import EditProduct from '../product/product-edit';
 import ViewProduct from '../product/product-view';
 import Order from '../../pages/order/order';
 import ViewOrder from '../../pages/order/order-view';
-import OrderStage from '../../pages/order/order-stage';
+import OrderStage from '../order/frontdesk';
 import Customer from '../../pages/customer/customer';
 import AddCustomer from '../../pages/customer/customer-add';
 import EditCustomer from '../../pages/customer/customer-edit';
@@ -24,15 +24,20 @@ import Employee from '../../pages/employee/employee';
 import AddEmployee from '../../pages/employee/employee-add';
 import ViewEmployee from '../../pages/employee/employee-view';
 import EditEmployee from '../../pages/employee/employee-edit';
-import EmployeePermission from '../../pages/employee/employee-permission';
+import Role from '../../pages/employee/role';
+import AddRole from '../../pages/employee/role-add';
+import EditRole from '../../pages/employee/role-edit';
+import User from '../../pages/employee/user';
+import AddUser from '../../pages/employee/user-add';
+import EditUser from '../../pages/employee/user-edit';
 import Stock from '../../pages/stock/stock';
 import AddStock from '../../pages/stock/stock-add';
 import StockLog from '../../pages/stock/stock-log';
 import ViewStock from '../../pages/stock/stock-view';
 import EditStock from '../../pages/stock/stock-edit';
-import Inventory from '../../pages/inventory/inventory';
-import ViewInventory from "../inventory/inventory-view";
-import AddInventory from '../inventory/inventory-add';
+import Inventory from '../stock/inventory';
+import ViewInventory from "../stock/inventory-view";
+import AddInventory from '../stock/inventory-add';
 import Finance from '../../pages/finance/finance';
 
 
@@ -79,7 +84,12 @@ class Admin extends React.Component{
                                 <Route path='/employee-add' component={AddEmployee} />
                                 <Route path='/employee-view' component={ViewEmployee} />
                                 <Route path='/employee-edit' component={EditEmployee} />
-                                <Route path='/employee-permission' component={EmployeePermission} />
+                                <Route path='/user' component={User} />
+                                <Route path='/user-add' component={AddUser} />
+                                <Route path='/user-edit' component={EditUser} />
+                                <Route path='/role' component={Role} />
+                                <Route path='/role-add' component={AddRole} />
+                                <Route path='/role-edit' component={EditRole} />
                                 <Route path='/order' component={Order} />
                                 <Route path='/order-view' component={ViewOrder} />
                                 <Route path='/order-stage' component={OrderStage} />

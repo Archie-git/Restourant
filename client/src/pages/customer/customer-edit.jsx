@@ -34,7 +34,7 @@ const EditCustomer = Form.create({name: 'add-customer-form'})(
             const data = this.props.location.state.data;
             return (
                 <div>
-                    <TopNav nav={['会员管理', '编辑会员']} />
+                    <TopNav nav={['会员管理', '会员列表', '编辑会员']} />
                     <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>编辑会员信息</span>}
                           extra={<Button type="primary" onClick={()=>{this.props.history.push('/customer')}}>返回</Button>}
                           style={{width: "100%", border: "none"}}

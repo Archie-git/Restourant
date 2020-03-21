@@ -12,7 +12,6 @@ class ViewOrder extends React.Component{
     }
     UNSAFE_componentWillMount = async () => {
         let data = this.props.location.state.data;
-        console.log(data);
         this.setState({
             data: data
         })

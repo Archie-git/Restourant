@@ -1,8 +1,8 @@
 import React from 'react';
 import {Table, Divider, Switch, message, Input, Button, Modal} from 'antd';
-import Loading from '../../components/loading/index';
-import TopNav from '../../components/top-nav/index'
-import {reqCategoryList, updateCategoryList, reqCategorySearch, reqCategoryDelete} from '../../api/index';
+import Loading from '../../components/loading';
+import TopNav from '../../components/top-nav'
+import {reqCategoryList, updateCategoryList, reqCategorySearch, reqCategoryDelete} from '../../api';
 
 class Category extends React.Component{
     constructor(props){
@@ -10,83 +10,12 @@ class Category extends React.Component{
         this.state = {
             isLoading: true,
             data: [],
-            column: [],
         }
     }
     UNSAFE_componentWillMount = async () => {
         const response=await reqCategoryList();
         this.refreshTable(response);
     };
-    categoryColumn = [
-        {
-            title: '编号',
-            key: 'index',
-            render: (text, record) => <span>{record.index+1}</span>
-        },
-        {
-            title: '品类名称',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text, record) => <Button type="link" onClick={()=>this.handleView(record)}>{text}</Button>
-        },
-        {
-            title: '级别',
-            dataIndex: 'level',
-            key: 'level',
-            render: text => {
-                let level="";
-                switch(text){
-                    case 0 : level="一级";break;
-                    case 1 : level="二级";break;
-                    case 2 : level="三级";break;
-                    case 3 : level="四级";break;
-                    case 4 : level="五级";break;
-                    case 5 : level="六级";break;
-                    case 6 : level="七级";break;
-                    case 7 : level="八级";break;
-                    case 8 : level="九级";break;
-                    default: level="十级"
-                }
-                // return <Button type="link" onClick={this.testfunc}>{level}</Button>
-                return <span>{level}</span>;
-            },
-            sorter: (a, b) => a.level-b.level
-        },
-        {
-            title: '子项数量',
-            dataIndex: 'son',
-            key: 'son',
-            sorter: (a, b) => a.son-b.son
-        },
-        {
-            title: '商品总数(/件)',
-            dataIndex: 'amount',
-            key: 'amount',
-            sorter: (a, b) => a.amount-b.amount
-        },
-        {
-            title: '是否显示',
-            dataIndex: 'isnav',
-            key: 'isnav',
-            render: (text, record) => <Switch
-                size="small"
-                onClick={()=>this.handleIsnavChange(record)}
-                defaultChecked={text === 1}/>,
-            filters: [{text: '已显示', value: 1}, {text: '未显示', value: 0}],
-            onFilter: (value, record) => value===record.isnav
-        },
-        {
-            title: '操作',
-            key: 'action',
-            render: (record) => (
-                <span>
-                    <Button size="small"  onClick={()=>this.handleEdit(record)}>编辑</Button>
-                    <Divider type="vertical" />
-                    <Button size="small" type="danger" onClick={()=>this.handleDelete(record)}>删除</Button>
-                </span>
-            )
-        }
-    ];
     refreshTable  = (response) => {
         this.setState({isLoading: true});
         this.timerID = setTimeout(() => {
@@ -95,7 +24,7 @@ class Category extends React.Component{
                     item.index = index;
                     return item
                 });
-                this.setState({isLoading: false, data: data, column: this.categoryColumn})
+                this.setState({isLoading: false, data: data})
             }else if(response.status===1){
                 message.error(response.msg);
                 this.setState({isLoading: false, data: null})
@@ -153,6 +82,76 @@ class Category extends React.Component{
         this.props.history.push({pathname: '/category-view', state: {data: record}})
     };
     render(){
+        const columns = [
+            {
+                title: '编号',
+                key: 'index',
+                render: (text, record) => <span>{record.index+1}</span>
+            },
+            {
+                title: '品类名称',
+                dataIndex: 'name',
+                key: 'name',
+                render: (text, record) => <Button type="link" onClick={()=>this.handleView(record)}>{text}</Button>
+            },
+            {
+                title: '级别',
+                dataIndex: 'level',
+                key: 'level',
+                render: text => {
+                    let level="";
+                    switch(text){
+                        case 0 : level="一级";break;
+                        case 1 : level="二级";break;
+                        case 2 : level="三级";break;
+                        case 3 : level="四级";break;
+                        case 4 : level="五级";break;
+                        case 5 : level="六级";break;
+                        case 6 : level="七级";break;
+                        case 7 : level="八级";break;
+                        case 8 : level="九级";break;
+                        default: level="十级"
+                    }
+                    // return <Button type="link" onClick={this.testfunc}>{level}</Button>
+                    return <span>{level}</span>;
+                },
+                sorter: (a, b) => a.level-b.level
+            },
+            {
+                title: '子项数量',
+                dataIndex: 'son',
+                key: 'son',
+                sorter: (a, b) => a.son-b.son
+            },
+            {
+                title: '商品总数(/件)',
+                dataIndex: 'amount',
+                key: 'amount',
+                sorter: (a, b) => a.amount-b.amount
+            },
+            {
+                title: '是否显示',
+                dataIndex: 'isnav',
+                key: 'isnav',
+                render: (text, record) => <Switch
+                    size="small"
+                    onClick={()=>this.handleIsnavChange(record)}
+                    defaultChecked={text === 1}/>,
+                filters: [{text: '已显示', value: 1}, {text: '未显示', value: 0}],
+                onFilter: (value, record) => value===record.isnav
+            },
+            {
+                title: '操作',
+                key: 'action',
+                render: (record) => (
+                    <span>
+                    <Button size="small"  onClick={()=>this.handleEdit(record)}>编辑</Button>
+                    <Divider type="vertical" />
+                    <Button size="small" type="danger" onClick={()=>this.handleDelete(record)}>删除</Button>
+                </span>
+                )
+            }
+        ];
         return (
             <div className="category-container">
                 <TopNav nav={['商品管理', '商品分类']}/>
@@ -170,7 +169,7 @@ class Category extends React.Component{
                         <Table
                             style={{margin: "20px"}}
                             size="small"
-                            columns={this.state.column}
+                            columns={columns}
                             dataSource={this.state.data}
                             rowKey={record => record.id}
                             bordered

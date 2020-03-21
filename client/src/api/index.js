@@ -62,19 +62,30 @@ export const updateEmployeeList = (data) => ajax('/employee/update', data, 'POST
 
 //inventory
 export const reqInventoryList = () => ajax('/inventory/list', null, 'GET');
-export const updateInventoryList = (data) => ajax('/inventory/update', data, 'POST');
+export const reqInventoryAdd = (data) => ajax('/inventory/add', data, 'POST');
+export const reqInventoryUpdate = (data) => ajax('/inventory/update', data, 'POST');
+export const reqInventoryDelete = (id) => ajax('/inventory/delete', {id}, 'GET');
 
 
 //user
 export const reqUserList = () => ajax('/user/list', null, 'GET');
+export const reqUserDelete = (id) => ajax('/user/delete', {id}, 'GET');
+export const reqUserAdd = (data) => ajax('/user/add', data, 'POST');
+export const reqUserUpdate = (data) => ajax('/user/update', data, 'POST');
 
 //order
 export const reqOrderList = () => ajax('/order/list', null, 'GET');
 export const reqOrderSearch = (id) => ajax('/order/search', {id}, 'GET');
 
+//Role
+export const reqRoleList = () => ajax('/role/list', null, 'GET');
+export const reqRoleDelete = (id) => ajax('/role/delete', {id}, 'GET');
+export const reqRoleAdd = (data) => ajax('/role/add', data, 'POST');
+export const reqRoleUpdate = (data) => ajax('/role/update', data, 'POST');
 
-
-
+//Rule
+export const reqRuleList = () => ajax('/rule/list', null, 'GET');
+export const reqRuleUpdate = (data) => ajax('/rule/update', data, 'POST');
 
 
 

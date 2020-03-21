@@ -2,20 +2,24 @@ const menuList=[
     {
         key: "/home",
         title: "首页",
-        icon: "home"
+        icon: "home",
+        display: 1
     },
     {
         key: "/order",
         title: "订单管理",
         icon: "account-book",
+        display: 1,
         children: [
             {
                 key: "/order",
-                title: "全部订单"
+                title: "全部订单",
+                display: 1
             },
             {
                 key: "/order-stage",
-                title: "前台管理"
+                title: "前台管理",
+                display: 1
             }
         ]
     },
@@ -23,78 +27,94 @@ const menuList=[
         key: "/product",
         title: "商品管理",
         icon: "shopping",
+        display: 1,
         children: [
             {
                 key: "/category",
-                title: "商品分类"
+                title: "商品分类",
+                display: 1
             },
             {
                 key: "/product",
-                title: "商品列表"
+                title: "商品列表",
+                display: 1
             },
             {
                 key: "/product-add",
-                title: "添加商品"
+                title: "添加商品",
+                display: 1
             }
         ]
     },
     {
         key: "/stock",
         title: "库存管理",
-        icon: "smile",
+        icon: "appstore",
+        display: 1,
         children: [
             {
                 key: "/stock",
-                title: "库存信息"
+                title: "库存信息",
+                display: 1
             },
             {
                 key: "/inventory",
-                title: "库存盘点"
+                title: "库存盘点",
+                display: 1
             }
         ]
     },
     {
         key: "/customer",
         title: "会员管理",
-        icon: "smile",
+        icon: "crown",
+        display: 1,
         children: [
             {
                 key: "/customer",
-                title: "会员列表"
+                title: "会员列表",
+                display: 1
             },
             {
-                key: "/customer-setting",
-                title: "营销管理"
+                key: "/customer-add",
+                title: "新增会员",
+                display: 1
             }
         ]
     },
     {
         key: "/employee",
         title: "人事管理",
-        icon: "smile",
+        icon: "team",
+        display: 1,
         children: [
             {
                 key: "/employee",
-                title: "员工列表"
+                title: "员工列表",
+                display: 1
             },
             {
-                key: "/employee-role",
-                title: "角色管理"
+                key: "/user",
+                title: "用户列表",
+                display: 1
             },
             {
-                key: "/employee-permission",
-                title: "权限管理"
+                key: "/role",
+                title: "角色管理",
+                display: 1
             }
         ]
     },
     {
         key: "/finance",
         title: "财务管理",
-        icon: "smile",
+        icon: "area-chart",
+        display: 1,
         children: [
             {
                 key: "/finance",
-                title: "财务管理1"
+                title: "财务报表",
+                display: 1
             }
         ]
     }

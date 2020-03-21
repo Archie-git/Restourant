@@ -124,7 +124,7 @@ class EditProduct extends React.Component {
         const {form} = this.props;
         return (
             <div>
-                <TopNav nav={['商品管理', '编辑商品']}/>
+                <TopNav nav={['商品管理', '商品列表', '编辑商品']}/>
                 <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>编辑商品信息</span>}
                       extra={<Button type="primary" onClick={()=>{this.props.history.push('/product')}}>返回</Button>}
                       style={{ border: "none", width: "100%"}}

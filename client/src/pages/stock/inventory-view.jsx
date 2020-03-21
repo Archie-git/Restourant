@@ -8,8 +8,9 @@ class ViewInventory extends React.Component{
         let month = time.getMonth()+1;
         return time.getFullYear()+"-"+month+"-"+time.getDate()+"\xa0\xa0"+time.getHours()+":"+time.getMinutes();
     };
-    getDetail = () => {
-    
+    getVariance = (amount, expect) => {
+        const ret = (amount-expect).toFixed(2);
+        return ret>0 ? <span>+{ret}</span> : <span>{ret}</span>
     };
     render() {
         const formItemLayout = {
@@ -29,16 +30,19 @@ class ViewInventory extends React.Component{
                             <span className="ant-form-text">{data.id}</span>
                         </Form.Item>
                         <Form.Item label="盘点时间">
-                            <span className="ant-form-text">{this.getTime(data.time)}</span>
+                            <span className="ant-form-text">{this.getTime(data.createtime)}</span>
                         </Form.Item>
                         <Form.Item label="盘点人">
-                            <span className="ant-form-text">{data.managername}</span>
+                            <span className="ant-form-text">{data.creater}</span>
+                        </Form.Item>
+                        <Form.Item label="预期金额">
+                            <span className="ant-form-text">￥{data.expect.toFixed(2)}</span>
                         </Form.Item>
                         <Form.Item label="盘点金额">
-                            <span className="ant-form-text">￥{data.amount}</span>
+                            <span className="ant-form-text">￥{data.amount.toFixed(2)}</span>
                         </Form.Item>
                         <Form.Item label="差异金额">
-                            <span className="ant-form-text">￥{data.variance}</span>
+                            <span className="ant-form-text">{this.getVariance(data.amount, data.expect)}</span>
                         </Form.Item>
                         <Form.Item label="状态">
                             <span className="ant-form-text" style={{marginLeft: "20px", textIndent: 0}}>
@@ -49,11 +53,7 @@ class ViewInventory extends React.Component{
                             <span className="ant-form-text">{data.note}</span>
                         </Form.Item>
                         <Form.Item label="详情">
-                            {
-                                data.detail.map((item, index) => {
-                                    return <span key={index} className="ant-form-text">{item}</span>
-                                })
-                            }
+                            <span className="ant-form-text">{data.detail}</span>
                         </Form.Item>
                     </Form>
                 </Card>

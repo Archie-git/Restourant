@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from "../../components/top-nav";
-import {Input, Table, Button, Icon, Divider} from "antd";
+import {Input, Table, Button, Icon} from "antd";
 import Loading from "../../components/loading";
 import {reqOrderList, reqOrderSearch, reqProductList} from '../../api/index';
 
@@ -76,7 +76,7 @@ class Order extends React.Component{
                 title: '创建时间',
                 dataIndex: 'createtime',
                 key: 'createtime',
-                render: (text) => <span>{this.getTime(text)}</span>,
+                render: (text) => <span><Icon type="clock-circle" />&nbsp;{this.getTime(text)}</span>,
                 sorter: (a, b) => a.amount - b.amount,
             },
             {
@@ -94,16 +94,22 @@ class Order extends React.Component{
             {
                 title: '状态',
                 dataIndex: 'state',
-                key: 'state'
+                key: 'state',
+                filters: [
+                    {text: "已付款", value: 1},
+                    {text: "请求取消", value: 2},
+                    {text: "已取消", value: 3},
+                    {text: "已完成", value: 4},
+                    {text: "已评价", value: 5},
+                ],
+                onFilter: (value, record) => value===record.state
             },
             {
                 title: '操作',
                 key: 'operation',
                 render: (record) => (
                     <span>
-                        <Button size="small" type="primary"  onClick={()=>this.handleView(record)}>详情</Button>
-                        <Divider type="vertical"/>
-                        <Button size="small" type="primary">操作</Button>
+                        <Button size="small" type="primary"  onClick={()=>this.handleView(record)}>查看详情</Button>
                     </span>
                 )
             }

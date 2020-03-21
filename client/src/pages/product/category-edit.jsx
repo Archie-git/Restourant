@@ -5,6 +5,17 @@ import { updateCategoryList } from "../../api";
 
 const EditCategory = Form.create({ name: 'category-add' })(
     class extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                data: []
+            }
+        }
+        UNSAFE_componentWillMount = () => {
+            this.setState({
+                data: this.props.location.state.data
+            })
+        };
         validateName = (rule, value, callback) =>{
             if(!value){
                 callback("请输入品类名称")
@@ -58,7 +69,6 @@ const EditCategory = Form.create({ name: 'category-add' })(
                 wrapperCol: {span: 10}
             };
             const form = this.props.form;
-            const data = this.props.location.state.data;
             return (
                 <div>
                     <TopNav nav={['商品管理', '商品分类', '编辑品类']}/>
@@ -70,13 +80,13 @@ const EditCategory = Form.create({ name: 'category-add' })(
                             <Form.Item label="名称：">
                                 {form.getFieldDecorator('name', {
                                     rules: [{required: true, validator: this.validateName }],
-                                    initialValue: data.name
+                                    initialValue: this.state.data.name
                                 })(<Input />)}
                             </Form.Item>
                             <Form.Item label="级别：">
                                 {form.getFieldDecorator('level', {
                                     rules: [{required: true}],
-                                    initialValue: data.level
+                                    initialValue: this.state.data.level
                                 })(
                                     <Select>
                                         <Select.Option key={0}>一级</Select.Option>
@@ -94,12 +104,12 @@ const EditCategory = Form.create({ name: 'category-add' })(
                                 {form.getFieldDecorator('isnav', {
                                     rules: [{required: true}],
                                     valuePropName: "checked",
-                                    initialValue: data.isnav===1
+                                    initialValue: this.state.data.isnav===1
                                 })(<Switch />)}
                             </Form.Item>
                             <Form.Item label="备注：">
                                 {form.getFieldDecorator('note', {
-                                    initialValue: data.note
+                                    initialValue: this.state.data.note
                                 })(<Input.TextArea rows={4}/>)}
                             </Form.Item>
                             <Form.Item>

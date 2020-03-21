@@ -22,7 +22,7 @@ class ViewCategory extends React.Component{
         };
         return (
             <div>
-                <TopNav nav={['商品管理', '品类详情']} />
+                <TopNav nav={['商品管理', '商品分类', '品类详情']} />
                 <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>查看品类详情</span>}
                       extra={<Button type="primary" onClick={()=>{this.props.history.push('/category')}}>返回</Button>}
                       style={{width: "100%", border: "none"}}

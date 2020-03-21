@@ -63,7 +63,14 @@ class Header extends React.Component{
                 <img src={"https://cdn.heweather.com/cond_icon/"+this.state.weather_code+".png"} alt="weather" />
                 <span style={{marginRight: "100px"}}>{this.state.weather_txt}</span>
                 <span style={{marginRight: "20px"}}>欢迎! {this.state.username}</span>
-                <Popconfirm placement="bottomRight" title="确定要退出系统吗？" okType="danger" onConfirm={this.logout} okText="确认" cancelText="取消" >
+                <Popconfirm
+                    placement="bottomRight"
+                    title="确定要退出系统吗？"
+                    okType="danger"
+                    onConfirm={this.logout}
+                    okText="确认"
+                    cancelText="取消"
+                >
                     <Button style={{marginRight: "50px"}} type="primary" loading={this.state.loading}>退出</Button>
                 </Popconfirm>
             </div>

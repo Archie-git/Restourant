@@ -3,9 +3,9 @@ import {Form,Input,Icon,Button,message} from 'antd';
 import {Redirect} from 'react-router-dom';
 import './login.less';
 import logo from '../../assets/images/logo.png';
-import {reqLogin} from '../../api';
+import {reqLogin, reqRoleList} from '../../api';
 import memoryUtils from '../../util/memoryUtils';
-import storageUtils from '../../util/storageUtils'
+import storageUtils from '../../util/storageUtils';
 //登录的路由组件
 class Login extends React.Component{
     handleSubmit=(e)=>{
@@ -13,14 +13,19 @@ class Login extends React.Component{
         this.props.form.validateFields(async (err,values)=>{
             if(!err){
                 const {username,password}=values;
-                const ret=await reqLogin(username,password);
-                if(ret.status===0){
+                const response1 = await reqLogin(username,password);
+                const response2 = await reqRoleList();
+                if(response1.status===0 && response2.status===0){
                     message.success('登录成功');
-                    memoryUtils.user=ret.data;
-                    storageUtils.saveUser(ret.data);
+                    let data = response1.data;
+                    let permission = [];
+                    response2.data.forEach(item => {
+                        if(response1.data.role===item.id) permission = item.permission.split("-")
+                    });
+                    data.permission = permission;
+                    memoryUtils.user = response1.data;
+                    storageUtils.saveUser(response1.data);
                     this.props.history.replace('/')
-                }else{
-                    message.error(ret.msg)
                 }
             }else{
                 console.log("校验失败")

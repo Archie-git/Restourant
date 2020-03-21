@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from "../../components/top-nav";
-import {Input, Table, Button, message, Icon} from "antd";
+import {Input, Table, Button, message, Icon, Divider} from "antd";
 import Loading from "../../components/loading";
 import {reqOrderList, reqOrderSearch, reqProductList} from '../../api/index';
 
@@ -33,20 +33,16 @@ class OrderStage extends React.Component{
             }, 300)
         }
     };
+    handleAdd = () => {
+        message.success("handle Add")
+    };
     handleSearch = async (id) => {
         const response = id==="" ? await reqOrderList() : await reqOrderSearch(id);
         this.refreshTable(response)
     };
-    // handleProductView = async (id) => {
-    //     console.log(id)
-    //     const response = await reqProductSearch(id);
-    //     console.log(response.data)
-    //     if(response.status === 0){
-    //         // this.props.history.push({pathname: '/product-view', state: {data: response.data}})
-    //     }
-    // };
     handleView = (id) => {
-        message.success(id)
+        console.log(id)
+        message.success("handle View")
     };
     getTime = (time) => {
         let temp = new Date(time);
@@ -60,6 +56,12 @@ class OrderStage extends React.Component{
                 dataIndex: 'id',
                 key: 'id',
                 render: (text) => <Button type="link" onClick={()=>this.handleView(text)}>{text}</Button>
+            },
+            {
+                title: '桌号',
+                dataIndex: 'seat',
+                key: 'seat',
+                render: (text) => <span>{text<10 ? '0'+text : text}</span>
             },
             {
                 title: '顾客',
@@ -95,11 +97,6 @@ class OrderStage extends React.Component{
                 sorter: (a, b) => a.amount - b.amount
             },
             {
-                title: '评价',
-                dataIndex: 'evalution',
-                key: 'evalution'
-            },
-            {
                 title: '状态',
                 dataIndex: 'state',
                 key: 'state'
@@ -109,17 +106,19 @@ class OrderStage extends React.Component{
                 key: 'operation',
                 render: (record) => (
                     <span>
-                    <Button size="small" type="primary"  onClick={()=>this.handleView(record.id)}>查看详情</Button>
-                </span>
+                        <Button size="small" type="primary"  onClick={()=>this.handleView(record)}>详情</Button>
+                        <Divider type="vertical"/>
+                        <Button size="small" type="primary">操作</Button>
+                    </span>
                 )
             }
 
         ];
         return (
             <div>
-                <TopNav nav={['订单管理', '全部订单']} />
-
+                <TopNav nav={['订单管理', '前台管理']} />
                 <div style={{margin: "20px 22px 0 20px", overflow: "hidden"}}>
+                    <Button type="primary" onClick={this.handleAdd}>新增订单</Button>
                     <Input.Search
                         style={{width: "200px", float: "Right"}}
                         placeholder="查询订单信息"

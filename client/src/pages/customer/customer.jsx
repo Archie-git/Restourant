@@ -1,15 +1,18 @@
 import React from 'react';
-import {Button, Input, Table, Divider, Icon, Modal, Tag} from 'antd';
+import {Button, Input, Table, Divider, Icon, Modal, Tag, message, Form, Popconfirm} from 'antd';
 import TopNav from '../../components/top-nav/index';
 import Loading from '../../components/loading/index';
-import { reqCustomerList, reqCustomerSearch, reqCustomerDelete } from '../../api/index';
+import { reqCustomerList, reqCustomerSearch, reqCustomerDelete, reqRuleList, reqRuleUpdate } from '../../api/index';
+import {InputNumber} from "antd/es";
 
 class Customer extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             isLoading: true,
-            data: []
+            data: [],
+            visible: false,
+            rule: {}
         }
     }
     UNSAFE_componentWillMount = async () => {
@@ -41,6 +44,15 @@ class Customer extends React.Component{
     handleAdd = () => {
         this.props.history.push('/customer-add')
     };
+    handleSet = async () => {
+        const response = await reqRuleList();
+        if(response.status === 0){
+            this.setState({
+                visible: true,
+                rule: response.data[0]
+            })
+        }
+    };
     handleDelete = (record) => {
         Modal.confirm({
             title: '警告',
@@ -64,6 +76,20 @@ class Customer extends React.Component{
     };
     handleEdit = (record) => {
         this.props.history.push({pathname: '/customer-edit', state: { data: record}})
+    };
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields(async (err, values) => {
+            if(!err){
+                const response = await reqRuleUpdate(values);
+                if(response.status === 0){
+                    this.setState({visible: false});
+                    this.timerID = setTimeout(()=>{
+                        message.success("设置成功");
+                    }, 500)
+                }
+            }
+        })
     };
     render(){
         const columns = [
@@ -166,6 +192,7 @@ class Customer extends React.Component{
                 <TopNav nav={["会员管理","会员列表"]}/>
                 <div style={{margin: "20px 22px 0 20px"}}>
                     <Button type="primary" onClick={this.handleAdd}>新增会员</Button>
+                    <Button type="primary" style={{marginLeft: "40px"}} onClick={this.handleSet}>会员设置</Button>
                     <Input.Search
                         style={{width: "200px", float: "Right"}}
                         placeholder="查询会员信息"
@@ -183,12 +210,68 @@ class Customer extends React.Component{
                                bordered
                         />
                 }
+                <Modal
+                    visible={this.state.visible}
+                    title="会员设置"
+                    onCancel={()=>{this.setState({visible: false})}}
+                    footer={null}
+                >
+                    <Form style={{overflow: "hidden"}} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} onSubmit={this.handleSubmit}>
+                        <Form.Item label="ID" style={{display: "none"}}>
+                            {
+                                this.props.form.getFieldDecorator('id', {
+                                    initialValue: 1000
+                                })(<InputNumber/>)
+                            }
+                        </Form.Item>
+                        <Form.Item label="黄金会员">
+                            {
+                                this.props.form.getFieldDecorator('gold', {
+                                    initialValue: this.state.rule.gold || 0
+                                })(<InputNumber style={{width: "150px"}}/>)
+                            }
+                            <span style={{marginLeft: "10px"}}>积分</span>
+                        </Form.Item>
+                        <Form.Item label="白金会员">
+                            {
+                                this.props.form.getFieldDecorator('platinum', {
+                                    initialValue: this.state.rule.platinum || 0
+                                })(<InputNumber style={{width: "150px"}}/>)
+                            }
+                            <span style={{marginLeft: "10px"}}>积分</span>
+                        </Form.Item>
+                        <Form.Item label="钻石会员">
+                            {
+                                this.props.form.getFieldDecorator('diamond', {
+                                    initialValue: this.state.rule.diamond || 0
+                                })(<InputNumber style={{width: "150px"}}/>)
+                            }
+                            <span style={{marginLeft: "10px"}}>积分</span>
+                        </Form.Item>
+                        {/*<Button style={{float: "right", margin: "20px 160px 0 30px"}} type="primary" htmlType="submit">确定</Button>*/}
+                        <Popconfirm
+                            placement="topRight"
+                            title="确定要更新会员设置吗？"
+                            okType="danger"
+                            onConfirm={this.handleSubmit}
+                            okText="确认"
+                            cancelText="取消"
+                        >
+                            <Button style={{float: "right", margin: "20px 160px 0 30px"}} type="primary">设置</Button>
+                        </Popconfirm>
+                        <Button
+                            style={{float: "right", marginTop: "20px"}}
+                            type="primary"
+                            onClick={()=>{this.setState({visible: false})}}
+                        >取消</Button>
+                    </Form>
+                </Modal>
             </div>
         )
     }
 }
 
-export default Customer;
+export default Form.create()(Customer);
 
 
 

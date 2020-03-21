@@ -25,7 +25,7 @@ class Product extends React.Component {
         this.refreshTable(response)
     };
     componentWillUnmount = () => {
-        clearTimeout(this.timeID);
+        clearTimeout(this.timerID);
     };
     formRef = {};
     rowSelection = {
@@ -93,7 +93,7 @@ class Product extends React.Component {
                 options2: options2,
                 categoryFilters: categoryFilters
             });
-            this.timeID = setTimeout(() => {
+            this.timerID = setTimeout(() => {
                 this.setState({
                     isLoading: false,
                     data: data
@@ -192,7 +192,7 @@ class Product extends React.Component {
                                 }
                             })
                         });
-                        this.timeID = setTimeout(() => {
+                        this.timerID = setTimeout(() => {
                             this.formRef1.props.form.resetFields();
                             this.refreshTable(data)
                         }, 500)
@@ -218,7 +218,7 @@ class Product extends React.Component {
                                 }
                             })
                         });
-                        this.timeID = setTimeout(() => {
+                        this.timerID = setTimeout(() => {
                             this.refreshTable(data)
                         }, 500)
                     }
@@ -241,7 +241,7 @@ class Product extends React.Component {
                             }
                         })
                     });
-                    this.timeID = setTimeout(() => {
+                    this.timerID = setTimeout(() => {
                         this.refreshTable(data)
                     }, 500)
                 }
