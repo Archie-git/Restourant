@@ -33,7 +33,7 @@ router.post('/upload', (req, res) => {
                status: 1,
                data: {
                    name: req.file.filename,
-                   url: 'http://localhost:3001/upload/'+req.file.filename
+                   url: 'https://archie.zone/upload/'+req.file.filename
                }
            })
        }

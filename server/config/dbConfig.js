@@ -3,7 +3,7 @@ module.exports={
         host:'localhost',
         user:'root',
         password:'password',
-        database:'restaurant',
+        database:'restaurant_management',
         port:3306
     }
 };

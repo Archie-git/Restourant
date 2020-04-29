@@ -2,10 +2,19 @@ let express = require('express');
 let router = express.Router();
 let model = require('../model');
 
-//渲染商品列表
+//获取商品列表
 router.get('/list', (req, res) => {
     let sql = "SELECT * FROM product";
     model.querySQL(sql).then((ret) => {
+        res.send({status: 0, data: ret})
+    }, err => {
+        res.send({status: 1, msg: err})
+    })
+});
+//获取已上架的商品列表
+router.get('/list-onsale', (req, res) => {
+    let sql = "SELECT * FROM product WHERE onsale=1";
+    model.querySQL(sql).then(ret => {
         res.send({status: 0, data: ret})
     }, err => {
         res.send({status: 1, msg: err})
@@ -71,7 +80,25 @@ router.post('/search', (req, res) => {
         })
     }
 });
-
+//微信小程序中根据商品名称搜索商品
+router.get('/search-name', (req, res) => {
+    let sql = "SELECT * FROM product WHERE name LIKE '%"+req.query.name+"%'"+" AND onsale=1";
+    console.log(sql);
+    model.querySQL(sql).then(ret => {
+        res.send({status: 0, data: ret})
+    }, err => {
+        res.send({status: 1, msg: err})
+    })
+});
+//微信小程序中根据id搜索商品
+router.get('/search-id', (req, res) => {
+    let sql = "SELECT * FROM product WHERE id="+req.query.id;
+    model.querySQL(sql).then(ret => {
+        res.send({status: 0, data: ret[0]})
+    }, err => {
+        res.send({status: 1, msg: err})
+    })
+});
 
 
 
