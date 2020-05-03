@@ -11,18 +11,30 @@ router.get('/list', (req, res) => {
         res.send({status: 1, msg: err})
     })
 });
+
+
+
+//获取会员列表
+router.get('/member-list', (req, res) => {
+    let sql = "SELECT * FROM customer WHERE status IN (1, 2, 3)";
+    model.querySQL(sql).then(ret => {
+        res.send({status: 0, data: ret})
+    }, err => {
+        res.send({status: 1, msg: err})
+    })
+});
 //根据id或姓名搜索客户
-router.get('/search', (req, res) => {
+router.get('/member-search', (req, res) => {
     let data = req.query;
     if(data.hasOwnProperty('idOrName')){
         data.id = data.idOrName;
         delete data.idOrName;
-        let sql = model.getSearchSQL('customer', data);
+        let sql = model.getSearchSQL('customer', data) + 'WHERE status IN (1, 2, 3)';
         model.querySQL(sql).then(ret => {
             if(ret.length === 0){
                 data.name = data.id;
                 delete data.id;
-                let sql = model.getSearchSQL('customer', data);
+                let sql = model.getSearchSQL('customer', data) + 'WHERE status IN (1, 2, 3)';
                 model.querySQL(sql).then( ret => {
                     res.send({status: 0, data: ret})
                 }, err => {
@@ -72,37 +84,6 @@ router.post('/update', (req, res) => {
     })
 });
 
-//微信小程序获取登录用户信息,如果用户不存在则注册用户，最后返回用户信息
-router.get('/login', (req, res) => {
-    let sql1 = "SELECT * FROM customer WHERE openid='"+req.query.openid+"'";
-    model.querySQL(sql1).then(ret => {
-        if(ret.length === 1){
-            res.send({status: 0, data: ret[0]})
-        }else{
-            let data = req.body;
-            data.integral = 0;
-            data.status = 0;
-            data.createtime = new Date().getTime();
-            data.note = '非会员用户';
-            data.orderid = '';
-            data.tel = '';
-            delete data.profile;
-            let sql2 = model.getAddSQL('customer', data);
-            model.querySQL(sql2).then(ret => {
-                let sql3 = "SELECT * FROM customer WHERE openid='"+req.body.openid+"'";
-                model.querySQL(sql3).then(ret => {
-                    res.send({status: 0, data: ret[0]})
-                }, err => {
-                    res.send({status:1, msg: err})
-                })
-            }, err => {
-                res.send({status:1, msg: err})
-            })
-        }
-    }, err => {
-        res.send({status: 1, msg: err})
-    })
-});
 
 
 

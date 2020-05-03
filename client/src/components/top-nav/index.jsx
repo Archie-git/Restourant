@@ -72,13 +72,12 @@ class TopNav extends React.Component{
                         //         <span style={{margin: "0 10px", color: "#98a9c4"}}>/</span>
                         //     </span>
                         // )
-                        return index===0 ? (
+                        return index===0 && index===this.props.nav.length ? (
                             <span key={index}>
                                 <span style={{fontWeight: "bold", cursor: "default"}}>{item}</span>
                                 <span style={{
                                     margin: "0 10px",
                                     color: "#98a9c4",
-                                    display: item==="首页" ? "none" : "inline-block"
                                 }}>/</span>
                             </span>
                         ) : index+1===this.props.nav.length ? (

@@ -12,6 +12,7 @@ class ViewProduct extends React.Component{
     }
     UNSAFE_componentWillMount = async () => {
         let data = this.props.location.state.data;
+        console.log(data);
         this.setState({
             data: data
         })
@@ -56,10 +57,13 @@ class ViewProduct extends React.Component{
                         <Form.Item label="赠送积分" hasFeedback>
                             <span className="ant-form-text">{this.state.data.integral}</span>
                         </Form.Item>
-                        <Form.Item label="详细页标题">
+                        <Form.Item label="简介">
                             <span className="ant-form-text">{this.state.data.introduce}</span>
                         </Form.Item>
-                        <Form.Item label="详细页描述">
+                        <Form.Item label="优惠提示">
+                            <span className="ant-form-text">{this.state.data.tip}</span>
+                        </Form.Item>
+                        <Form.Item label="商品描述">
                             <span className="ant-form-text">{this.state.data.description}</span>
                         </Form.Item>
                         <Form.Item label="黄金会员折扣">
@@ -82,7 +86,7 @@ class ViewProduct extends React.Component{
                                 {
                                     this.state.data.pictures==="" ? <span>无</span> :
                                         this.state.data.pictures.split(",").map((item, index)=> {
-                                            return (<img key={index} src={item} alt="商品图片"/>)
+                                            return (<img key={index} src={'http://localhost:3001/upload/'+item} alt="商品图片"/>)
                                         })
                                 }
                             </span>

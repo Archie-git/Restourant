@@ -14,7 +14,7 @@ router.get('/list', (req, res) => {
 //获取已上架的商品列表
 router.get('/list-onsale', (req, res) => {
     let sql = "SELECT * FROM product WHERE onsale=1";
-    model.querySQL(sql).then(ret => {
+    model.querySQL(sql).then((ret) => {
         res.send({status: 0, data: ret})
     }, err => {
         res.send({status: 1, msg: err})
@@ -48,7 +48,7 @@ router.post('/add', (req, res) => {
         res.send({statue: 1, msg: err})
     })
 });
-//根据商品名称或货号，商品平类，商品状态搜索商品
+//根据商品名称或货号搜索商品
 router.post('/search', (req, res) => {
     let data = req.body;
     if(data.hasOwnProperty('nameOrNumber')){
@@ -80,17 +80,16 @@ router.post('/search', (req, res) => {
         })
     }
 });
-//微信小程序中根据商品名称搜索商品
+//小程序中根据名称搜索商品
 router.get('/search-name', (req, res) => {
     let sql = "SELECT * FROM product WHERE name LIKE '%"+req.query.name+"%'"+" AND onsale=1";
-    console.log(sql);
     model.querySQL(sql).then(ret => {
         res.send({status: 0, data: ret})
     }, err => {
         res.send({status: 1, msg: err})
     })
 });
-//微信小程序中根据id搜索商品
+//小程序中根据id搜索商品
 router.get('/search-id', (req, res) => {
     let sql = "SELECT * FROM product WHERE id="+req.query.id;
     model.querySQL(sql).then(ret => {
@@ -99,6 +98,7 @@ router.get('/search-id', (req, res) => {
         res.send({status: 1, msg: err})
     })
 });
+
 
 
 

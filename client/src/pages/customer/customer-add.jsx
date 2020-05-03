@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Card, Button, Input, message } from 'antd';
 import TopNav from "../../components/top-nav";
-import { reqCustomerAdd } from '../../api/index'
+import { reqMemberAdd } from '../../api/index'
 
 const AddCustomer = Form.create({name: 'add-customer-form'})(
     class extends React.Component{
@@ -13,7 +13,7 @@ const AddCustomer = Form.create({name: 'add-customer-form'})(
                     data.createtime = new Date().getTime();
                     data.status = 1;
                     data.integral = 0;
-                    const response = await reqCustomerAdd(data);
+                    const response = await reqMemberAdd(data);
                     if(response.status === 0){
                         message.success("新增会员成功，即将返回会员列表页！");
                         this.timerID = setTimeout(() => {

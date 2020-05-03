@@ -99,9 +99,14 @@ class ViewStock extends React.Component{
         this.setState({log: log})
     };
     getTime = (time) => {
-        time = new Date(Number(time));
+        time = new Date();
         let month = time.getMonth()+1;
-        return time.getFullYear()+"-"+month+"-"+time.getDate()+"\xa0\xa0"+time.getHours()+":"+time.getMinutes();
+        month = month>=10 ? month : "0"+month;
+        let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+        let hour = time.getHours()>=10 ? time.getHours() : "0"+time.getHours();
+        let minute = time.getMinutes()>=10 ? time.getMinutes() : "0"+time.getMinutes();
+        let second = time.getSeconds()>=10 ? time.getSeconds() : "0"+time.getSeconds();
+        return time.getFullYear()+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
     };
     handleDetail = (data) => {
         this.setState({
@@ -177,7 +182,8 @@ class ViewStock extends React.Component{
                                 <span className="ant-form-pictures">
                                     {
                                         this.state.data.pictures.map((item, index) => {
-                                            return item==="" ? null : <img key={index} src={item} alt="货物图片"/>
+                                            return item==="" ? null
+                                                : <img key={index} src={'http://localhost:3001/upload/'+item} alt="货物图片"/>
                                         })
                                     }
                                 </span>
@@ -186,7 +192,7 @@ class ViewStock extends React.Component{
                             <span className="ant-form-text">{this.state.data.note}</span>
                         </Form.Item>
                     </Form>
-                    <List style={{margin: "30px 220px"}}
+                    <List style={{margin: "30px 200px"}}
                           size="small"
                           header={header}
                           dataSource={this.state.log}
@@ -196,7 +202,7 @@ class ViewStock extends React.Component{
                                   <span style={{fontWeight: "bolder", marginLeft: "10px"}}>
                                       {this.getTime(item.time)}
                                   </span>
-                                  <span style={{color: "#1DA57A", marginLeft: "20px"}}>
+                                  <span style={{color: "#1DA57A", marginLeft: "20px", width: "50px"}}>
                                       {item.manager}
                                   </span>
                                   <span>

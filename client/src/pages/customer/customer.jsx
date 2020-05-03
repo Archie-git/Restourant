@@ -1,9 +1,8 @@
 import React from 'react';
-import {Button, Input, Table, Divider, Icon, Modal, Tag, message, Form, Popconfirm} from 'antd';
+import {Button, Input, Table, Divider, Icon, Modal, Tag, message, Form} from 'antd';
 import TopNav from '../../components/top-nav/index';
 import Loading from '../../components/loading/index';
-import { reqCustomerList, reqCustomerSearch, reqCustomerDelete, reqRuleList, reqRuleUpdate } from '../../api/index';
-import {InputNumber} from "antd/es";
+import { reqMemberList, reqMemberSearch, reqMemberDelete, reqRuleUpdate } from '../../api/index';
 
 class Customer extends React.Component{
     constructor(props){
@@ -16,7 +15,7 @@ class Customer extends React.Component{
         }
     }
     UNSAFE_componentWillMount = async () => {
-        let response = await reqCustomerList();
+        let response = await reqMemberList();
         this.refreshTable(response)
     };
     componentWillUnmount = () => {
@@ -38,28 +37,29 @@ class Customer extends React.Component{
         }
     };
     handleSearch = async (idOrName) => {
-        const response = idOrName==="" ? await reqCustomerList() : await reqCustomerSearch(idOrName);
+        const response = idOrName==="" ? await reqMemberList() : await reqMemberSearch(idOrName);
         this.refreshTable(response)
     };
     handleAdd = () => {
         this.props.history.push('/customer-add')
     };
-    handleSet = async () => {
-        const response = await reqRuleList();
-        if(response.status === 0){
-            this.setState({
-                visible: true,
-                rule: response.data[0]
-            })
-        }
-    };
+    //会员设置
+    // handleSet = async () => {
+    //     const response = await reqRuleList();
+    //     if(response.status === 0){
+    //         this.setState({
+    //             visible: true,
+    //             rule: response.data[0]
+    //         })
+    //     }
+    // };
     handleDelete = (record) => {
         Modal.confirm({
             title: '警告',
             content: "确定要删除会员\""+record.name+"(ID:"+record.id+")\"吗?",
             okText: '确定',
             onOk: async ()=>{
-                const response1 = await reqCustomerDelete(record.id);
+                const response1 = await reqMemberDelete(record.id);
                 if(response1.status === 0){
                     let data = [];
                     this.state.data.forEach(item => {
@@ -107,7 +107,8 @@ class Customer extends React.Component{
                         {
                             record.status===1 ? <span>{text} <Tag color="blue">黄金</Tag></span> :
                                 record.status===2 ? <span>{text} <Tag color="green">白金</Tag></span> :
-                                    <span>{text} <Tag color="red">钻石</Tag></span>
+                                    record.status===3 ? <span>{text} <Tag color="red">钻石</Tag></span> :
+                                        <span>{text}</span>
                         }
                     </Button>
                 ),
@@ -192,7 +193,8 @@ class Customer extends React.Component{
                 <TopNav nav={["会员管理","会员列表"]}/>
                 <div style={{margin: "20px 22px 0 20px"}}>
                     <Button type="primary" onClick={this.handleAdd}>新增会员</Button>
-                    <Button type="primary" style={{marginLeft: "40px"}} onClick={this.handleSet}>会员设置</Button>
+                    {/*会员设置*/}
+                    {/*<Button type="primary" style={{marginLeft: "40px"}} onClick={this.handleSet}>会员设置</Button>*/}
                     <Input.Search
                         style={{width: "200px", float: "Right"}}
                         placeholder="查询会员信息"
@@ -210,62 +212,62 @@ class Customer extends React.Component{
                                bordered
                         />
                 }
-                <Modal
-                    visible={this.state.visible}
-                    title="会员设置"
-                    onCancel={()=>{this.setState({visible: false})}}
-                    footer={null}
-                >
-                    <Form style={{overflow: "hidden"}} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} onSubmit={this.handleSubmit}>
-                        <Form.Item label="ID" style={{display: "none"}}>
-                            {
-                                this.props.form.getFieldDecorator('id', {
-                                    initialValue: 1000
-                                })(<InputNumber/>)
-                            }
-                        </Form.Item>
-                        <Form.Item label="黄金会员">
-                            {
-                                this.props.form.getFieldDecorator('gold', {
-                                    initialValue: this.state.rule.gold || 0
-                                })(<InputNumber style={{width: "150px"}}/>)
-                            }
-                            <span style={{marginLeft: "10px"}}>积分</span>
-                        </Form.Item>
-                        <Form.Item label="白金会员">
-                            {
-                                this.props.form.getFieldDecorator('platinum', {
-                                    initialValue: this.state.rule.platinum || 0
-                                })(<InputNumber style={{width: "150px"}}/>)
-                            }
-                            <span style={{marginLeft: "10px"}}>积分</span>
-                        </Form.Item>
-                        <Form.Item label="钻石会员">
-                            {
-                                this.props.form.getFieldDecorator('diamond', {
-                                    initialValue: this.state.rule.diamond || 0
-                                })(<InputNumber style={{width: "150px"}}/>)
-                            }
-                            <span style={{marginLeft: "10px"}}>积分</span>
-                        </Form.Item>
-                        {/*<Button style={{float: "right", margin: "20px 160px 0 30px"}} type="primary" htmlType="submit">确定</Button>*/}
-                        <Popconfirm
-                            placement="topRight"
-                            title="确定要更新会员设置吗？"
-                            okType="danger"
-                            onConfirm={this.handleSubmit}
-                            okText="确认"
-                            cancelText="取消"
-                        >
-                            <Button style={{float: "right", margin: "20px 160px 0 30px"}} type="primary">设置</Button>
-                        </Popconfirm>
-                        <Button
-                            style={{float: "right", marginTop: "20px"}}
-                            type="primary"
-                            onClick={()=>{this.setState({visible: false})}}
-                        >取消</Button>
-                    </Form>
-                </Modal>
+                {/*<Modal*/}
+                {/*    visible={this.state.visible}*/}
+                {/*    title="会员设置"*/}
+                {/*    onCancel={()=>{this.setState({visible: false})}}*/}
+                {/*    footer={null}*/}
+                {/*>*/}
+                {/*    <Form style={{overflow: "hidden"}} labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} onSubmit={this.handleSubmit}>*/}
+                {/*        <Form.Item label="ID" style={{display: "none"}}>*/}
+                {/*            {*/}
+                {/*                this.props.form.getFieldDecorator('id', {*/}
+                {/*                    initialValue: 1000*/}
+                {/*                })(<InputNumber/>)*/}
+                {/*            }*/}
+                {/*        </Form.Item>*/}
+                {/*        <Form.Item label="黄金会员">*/}
+                {/*            {*/}
+                {/*                this.props.form.getFieldDecorator('gold', {*/}
+                {/*                    initialValue: this.state.rule.gold || 0*/}
+                {/*                })(<InputNumber style={{width: "150px"}}/>)*/}
+                {/*            }*/}
+                {/*            <span style={{marginLeft: "10px"}}>积分</span>*/}
+                {/*        </Form.Item>*/}
+                {/*        <Form.Item label="白金会员">*/}
+                {/*            {*/}
+                {/*                this.props.form.getFieldDecorator('platinum', {*/}
+                {/*                    initialValue: this.state.rule.platinum || 0*/}
+                {/*                })(<InputNumber style={{width: "150px"}}/>)*/}
+                {/*            }*/}
+                {/*            <span style={{marginLeft: "10px"}}>积分</span>*/}
+                {/*        </Form.Item>*/}
+                {/*        <Form.Item label="钻石会员">*/}
+                {/*            {*/}
+                {/*                this.props.form.getFieldDecorator('diamond', {*/}
+                {/*                    initialValue: this.state.rule.diamond || 0*/}
+                {/*                })(<InputNumber style={{width: "150px"}}/>)*/}
+                {/*            }*/}
+                {/*            <span style={{marginLeft: "10px"}}>积分</span>*/}
+                {/*        </Form.Item>*/}
+                {/*        /!*<Button style={{float: "right", margin: "20px 160px 0 30px"}} type="primary" htmlType="submit">确定</Button>*!/*/}
+                {/*        <Popconfirm*/}
+                {/*            placement="topRight"*/}
+                {/*            title="确定要更新会员设置吗？"*/}
+                {/*            okType="danger"*/}
+                {/*            onConfirm={this.handleSubmit}*/}
+                {/*            okText="确认"*/}
+                {/*            cancelText="取消"*/}
+                {/*        >*/}
+                {/*            <Button style={{float: "right", margin: "20px 160px 0 30px"}} type="primary">设置</Button>*/}
+                {/*        </Popconfirm>*/}
+                {/*        <Button*/}
+                {/*            style={{float: "right", marginTop: "20px"}}*/}
+                {/*            type="primary"*/}
+                {/*            onClick={()=>{this.setState({visible: false})}}*/}
+                {/*        >取消</Button>*/}
+                {/*    </Form>*/}
+                {/*</Modal>*/}
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import './product.less';
-import {Button, Divider, Switch, Table, Icon, Modal, Row, Col, Cascader} from 'antd';
+import {Button, Divider, Switch, Table, Modal, Row, Col, Cascader} from 'antd';
 import {reqCategoryList, reqProductList, reqProductDelete, updateProductList, reqProductSearch} from '../../api';
 import ProductSearch from "./product-search";
 import Loading from '../../components/loading/index';
@@ -22,7 +22,7 @@ class Product extends React.Component {
     }
     UNSAFE_componentWillMount = async () => {
         const response = await reqProductList();
-        this.refreshTable(response)
+        if(response.status === 0) this.refreshTable(response.data)
     };
     componentWillUnmount = () => {
         clearTimeout(this.timerID);
@@ -33,10 +33,9 @@ class Product extends React.Component {
             this.setState({selectedRowKeys: selectedRowKeys})
         }
     };
-    refreshTable = async (response1) => {
-        const response2 = await reqCategoryList();
-        if(response1.status===0 && response2.status===0){
-            let data = response1.data;
+    refreshTable = async (data) => {
+        const response = await reqCategoryList();
+        if(response.status===0){
             let options1 = [
                 {
                     value: 'onsale-1',
@@ -69,7 +68,7 @@ class Product extends React.Component {
             ];
             let options2 = [];
             let categoryFilters = [];
-            response2.data.forEach(item1 => {
+            response.data.forEach(item1 => {
                 options2.push({label: item1.name, value: item1.id});
                 data.map(item2 => {
                     categoryFilters.indexOf(item1.name)===-1 ? categoryFilters.push(item1.name) : categoryFilters.push();
@@ -152,7 +151,7 @@ class Product extends React.Component {
                 let data = {};
                 if(values.nameOrNumber==="" && values.status.length===0){
                     const response = await reqProductList();
-                    this.refreshTable(response)
+                    if(response.status === 0) this.refreshTable(response.data)
                 }else{
                     for(let key in values){
                         if(values.hasOwnProperty(key) && values[key].length !== 0){
@@ -165,7 +164,7 @@ class Product extends React.Component {
                         }
                     }
                     const response = await reqProductSearch(data);
-                    this.refreshTable(response)
+                    if(response.status === 0) this.refreshTable(response.data)
                 }
             }
         })
@@ -176,9 +175,11 @@ class Product extends React.Component {
     handleOperate = async () => {
         let operation = this.state.operation;
         if(operation.length === 0){
+            console.log("opera")
             this.setState({selectedRowKeys: []});
             this.refreshTable(this.state.data)
         }else if(operation.length === 1){
+            console.log("opera1")
             if(operation[0] === 'delete'){
                 const response1 = reqProductDelete(this.state.selectedRowKeys);
                 if(response1.status === 0){
@@ -225,10 +226,10 @@ class Product extends React.Component {
                 }
             }
         }else{
+            console.log("opera2")
             let data = {};
             data.id = this.state.selectedRowKeys;
             data.category = operation[1];
-            console.log(data);
             const response1 = await updateProductList(data);
             if(response1.status === 0){
                 const response2 = await reqProductList();
@@ -241,9 +242,7 @@ class Product extends React.Component {
                             }
                         })
                     });
-                    this.timerID = setTimeout(() => {
-                        this.refreshTable(data)
-                    }, 500)
+                    this.refreshTable(data)
                 }
             }
         }
@@ -283,29 +282,6 @@ class Product extends React.Component {
                 dataIndex: 'sales',
                 render: (text, record) => <span>{text+record.unit}</span>,
                 sorter: (a, b) => a.sales - b.sales
-            },
-            {
-                title: '评价',
-                key: 'stars',
-                dataIndex: 'stars',
-                render: (text) => {
-                    let starArr=[];
-                    for(let i=0;i<text;i++){
-                        starArr.push(i)
-                    }
-                    return starArr.map((item) => {
-                        return <Icon key={item} type="star" style={{color: "yellow"}} theme="filled" />
-                    });
-                },
-                sorter: (a, b) => a.stars - b.stars,
-                filters: [
-                    {text: "一星", value: 1},
-                    {text: "二星", value: 2},
-                    {text: "三星", value: 3},
-                    {text: "四星", value: 4},
-                    {text: "五星", value: 5},
-                ],
-                onFilter: (value, record) => value===record.stars
             },
             {
                 title: '状态',

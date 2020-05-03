@@ -1,8 +1,8 @@
-﻿let express = require('express');
+let express = require('express');
 let router = express.Router();
 let model = require('../model');
 
-//获取店铺
+//获取商家列表
 router.get('/info', function(req, res) {
     const sql = "SELECT * FROM shop";
     model.querySQL(sql).then(ret => {
@@ -11,7 +11,7 @@ router.get('/info', function(req, res) {
         res.send({status: 1, msg: err})
     })
 });
-//更新店铺
+//更新商店信息
 router.post('/update', (req, res) => {
     const sql = model.getUpdateSQL('shop', req.body);
     console.log(sql);
@@ -24,7 +24,6 @@ router.post('/update', (req, res) => {
 
 
 module.exports = router;
-
 
 
 

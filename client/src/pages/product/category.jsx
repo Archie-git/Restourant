@@ -124,12 +124,6 @@ class Category extends React.Component{
                 sorter: (a, b) => a.son-b.son
             },
             {
-                title: '商品总数(/件)',
-                dataIndex: 'amount',
-                key: 'amount',
-                sorter: (a, b) => a.amount-b.amount
-            },
-            {
                 title: '是否显示',
                 dataIndex: 'isnav',
                 key: 'isnav',

@@ -210,18 +210,6 @@ const EditRole = Form.create({ name: 'role-add' })(
                                         style={{marginBottom: "10px"}}
                                     >角色管理</Checkbox><br/>
                                 </div>
-                                {/*财务管理*/}
-                                <Checkbox
-                                    onChange={(e)=>this.handleChange(e, [12])}
-                                    defaultChecked={this.getFatherChecked([12])}
-                                >财务管理</Checkbox>
-                                <div style={{marginLeft: "30px"}}>
-                                    <Checkbox
-                                        onChange={(e)=>this.handleChange(e, 12)}
-                                        checked={this.state.data[12].display===1}
-                                        style={{marginBottom: "10px"}}
-                                    >财务报表</Checkbox><br/>
-                                </div>
                             </div>
                             <Form.Item label="备注：">
                                 {form.getFieldDecorator('note', {

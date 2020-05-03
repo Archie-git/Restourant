@@ -70,7 +70,7 @@ class StocklogView extends React.Component {
                         {
                             String(this.props.info.pictures).split(',').map((item, index) => {
                                 return item==="" ? null : <img
-                                    key={index} src={item} alt="货物图片"
+                                    key={index} src={'http://localhost:3001/upload/'+item} alt="货物图片"
                                     style={{
                                         width: "80px",
                                         height: "80px",

@@ -11,6 +11,15 @@ router.get('/list', (req, res) => {
         res.send({status: 1, msg: err})
     })
 });
+//获取前台order数据
+router.get('/frontdesk-list', (req, res) => {
+    let sql = "SELECT * FROM orders WHERE state IN (0, 1)";
+    model.querySQL(sql).then(ret => {
+        res.send({status: 0, data: ret})
+    }, err => {
+        res.send({status: 1, msg: err})
+    })
+});
 //根据订单ID搜索记录
 router.get('/search', (req, res) => {
     let sql = "SELECT * FROM orders WHERE id="+req.query.id;
@@ -20,26 +29,25 @@ router.get('/search', (req, res) => {
         res.send({status: 1, msg: err})
     })
 });
-//微信小程序获取某一位用户的所有订单信息
-router.get('/list-customer', (req, res) => {
-    let sql = "SELECT * FROM orders WHERE id IN("+req.query.customer+")";
+//根据订单的顾客ID搜素记录
+router.get('/list-mini', (req, res) => {
+    let sql = "SELECT * FROM orders WHERE customer="+req.query.customer;
     model.querySQL(sql).then(ret => {
         res.send({status: 0, data: ret})
     }, err => {
         res.send({status: 1, msg: err})
     })
 });
-//小程序新增订单
-router.post('/add', (req, res) => {
-    let sql = model.getAddSQL('orders', req.body);
+//根据订单ID更新订单信息
+router.post('/update', (req, res) => {
+    let sql = model.getUpdateSQL('orders', req.body);
     console.log(sql);
     model.querySQL(sql).then(ret => {
-        res.send({status: 0, msg: '添加成功'})
+        res.send({status: 0, msg: '更新成功'})
     }, err => {
         res.send({status: 1, msg: err})
     })
-})
-
+});
 
 
 module.exports = router;

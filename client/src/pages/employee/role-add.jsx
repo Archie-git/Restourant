@@ -57,10 +57,6 @@ const AddRole = Form.create({ name: 'role-add' })(
                     {
                         title: "角色管理",
                         display: 0
-                    },
-                    {
-                        title: "财务报表",
-                        display: 0
                     }
                 ]
             }
@@ -226,15 +222,6 @@ const AddRole = Form.create({ name: 'role-add' })(
                                         checked={this.state.data[11].display===1}
                                         style={{marginBottom: "10px"}}
                                     >角色管理</Checkbox><br/>
-                                </div>
-                                {/*财务管理*/}
-                                <Checkbox onChange={(e)=>this.handleChange(e, [12])}>财务管理</Checkbox>
-                                <div style={{marginLeft: "30px"}}>
-                                    <Checkbox
-                                        onChange={(e)=>this.handleChange(e, 12)}
-                                        checked={this.state.data[12].display===1}
-                                        style={{marginBottom: "10px"}}
-                                    >财务报表</Checkbox><br/>
                                 </div>
                             </div>
                             <Form.Item label="备注：">

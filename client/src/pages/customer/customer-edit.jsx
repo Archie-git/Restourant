@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Card, Button, Input, message, InputNumber, Radio} from 'antd';
 import TopNav from "../../components/top-nav";
-import { updateCustomerList } from '../../api/index'
+import { updateMemberList } from '../../api/index'
 
 const EditCustomer = Form.create({name: 'add-customer-form'})(
     class extends React.Component{
@@ -16,7 +16,7 @@ const EditCustomer = Form.create({name: 'add-customer-form'})(
                             data[key] = values[key];
                         }
                     }
-                    const response = await updateCustomerList(data);
+                    const response = await updateMemberList(data);
                     if(response.status === 0){
                         message.success("编辑会员信息成功，即将返回会员列表页！");
                         this.timerID = setTimeout(() => {

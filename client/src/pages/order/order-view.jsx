@@ -1,6 +1,6 @@
 import React from 'react';
 // import './order.less';
-import {Form, Button, Card, Icon} from 'antd';
+import {Form, Button, Card, Icon, Tag} from 'antd';
 import TopNav from "../../components/top-nav";
 
 class ViewOrder extends React.Component{
@@ -17,9 +17,14 @@ class ViewOrder extends React.Component{
         })
     };
     getTime = (time) => {
-        let temp = new Date(time);
-        let month = temp.getMonth()+1;
-        return temp.getFullYear()+"-"+month+"-"+temp.getDate()+" "+temp.getHours()+":"+temp.getMinutes()
+        time = new Date(time);
+        let month = time.getMonth()+1;
+        month = month>=10 ? month : "0"+month;
+        let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+        let hour = time.getHours()>=10 ? time.getHours() : "0"+time.getHours();
+        let minute = time.getMinutes()>=10 ? time.getMinutes() : "0"+time.getMinutes();
+        let second = time.getSeconds()>=10 ? time.getSeconds() : "0"+time.getSeconds();
+        return time.getFullYear()+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
     };
     render(){
         const formItemLayout = {
@@ -34,14 +39,29 @@ class ViewOrder extends React.Component{
                       style={{ border: "none", width: "100%"}}
                 >
                     <Form {...formItemLayout} style={{marginTop: "40px"}}>
-                        <Form.Item label="订单ID" hasFeedback>
+                        <Form.Item label="订单ID">
                             <span className="ant-form-text">{this.state.data.id}</span>
                         </Form.Item>
-                        <Form.Item label="顾客ID" hasFeedback>
-                            <span className="ant-form-text">{this.state.data.customer}</span>
+                        <Form.Item label="顾客">
+                            <span className="ant-form-text">{this.state.data.customer.name}</span>
                         </Form.Item>
-                        <Form.Item label="状态" hasFeedback>
-                            <span className="ant-form-text">{this.state.data.state}</span>
+                        <Form.Item label="桌号">
+                            <span className="ant-form-text">{this.state.data.seat}号桌</span>
+                        </Form.Item>
+                        <Form.Item label="状态">
+                            <span className="ant-form-text" style={{textIndent: 0, marginLeft: "20px"}}>
+                                {
+                                    this.state.data.state === 0 ? (
+                                        <div>
+                                            {
+                                                this.state.data.urged === 0 ? <Tag color="blue">已付款</Tag> : <Tag color="red">催单</Tag>
+                                            }
+                                        </div>
+                                    ) : this.state.data.state === 1 ? <Tag color="red">请求取消</Tag> :
+                                        this.state.data.state === 2 ? <Tag color="green">已取消</Tag> :
+                                            <Tag color="green">已完成</Tag>
+                                }
+                            </span>
                         </Form.Item>
                         <Form.Item label="订单列表">
                             <div className="ant-form-text">
@@ -52,10 +72,10 @@ class ViewOrder extends React.Component{
                                 }
                             </div>
                         </Form.Item>
-                        <Form.Item label="下单时间" hasFeedback>
+                        <Form.Item label="下单时间">
                             <span className="ant-form-text">{this.getTime(this.state.data.createtime)}</span>
                         </Form.Item>
-                        <Form.Item label="订单总金额" hasFeedback>
+                        <Form.Item label="订单总金额">
                             <span className="ant-form-text">￥{this.state.data.amount}</span>
                         </Form.Item>
                         <Form.Item label="实付金额">
@@ -64,8 +84,29 @@ class ViewOrder extends React.Component{
                         <Form.Item label="所获积分">
                             <span className="ant-form-text">{this.state.data.integral}</span>
                         </Form.Item>
-                        <Form.Item label="评价">
-                            <span className="ant-form-text">{this.state.data.evalution}</span>
+                        <Form.Item label="备注">
+                            <span className="ant-form-text">{this.state.data.note}</span>
+                        </Form.Item>
+                        <Form.Item label="评价等级">
+                            <span className="ant-form-text">
+                                {
+                                    this.state.data.stars === 0 ? "暂未评价" : [1,2,3,4,5].map((item, index) => {
+                                        return (
+                                            <Icon key={index} type="star" theme="filled"
+                                                  style={{color: "yellow", marginLeft: "5px",
+                                                      display: item > this.state.data.stars ? "none" : "inline"}}
+                                            />
+                                        )
+                                    })
+                                }
+                            </span>
+                        </Form.Item>
+                        <Form.Item label="评价文字">
+                            <span className="ant-form-text">
+                                {
+                                    this.state.data.stars === 0 ? "暂未评价" : this.state.data.evaluation
+                                }
+                            </span>
                         </Form.Item>
                     </Form>
                 </Card>

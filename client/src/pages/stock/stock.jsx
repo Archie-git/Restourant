@@ -47,7 +47,7 @@ class Stock extends React.Component{
                 let time = item1.log[item1.log.length-1].time;
                 time = new Date(time);
                 item1.fullTime = time;
-                item1.time = time.getMonth()+1+"-"+time.getDate()+" "+time.getHours()+":"+time.getMinutes();
+                item1.time = this.getTime(time);
                 item1.pictures = item1.pictures.split(',');
                 return item1
             });
@@ -110,6 +110,16 @@ class Stock extends React.Component{
     };
     handleView = (record) => {
         this.props.history.push({pathname: '/stock-view', state: {data: record}});
+    };
+    getTime = (time) => {
+        time = new Date();
+        let month = time.getMonth()+1;
+        month = month>=10 ? month : "0"+month;
+        let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+        let hour = time.getHours()>=10 ? time.getHours() : "0"+time.getHours();
+        let minute = time.getMinutes()>=10 ? time.getMinutes() : "0"+time.getMinutes();
+        let second = time.getSeconds()>=10 ? time.getSeconds() : "0"+time.getSeconds();
+        return time.getFullYear()+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
     };
     render(){
         const state = [{text: "正常", value: 0},{text: "告罄", value: 1},{text: "过剩", value: 2}];

@@ -5,6 +5,7 @@ import {Layout} from 'antd';
 import Header from '../../components/header';
 import LeftNav from '../../components/left-nav';
 import Home from '../../pages/home/home';
+import EditHome from '../../pages/home/home-edit';
 import Category from '../product/category';
 import AddCategory from '../product/category-add';
 import EditCategory from '../product/category-edit';
@@ -38,7 +39,6 @@ import EditStock from '../../pages/stock/stock-edit';
 import Inventory from '../stock/inventory';
 import ViewInventory from "../stock/inventory-view";
 import AddInventory from '../stock/inventory-add';
-import Finance from '../../pages/finance/finance';
 
 
 const {Sider,Content,Footer}=Layout;
@@ -59,6 +59,7 @@ class Admin extends React.Component{
                         <Content style={{margin: "0 20px", paddingBottom: "100px", backgroundColor: "white", minHeight: "500px"}}>
                             <Switch>
                                 <Route path='/home' component={Home} />
+                                <Route path='/home-edit' component={EditHome} />
                                 <Route path='/category' component={Category} />
                                 <Route path='/category-add' component={AddCategory} />
                                 <Route path='/category-edit' component={EditCategory} />
@@ -93,7 +94,6 @@ class Admin extends React.Component{
                                 <Route path='/order' component={Order} />
                                 <Route path='/order-view' component={ViewOrder} />
                                 <Route path='/order-stage' component={OrderStage} />
-                                <Route path='/finance' component={Finance} />
                                 <Redirect to='/home' />
                             </Switch>
                         </Content>

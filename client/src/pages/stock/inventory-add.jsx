@@ -42,9 +42,14 @@ const AddInventory = Form.create({ name: 'inventory-add-form' })(
             });
         };
         getTime = () => {
-            let temp = new Date();
-            let month = temp.getMonth()+1;
-            return temp.getFullYear()+"-"+month+"-"+temp.getDate()+" "+temp.getHours()+":"+temp.getMinutes()
+            let time = new Date();
+            let month = time.getMonth()+1;
+            month = month>=10 ? month : "0"+month;
+            let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+            let hour = time.getHours()>=10 ? time.getHours() : "0"+time.getHours();
+            let minute = time.getMinutes()>=10 ? time.getMinutes() : "0"+time.getMinutes();
+            let second = time.getSeconds()>=10 ? time.getSeconds() : "0"+time.getSeconds();
+            return time.getFullYear()+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
         };
         render() {
             const formItemLayout = {

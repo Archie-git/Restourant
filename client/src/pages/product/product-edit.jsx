@@ -130,6 +130,11 @@ class EditProduct extends React.Component {
                       style={{ border: "none", width: "100%"}}
                 >
                     <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
+                        <Form.Item label="商品ID" hasFeedback style={{display: "none"}}>
+                            { form.getFieldDecorator('id', {
+                                initialValue: this.state.data.id
+                            })(<Input placeholder="请输入商品货号"/>)}
+                        </Form.Item>
                         <Form.Item label="商品货号" hasFeedback>
                             { form.getFieldDecorator('number', {
                                 initialValue: this.state.data.number,
@@ -191,17 +196,23 @@ class EditProduct extends React.Component {
                                 rules: [{required: true, message: "请输入积分值"}]
                             })(<Input placeholder="请输入积分值"/>)}
                         </Form.Item>
-                        <Form.Item label="详细页标题" hasFeedback>
+                        <Form.Item label="简介" hasFeedback>
                             { form.getFieldDecorator('introduce', {
                                 initialValue: this.state.data.introduce,
                                 rule: [{validate: this.validateIntroduceTitle}]
-                            })(<Input.TextArea rows={2} placeholder="请输入详细页标题"/>)}
+                            })(<Input.TextArea rows={2} placeholder="请输入简介"/>)}
                         </Form.Item>
-                        <Form.Item label="详细页描述" hasFeedback>
+                        <Form.Item label="优惠提示" hasFeedback>
+                            { form.getFieldDecorator('tip', {
+                                initialValue: this.state.data.tip,
+                                rule: [{validate: this.validateIntroduceTitle}]
+                            })(<Input.TextArea rows={2} placeholder="请输入优惠提示"/>)}
+                        </Form.Item>
+                        <Form.Item label="商品描述" hasFeedback>
                             { form.getFieldDecorator('description', {
                                 initialValue: this.state.data.description,
                                 rule: [{validate: this.validateIntroduceContent}]
-                            })(<Input.TextArea rows={4} placeholder="请输入详细页描述"/>)}
+                            })(<Input.TextArea rows={4} placeholder="请输入商品描述"/>)}
                         </Form.Item>
                         <Form.Item label="黄金会员折扣：">
                             {form.getFieldDecorator('discount_gold', {

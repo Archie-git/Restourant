@@ -10,12 +10,16 @@ const WEATHER_KEY="0894aab8b0394389a7ac887e32db9c30";
 const LOCATION_URL="https://apis.map.qq.com/ws/location/v1/ip";
 const LOCATION_KEY="LOABZ-ONL6F-CLXJZ-N4A2L-AB74O-ITFWZ";
 
-//basic requests;
-export const reqLogin = (username,password) => ajax('/login',{username: username, password: password},'POST');
-
 //header;
 export const reqWeather = (location, key=WEATHER_KEY) => ajax(WEATHER_URL,{location: location, key: key},'GET');
 export const reqCity = (key=LOCATION_KEY) => jsonp(LOCATION_URL, {key});
+
+//basic requests;
+export const reqLogin = (username,password) => ajax('/login',{username: username, password: password},'POST');
+
+//home
+export const reqShopInfo = () => ajax('/shop/info', null, 'GET');
+export const updateShopInfo = (data) => ajax('/shop/update', data, 'POST')
 
 //category;
 export const reqCategoryList = () => ajax('/category/list',null ,'GET');
@@ -48,10 +52,11 @@ export const addStocklogList = (data) => ajax('/stock/stocklog-add', data, 'POST
 
 //customer
 export const reqCustomerList = () => ajax('/customer/list', null, 'GET');
-export const reqCustomerSearch = (idOrName) => ajax('/customer/search', {idOrName}, 'GET');
-export const reqCustomerDelete = (id) => ajax('/customer/delete', {id}, 'GET');
-export const reqCustomerAdd = (data) => ajax('/customer/add', data, 'POST');
-export const updateCustomerList = (data) => ajax('/customer/update', data, 'POST');
+export const reqMemberList = () => ajax('/customer/member-list', null, 'GET');
+export const reqMemberSearch = (idOrName) => ajax('/customer/member-search', {idOrName}, 'GET');
+export const reqMemberDelete = (id) => ajax('/customer/delete', {id}, 'GET');
+export const reqMemberAdd = (data) => ajax('/customer/add', data, 'POST');
+export const updateMemberList = (data) => ajax('/customer/update', data, 'POST');
 
 //employee
 export const reqEmployeeList = () => ajax('/employee/list', null, 'GET');
@@ -75,7 +80,9 @@ export const reqUserUpdate = (data) => ajax('/user/update', data, 'POST');
 
 //order
 export const reqOrderList = () => ajax('/order/list', null, 'GET');
+export const reqFrontdeskList = () => ajax('/order/frontdesk-list', null, 'GET');
 export const reqOrderSearch = (id) => ajax('/order/search', {id}, 'GET');
+export const reqOrderUpdate = (data) => ajax('/order/update', data, 'POST');
 
 //Role
 export const reqRoleList = () => ajax('/role/list', null, 'GET');
