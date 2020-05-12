@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, Card, Col, DatePicker, List, Row, Select} from 'antd';
+import {Button, Card, DatePicker, List,  Select} from 'antd';
 import TopNav from '../../components/top-nav/index';
 import StocklogView from './stock-log-view';
 import moment from "moment";
-import {reqStocklogList} from "../../api";
+import { reqStocklogList } from "../../api";
 
 class StockLog extends React.Component{
     constructor(props){
@@ -17,12 +17,28 @@ class StockLog extends React.Component{
         })
     }
     UNSAFE_componentWillMount = async () => {
-        const response = await reqStocklogList();
+        let response = await reqStocklogList();
         if(response.status === 0){
-            let data = response.data.reverse();
+            let data1 = response.data.reverse();
+            data1 = data1.map(item1 => {
+                if(item1.operation === "修改"){
+                    let data2 = data1.filter(item2 => {
+                        return item1.time > item2.time && item1.stockid === item2.stockid && item1.operation === "修改"
+                    });
+                    if(data2.length === 0){
+                        item1.before = data1.find(item3 => {
+                            return item3.stockid === item1.stockid && item3.operation === "新增"
+                        });
+                    }else{
+                        data2 = data2.sort((a, b) => a.time - b.time);
+                        item1.before = data2.pop();
+                    }
+                }
+                return item1
+            });
             this.setState({
-                data: data,
-                log: data
+                data: data1,
+                log: data1
             })
         }
     };
@@ -102,8 +118,8 @@ class StockLog extends React.Component{
         });
         this.setState({log: log})
     };
-    getTime = (time) => {
-        time = new Date();
+    getTimeForm = (time) => {
+        time = new Date(time);
         let month = time.getMonth()+1;
         month = month>=10 ? month : "0"+month;
         let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
@@ -112,32 +128,31 @@ class StockLog extends React.Component{
         let second = time.getSeconds()>=10 ? time.getSeconds() : "0"+time.getSeconds();
         return time.getFullYear()+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
     };
-    handleDetail = (data) => {
+    handleDetail = async (data) => {
+        console.log(data);
         this.setState({
             visible: true,
             logInfo: data
-        })
+        });
     };
     onOk = () =>{
-        this.setState({visible: false})
+        this.setState({
+            visible: false,
+            logInfo: {}
+        })
     };
     render(){
         let header = (
-            <div>
-                <Row>
-                    <Col span={6}> </Col>
-                    <Col span={18} style={{textAlign: "right"}}>
-                        { this.state.option===0 ? null : this.getTimePicker()}
-                        <Select defaultValue="按顺序查看" onChange={(value)=>this.handleSelectChange(value)}
-                                style={{width: "115px", marginLeft: "10px"}}>
-                            <Select.Option value={0}>按顺序查看</Select.Option>
-                            <Select.Option value={1}>按日期查看</Select.Option>
-                            <Select.Option value={2}>按周次查看</Select.Option>
-                            <Select.Option value={3}>按月份查看</Select.Option>
-                            <Select.Option value={4}>自定义区间</Select.Option>
-                        </Select>
-                    </Col>
-                </Row>
+            <div style={{textAlign: "right"}}>
+                { this.state.option===0 ? null : this.getTimePicker()}
+                <Select defaultValue="按顺序查看" onChange={(value)=>this.handleSelectChange(value)}
+                        style={{width: "115px", margin: "0 20px 0 10px"}}>
+                    <Select.Option value={0}>按顺序查看</Select.Option>
+                    <Select.Option value={1}>按日期查看</Select.Option>
+                    <Select.Option value={2}>按周次查看</Select.Option>
+                    <Select.Option value={3}>按月份查看</Select.Option>
+                    <Select.Option value={4}>自定义区间</Select.Option>
+                </Select>
             </div>
         );
         return (
@@ -147,34 +162,36 @@ class StockLog extends React.Component{
                       extra={<Button type="primary" onClick={()=>this.props.history.push('/stock')}>返回</Button>}
                       style={{ border: "none", width: "100%"}}
                 >
-                    <List style={{margin: "20px 200px"}}
+                    <List style={{margin: "20px 170px"}}
                           size="small"
                           header={header}
                           dataSource={this.state.log}
                           pagination={{pageSize: 10}}
                           renderItem={item =>
                               <List.Item>
-                                  <span style={{fontWeight: "bolder", marginLeft: "10px"}}>
-                                      {this.getTime(item.time)}
+                                  <span style={{fontWeight: "bolder", marginLeft: "10px"}}>{this.getTimeForm(item.time)}</span>
+                                  <span style={{color: "#1DA57A", marginLeft: "20px", width: "60px"}}>{item.manager}</span>
+                                  <span>对</span>
+                                  <span style={{margin: "0 20px", width: "80px"}}>
+                                      “<span style={{color: "#1DA57A"}}>{item.before ? item.before.stockname : item.stockname}</span>”
                                   </span>
-                                  <span style={{color: "#1DA57A", marginLeft: "20px"}}>
-                                      {item.manager}
-                                  </span>
-                                  <span>
-                                      对“{item.stockname}”的库存信息进行了{item.operation}
-                                  </span>
-                                  <Button type="link"
-                                          style={{marginLeft: "30px"}}
-                                          onClick={()=>this.handleDetail(item)}
+                                  <span>的库存信息进行了</span>
+                                  <span style={item.operation === '删除' ? {color: 'red'} : {color: '#1DA57A'}}>{item.operation}</span>
+                                  <Button
+                                      type='primary'
+                                      size='small'
+                                      style={{marginLeft: "30px"}}
+                                      onClick={()=>this.handleDetail(item)}
                                   >详情</Button>
                               </List.Item>
                           }
                           bordered
                     />
-                    <StocklogView visible={this.state.visible}
-                                  info={this.state.logInfo}
-                                  onCancel={this.onOk}
-                                  onOk={this.onOk}
+                    <StocklogView
+                        visible={this.state.visible}
+                        info={this.state.logInfo}
+                        onCancel={this.onOk}
+                        onOk={this.onOk}
                     />
                 </Card>
             </div>

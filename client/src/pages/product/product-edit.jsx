@@ -8,7 +8,7 @@ class EditProduct extends React.Component {
     constructor(props){
         super(props);
         this.state=({
-            category_options: [],
+            categoryOptions: [],
             data: []
         })
     }
@@ -22,10 +22,11 @@ class EditProduct extends React.Component {
         const response = await reqCategoryList();
         if(response.status === 0){
             let options = [];
+            options.push({key: "未分类", value: 999});
             response.data.forEach((item) => {
                 options.push({key: item.name, value: item.id})
             });
-            this.setState({category_options: options})
+            this.setState({categoryOptions: options});
         }
     };
     componentWillUnmount = () => {
@@ -108,7 +109,7 @@ class EditProduct extends React.Component {
                 delete values.state;
                 const response = await updateProductList(values);
                 if(response.status === 0){
-                    message.success(response.msg+",即将返回商品列表", 0.8);
+                    message.success("更新商品信息成功,即将返回商品列表页面");
                     this.timerID = setTimeout(()=>{
                         this.props.history.replace('/product')
                     }, 1000);
@@ -153,8 +154,8 @@ class EditProduct extends React.Component {
                                 rules: [{ required: true, message: '请选择所属分类' }],
                             })(
                                 <Select onChange={this.handleChange}>
-                                    { this.state.category_options.map((item) => {
-                                        return <Select.Option key={item.value}>{item.key}</Select.Option>
+                                    { this.state.categoryOptions.map((item) => {
+                                        return <Select.Option key={item.value} value={item.value}>{item.key}</Select.Option>
                                     })}
                                 </Select>
                             )}
@@ -171,7 +172,7 @@ class EditProduct extends React.Component {
                                 rules: [{required: true, message: "请输入商品计量单位", validate: this.validateUnit}]
                             })(<Input placeholder="请输入商品计量单位"/>)}
                         </Form.Item>
-                        <Form.Item label="商品状态">
+                        <Form.Item label="商品状态" style={{display: this.state.data.category === 999 ? "none" : "block"}}>
                             {form.getFieldDecorator('state', {
                                 initialValue: this.state.data.state,
                             })(

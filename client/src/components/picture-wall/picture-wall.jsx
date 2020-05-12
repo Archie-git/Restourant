@@ -17,7 +17,7 @@ class PicturesWall extends React.Component {
                     uid: -1-index,
                     name: item,
                     status: 'done',
-                    url: 'http://localhost:3001/upload/'+item
+                    url: '/upload/'+item
                 })
             });
             this.setState({fileList: fileList})

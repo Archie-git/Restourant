@@ -1,8 +1,7 @@
 import React from 'react';
 import './product.less';
-import {Button, Divider, Switch, Table, Modal, Row, Col, Cascader} from 'antd';
+import {Button, Divider, Switch, Table, Modal, Row, Col, Cascader, Tag, Select, Input, Icon} from 'antd';
 import {reqCategoryList, reqProductList, reqProductDelete, updateProductList, reqProductSearch} from '../../api';
-import ProductSearch from "./product-search";
 import Loading from '../../components/loading/index';
 import TopNav from "../../components/top-nav";
 
@@ -17,7 +16,8 @@ class Product extends React.Component {
             selectedRowKeys: [],
             operation: "",
             selectedCategory: [],
-            categoryFilters: []
+            categoryFilters: [],
+            selectedType: ''
         })
     }
     UNSAFE_componentWillMount = async () => {
@@ -72,15 +72,15 @@ class Product extends React.Component {
                 options2.push({label: item1.name, value: item1.id});
                 data.map(item2 => {
                     categoryFilters.indexOf(item1.name)===-1 ? categoryFilters.push(item1.name) : categoryFilters.push();
-                    if(item2.category === item1.id){
-                        item2.category_name = item1.name
-                    }
+                    if(item2.category === item1.id) item2.categoryName = item1.name;
+                    if(item2.category === 999) item2.categoryName = '未分类';
                     return item2;
                 })
             });
             categoryFilters = categoryFilters.map(item => {
                 return {text: item, value: item}
             });
+            categoryFilters.push({text: '未分类', value: '未分类'});
             options1.push({
                 label: '移至',
                 value: 'move',
@@ -113,13 +113,13 @@ class Product extends React.Component {
         }
     };
     handleAdd = () => {
-        this.props.history.push('/product-add')
+        this.props.history.push('/product/add')
     };
     handleView = (record) => {
-        this.props.history.push({pathname: '/product-view', state: {data: record}})
+        this.props.history.push({pathname: '/product/view', state: {data: record}})
     };
     handleEdit = (record) => {
-        this.props.history.push({pathname: '/product-edit', state: {data: record}})
+        this.props.history.push({pathname: '/product/edit', state: {data: record}})
     };
     handleDelete = (record) => {
         Modal.confirm({
@@ -127,9 +127,7 @@ class Product extends React.Component {
             content:  "确定要删除商品\""+record.name+"\"吗？",
             okText: '确认',
             onOk: async () => {
-                let data = [];
-                data.push(record.id);
-                const response = await reqProductDelete(data);
+                const response = await reqProductDelete(record);
                 if(response.status === 0){
                     let data=[];
                     this.state.data.forEach(item => {
@@ -144,30 +142,31 @@ class Product extends React.Component {
             onCancel: () => {}
         });
     };
-    handleSearchSubmit = e => {
-        e.preventDefault();
-        this.formRef.props.form.validateFields(async (err, values) => {
-            if(!err){
-                let data = {};
-                if(values.nameOrNumber==="" && values.status.length===0){
-                    const response = await reqProductList();
-                    if(response.status === 0) this.refreshTable(response.data)
-                }else{
-                    for(let key in values){
-                        if(values.hasOwnProperty(key) && values[key].length !== 0){
-                            if(key === "status"){
-                                let arr = values.status.split('-');
-                                data[arr[0]] = Number(arr[1])
-                            }else{
-                                data[key] = typeof(values[key])==="object" ? values[key][0] : values[key]
-                            }
-                        }
+    handleSelectChange = (value) => {
+        this.setState({selectedType: value})
+    };
+    handleSearch = async (value) => {
+        let data = {
+            status: this.state.selectedType,
+            value: value
+        };
+        if(data.value==="" && data.status===""){
+            const response = await reqProductList();
+            if(response.status === 0) this.refreshTable(response.data)
+        }else{
+            for(let key in data){
+                if(data.hasOwnProperty(key) && data[key].length !== 0){
+                    if(key === "status"){
+                        let arr = data.status.split('-');
+                        data[arr[0]] = Number(arr[1])
+                    }else{
+                        data[key] = typeof(data[key])==="object" ? data[key][0] : data[key]
                     }
-                    const response = await reqProductSearch(data);
-                    if(response.status === 0) this.refreshTable(response.data)
                 }
             }
-        })
+            const response = await reqProductSearch(data);
+            if(response.status === 0) this.refreshTable(response.data)
+        }
     };
     handleCascaderChange = (value) => {
         this.setState({operation: value})
@@ -175,11 +174,9 @@ class Product extends React.Component {
     handleOperate = async () => {
         let operation = this.state.operation;
         if(operation.length === 0){
-            console.log("opera")
             this.setState({selectedRowKeys: []});
             this.refreshTable(this.state.data)
         }else if(operation.length === 1){
-            console.log("opera1")
             if(operation[0] === 'delete'){
                 const response1 = reqProductDelete(this.state.selectedRowKeys);
                 if(response1.status === 0){
@@ -189,7 +186,7 @@ class Product extends React.Component {
                         data.forEach(item1 => {
                             this.state.options2.forEach(item2 => {
                                 if(item1.category === item2.value){
-                                    item1.category_name = item2.label
+                                    item1.categoryName = item2.label
                                 }
                             })
                         });
@@ -215,7 +212,7 @@ class Product extends React.Component {
                         data.forEach(item1 => {
                             this.state.options2.forEach(item2 => {
                                 if(item1.category === item2.value){
-                                    item1.category_name = item2.label
+                                    item1.categoryName = item2.label
                                 }
                             })
                         });
@@ -226,7 +223,6 @@ class Product extends React.Component {
                 }
             }
         }else{
-            console.log("opera2")
             let data = {};
             data.id = this.state.selectedRowKeys;
             data.category = operation[1];
@@ -238,7 +234,7 @@ class Product extends React.Component {
                     data.forEach(item1 => {
                         this.state.options2.forEach(item2 => {
                             if(item1.category === item2.value){
-                                item1.category_name = item2.label
+                                item1.categoryName = item2.label
                             }
                         })
                     });
@@ -259,54 +255,70 @@ class Product extends React.Component {
                 dataIndex: 'name',
                 key: 'name',
                 render: (text, record) => (
-                    <Button type="link" onClick={()=>this.handleView(record)}>{text}</Button>
+                    <Button type="link" onClick={()=>this.handleView(record)}>
+                        {text}
+                        {record.category === 999 ? <Tag size="small" color="red">未分类</Tag> : null}
+                    </Button>
                 )
             },
             {
                 title: '分类',
-                key: 'category_name',
-                dataIndex: 'category_name',
+                key: 'categoryName',
+                dataIndex: 'categoryName',
+                render: (text, record) => <span>{record.category === 999 ? "未设置分类" : text}</span>,
                 filters: this.state.categoryFilters,
-                onFilter: (value, record) => value===record.category_name
+                onFilter: (value, record) => value===record.categoryName
             },
             {
                 title: '售价',
                 key: 'price',
                 dataIndex: 'price',
-                render: (text) => <span>￥{text}</span>,
+                render: (text) => <span>￥{text.toFixed(2)}</span>,
                 sorter: (a, b) => a.price - b.price
             },
             {
-                title: '销量/周',
-                key: 'sales',
-                dataIndex: 'sales',
-                render: (text, record) => <span>{text+record.unit}</span>,
-                sorter: (a, b) => a.sales - b.sales
+                title: '积分',
+                key: 'integral',
+                dataIndex: 'integral',
+                render: (text) => <span>{text}</span>,
+                sorter: (a, b) => a.integral - b.integral
             },
+            {
+                title: '单位',
+                key: 'unit',
+                dataIndex: 'unit',
+                render: (text) => <span>{text}</span>
+            },
+            // {
+            //     title: '销量/周',
+            //     key: 'sales',
+            //     dataIndex: 'sales',
+            //     render: (text, record) => <span>{record.category === 999 ? '/' : text+record.unit}</span>,
+            //     sorter: (a, b) => a.sales - b.sales
+            // },
             {
                 title: '状态',
                 key: 'status',
-                render: (record) => (
+                render: (record) => record.category === 999 ? <span>/</span> : (
                     <span>
-                    <span>上架：</span>
-                    <Switch size="small"
-                            defaultChecked={record.onsale === 1}
-                            onClick={()=>this.handleStateChange(record, "onsale")}
-                    /><br/>
-                    <span>新品：</span>
-                    <Switch size="small"
-                            style={{marginTop: "5px"}}
-                            defaultChecked={record.isnew === 1}
-                            onClick={()=>this.handleStateChange(record, "isnew")}
-                    /><br/>
-                    <span>推荐：</span>
-                    <Switch size="small"
-                            style={{marginTop: "5px"}}
-                            defaultChecked={record.recommend === 1}
-                            onClick={()=>this.handleStateChange(record, "recommend")}
-                    />
-                </span>
-            
+                        <span>上架：</span>
+                        <Switch size="small"
+                                defaultChecked={record.onsale === 1}
+                                onClick={()=>this.handleStateChange(record, "onsale")}
+                        /><br/>
+                        <span>新品：</span>
+                        <Switch size="small"
+                                style={{marginTop: "5px"}}
+                                defaultChecked={record.isnew === 1}
+                                onClick={()=>this.handleStateChange(record, "isnew")}
+                        /><br/>
+                        <span>推荐：</span>
+                        <Switch size="small"
+                                style={{marginTop: "5px"}}
+                                defaultChecked={record.recommend === 1}
+                                onClick={()=>this.handleStateChange(record, "recommend")}
+                        />
+                    </span>
                 )
             },
             // {
@@ -360,7 +372,7 @@ class Product extends React.Component {
                 <div className="product-header">
                     <Row>
                         <Col span={8}>
-                            <Button type="primary" onClick={()=>this.handleAdd()}>新增商品</Button>
+                            <Button type="primary" onClick={()=>this.handleAdd()}><Icon type="plus"/>新增商品</Button>
                             
                         </Col>
                         <Col span={6} style={{marginTop: "-1px"}}>
@@ -370,11 +382,25 @@ class Product extends React.Component {
                                       onChange={this.handleCascaderChange}/>
                             <Button type="primary" onClick={this.handleOperate}>确认</Button>
                         </Col>
-                        <Col span={10} style={{textAlign:"right", marginTop: "-4px"}}>
-                            <ProductSearch
-                                wrappedComponentRef={(formRef) => this.formRef = formRef}
-                                options2={this.state.options2}
-                                onSubmit={this.handleSearchSubmit}
+                        <Col span={10} style={{textAlign:"right"}}>
+                            <Select
+                                style={{width: "110px", textAlign: "left"}}
+                                placeholder="选择状态"
+                                onChange={this.handleSelectChange}
+                            >
+                                <Select.Option value="">全部</Select.Option>
+                                <Select.Option value="onsale-1">已上架</Select.Option>
+                                <Select.Option value="onsale-0">未上架</Select.Option>
+                                <Select.Option value="isnew-1">新品</Select.Option>
+                                <Select.Option value="isnew-0">非新品</Select.Option>
+                                <Select.Option value="recommend-1">已推荐</Select.Option>
+                                <Select.Option value="recommend-0">未推荐</Select.Option>
+                            </Select>
+                            <Input.Search
+                                placeholder="搜索商品名称/货号"
+                                style={{width: "200px", float: "right", margin: "0 15px "}}
+                                onSearch={(value) => this.handleSearch(value)}
+                                enterButton
                             />
                         </Col>
                     </Row>

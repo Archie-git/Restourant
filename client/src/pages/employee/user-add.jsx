@@ -37,12 +37,13 @@ const AddUser = Form.create({ name: 'user-add' })(
                 if(!err) {
                     let data=values;
                     data.createtime = new Date().getTime();
+                    data.deleted = 0;
                     console.log(values);
                     const response = await reqUserAdd(data);
                     if(response.status === 0){
-                        message.success("新增成功,即将返回用户列表");
+                        message.success("新增用户成功,即将返回用户列表页面");
                         this.timerID = setTimeout(()=>{
-                            this.props.history.push('/user')
+                            this.props.history.push('/employee/user')
                         }, 2000);
                     }
                 }
@@ -58,7 +59,7 @@ const AddUser = Form.create({ name: 'user-add' })(
                 <div>
                     <TopNav nav={['人事管理','用户列表','创建用户']}/>
                     <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>新增用户信息</span>}
-                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/user')}}>返回</Button>}
+                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/employee/user')}}>返回</Button>}
                           style={{width: "100%", border: "none"}}
                     >
                         <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>

@@ -54,7 +54,7 @@ exports.getAddSQL = (tableName, data) => {
     let keys = Object.keys(data);
     let values = Object.values(data);
     values = values.map(item => {
-        return typeof(item)==="number" ? item : "\""+item+"\""
+        return typeof(item)==="number" ? item : "\'"+item+"\'"
     });
     return "INSERT INTO "+tableName+"("+keys.join(',')+")"+" VALUES("+values.join(",")+")";
 };
@@ -68,21 +68,6 @@ exports.getSearchSQL = (tableName, data) => {
         let value = typeof(values[i]) === "number" ? values[i] : "\""+values[i]+"\"";
         params.push(keys[i]+"="+value)
     }
-    let a = "SELECT * FROM "+tableName+" WHERE "+params.join(' and ');
-    console.log(a);
-    return a;
+    return "SELECT * FROM "+tableName+" WHERE "+params.join(' and ');
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 

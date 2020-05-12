@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Divider, Button, Modal, Icon} from 'antd';
+import {Table, Divider, Button, Modal, Icon, Tag} from 'antd';
 import Loading from '../../components/loading/index';
 import TopNav from '../../components/top-nav/index'
 import {reqRoleList, reqUserList, reqRoleDelete} from '../../api/index';
@@ -22,10 +22,16 @@ class Role extends React.Component{
         const response2 = await reqUserList();
         if(response1.status===0 && response2.status===0){
             let data = response1.data.map((item1, index) => {
+                let roleUser = [];
                 item1.index = index;
-                response2.data.forEach(item2 => {
-                    if(item1.creater === item2.id) item1.creatername = item2.username
+                response1.data.forEach(item3 => {
+                    if(item1.creater === item3.id) item1.createrRole = item3.name
                 });
+                response2.data.forEach(item2 => {
+                    if(item1.creater === item2.id) item1.createrName = item2.username;
+                    if(item1.id === item2.role) roleUser.push(item2.username)
+                });
+                item1.roleUser = roleUser;
                 let permission = [
                     {
                         title: "订单管理",
@@ -104,16 +110,6 @@ class Role extends React.Component{
                                 display: 0
                             }
                         ]
-                    },
-                    {
-                        title: "财务管理",
-                        display: 0,
-                        children: [
-                            {
-                                title: "财务报表",
-                                display: 0
-                            }
-                        ]
                     }
                 ];
                 item1.permission.split('-').forEach(item3 => {
@@ -166,10 +162,6 @@ class Role extends React.Component{
                             permission[4].display = 1;
                             permission[4].children[2].display = 1;
                             break;
-                        case '财务报表':
-                            permission[5].display = 1;
-                            permission[5].children[0].display = 1;
-                            break;
                         default:
                             break;
                     }
@@ -211,15 +203,20 @@ class Role extends React.Component{
         });
     };
     handleAdd = () => {
-        this.props.history.push('/role-add')
+        this.props.history.push('/employee/role/add')
     };
     handleEdit = (record) => {
-        this.props.history.push({pathname: '/role-edit', state: {data: record}})
+        this.props.history.push({pathname: '/employee/role/edit', state: {data: record}})
     };
-    getTime = (time) => {
-        let temp = new Date(time);
-        let month = temp.getMonth()+1;
-        return temp.getFullYear()+"-"+month+"-"+temp.getDate()+" "+temp.getHours()+":"+temp.getMinutes()
+    getTimeForm = (time) => {
+        time = new Date(time);
+        let month = time.getMonth()+1;
+        month = month>=10 ? month : "0"+month;
+        let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+        let hour = time.getHours()>=10 ? time.getHours() : "0"+time.getHours();
+        let minute = time.getMinutes()>=10 ? time.getMinutes() : "0"+time.getMinutes();
+        let second = time.getSeconds()>=10 ? time.getSeconds() : "0"+time.getSeconds();
+        return time.getFullYear()+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
     };
     render(){
         const columns = [
@@ -238,17 +235,34 @@ class Role extends React.Component{
                 title: '创建时间',
                 dataIndex: 'createtime',
                 key: 'son',
-                render: (text) => <span><Icon type="clock-circle" />&nbsp;{this.getTime(text)}</span>
+                render: (text) => <span><Icon type="clock-circle" />&nbsp;{this.getTimeForm(text)}</span>,
+                sorter: (a, b) => b.createtime - a.createtime
             },
             {
                 title: '创建人',
-                dataIndex: 'creatername',
-                key: 'creatername'
+                dataIndex: 'createrName',
+                key: 'createrName',
+                render: (text, record) => <span>{text} <Tag color="green">{record.createrRole}</Tag></span>
+            },
+            {
+                title: '角色用户',
+                dataIndex: 'roleUser',
+                key: 'roleUser',
+                render: (text) => (
+                    <span>
+                        {
+                            text.length !== 0 ? text.map((item, index) => {
+                                return <div  key={index}><span>{item}</span></div>
+                            }) : '/'
+                        }
+                    </span>
+                )
             },
             {
                 title: '备注',
                 dataIndex: 'note',
-                key: 'note'
+                key: 'note',
+                render: (text) => <span>{text ? text : '/'}</span>
             },
             {
                 title: '操作',
@@ -266,7 +280,7 @@ class Role extends React.Component{
             <div className="category-container">
                 <TopNav nav={['人事管理','角色管理']}/>
                 <div style={{margin: "20px 22px 0 20px"}}>
-                    <Button type="primary" onClick={this.handleAdd}>新增角色</Button>
+                    <Button type="primary" onClick={this.handleAdd}><Icon type="plus"/>新增角色</Button>
                 </div>
                 {
                     this.state.isLoading ? <Loading /> :

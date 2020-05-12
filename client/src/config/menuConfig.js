@@ -65,18 +65,18 @@ const menuList=[
         ]
     },
     {
-        key: "/customer",
+        key: "/member",
         title: "会员管理",
         icon: "crown",
         display: 1,
         children: [
             {
-                key: "/customer",
+                key: "/member",
                 title: "会员列表",
                 display: 1
             },
             {
-                key: "/customer-add",
+                key: "/member-add",
                 title: "新增会员",
                 display: 1
             }

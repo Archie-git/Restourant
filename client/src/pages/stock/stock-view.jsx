@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Card, Button, Tag, List, Select, DatePicker, Row, Col } from 'antd';
+import { Form, Card, Button, Tag, List, Select, DatePicker } from 'antd';
 import TopNav from '../../components/top-nav/index';
 import StocklogView from './stock-log-view';
 import moment from "moment";
@@ -16,10 +16,33 @@ class ViewStock extends React.Component{
         })
     }
     UNSAFE_componentWillMount = () => {
+        // const data = this.props.location.state.data;
+        // this.setState({
+        //     data: data,
+        //     log: data.log.reverse()
+        // });
+    
         const data = this.props.location.state.data;
+        let data1 = data.log.reverse();
+        data1 = data1.map(item1 => {
+            if(item1.operation === "修改"){
+                let data2 = data1.filter(item2 => {
+                    return item1.time > item2.time && item1.stockid === item2.stockid && item1.operation === "修改"
+                });
+                if(data2.length === 0){
+                    item1.before = data1.find(item3 => {
+                        return item3.stockid === item1.stockid && item3.operation === "新增"
+                    });
+                }else{
+                    data2 = data2.sort((a, b) => a.time - b.time);
+                    item1.before = data2.pop();
+                }
+            }
+            return item1
+        });
         this.setState({
             data: data,
-            log: data.log
+            log: data1
         });
     };
     handleSelectChange = (value) => {
@@ -98,8 +121,8 @@ class ViewStock extends React.Component{
         });
         this.setState({log: log})
     };
-    getTime = (time) => {
-        time = new Date();
+    getTimeForm = (time) => {
+        time = new Date(time);
         let month = time.getMonth()+1;
         month = month>=10 ? month : "0"+month;
         let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
@@ -123,30 +146,23 @@ class ViewStock extends React.Component{
             wrapperCol: {span: 10}
         };
         let header = (
-            <div>
-                <Row>
-                    <Col span={6}>
-                        <span style={{color: "#1DA57A", fontWeight: "bolder", fontSize: "18px"}}>库存日志</span>
-                    </Col>
-                    <Col span={18} style={{textAlign: "right"}}>
-                        { this.state.option===0 ? null : this.getTimePicker()}
-                        <Select defaultValue="按顺序查看" onChange={(value)=>this.handleSelectChange(value)}
-                                style={{width: "115px", marginLeft: "10px"}}>
-                            <Select.Option value={0}>按顺序查看</Select.Option>
-                            <Select.Option value={1}>按日期查看</Select.Option>
-                            <Select.Option value={2}>按周次查看</Select.Option>
-                            <Select.Option value={3}>按月份查看</Select.Option>
-                            <Select.Option value={4}>自定义区间</Select.Option>
-                        </Select>
-                    </Col>
-                </Row>
+            <div style={{textAlign: "right"}}>
+                { this.state.option===0 ? null : this.getTimePicker()}
+                <Select defaultValue="按顺序查看" onChange={(value)=>this.handleSelectChange(value)}
+                        style={{width: "115px", margin: "0 20px 0 10px"}}>
+                    <Select.Option value={0}>按顺序查看</Select.Option>
+                    <Select.Option value={1}>按日期查看</Select.Option>
+                    <Select.Option value={2}>按周次查看</Select.Option>
+                    <Select.Option value={3}>按月份查看</Select.Option>
+                    <Select.Option value={4}>自定义区间</Select.Option>
+                </Select>
             </div>
         );
         return (
             <div className="stock-view-container">
                 <TopNav nav={['库存管理', '库存信息', '货物详情']} />
                 <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>查看货物详情</span>}
-                      extra={<Button onClick={()=>{this.props.history.push('/stock')}}>返回</Button>}
+                      extra={<Button type='primary' onClick={()=>{this.props.history.push('/stock')}}>返回</Button>}
                       style={{width: "100%", border: "none"}}
                 >
                     <Form {...formItemLayout} style={{marginTop: "40px"}}>
@@ -157,7 +173,7 @@ class ViewStock extends React.Component{
                             <span className="ant-form-text">{this.state.data.category}</span>
                         </Form.Item>
                         <Form.Item label="单价">
-                            <span className="ant-form-text">￥{this.state.data.price}</span>
+                            <span className="ant-form-text">￥{this.state.data.price.toFixed(2)}</span>
                         </Form.Item>
                         <Form.Item label="库存数量">
                             <span className="ant-form-text">{this.state.data.amount}</span>
@@ -183,43 +199,54 @@ class ViewStock extends React.Component{
                                     {
                                         this.state.data.pictures.map((item, index) => {
                                             return item==="" ? null
-                                                : <img key={index} src={'http://localhost:3001/upload/'+item} alt="货物图片"/>
+                                                : <img key={index} src={'/upload/'+item} alt="货物图片"/>
                                         })
                                     }
                                 </span>
                         </Form.Item>
                         <Form.Item label="备注">
-                            <span className="ant-form-text">{this.state.data.note}</span>
+                            <span className="ant-form-text">{ this.state.data.note ? this.state.data.note : '无'}</span>
                         </Form.Item>
                     </Form>
-                    <List style={{margin: "30px 200px"}}
+                    <List style={{margin: "50px 170px"}}
                           size="small"
                           header={header}
                           dataSource={this.state.log}
                           pagination={{pageSize: 10}}
                           renderItem={item =>
                               <List.Item>
+                                  {/*<span style={{fontWeight: "bolder", marginLeft: "10px"}}>{this.getTimeForm(item.time)}</span>*/}
+                                  {/*<span style={{color: "#1DA57A", marginLeft: "20px", width: "50px"}}>{item.manager}</span>*/}
+                                  {/*<span>对“{item.stockname}”的库存信息进行了{item.operation}</span>*/}
+                                  {/*<Button type="link"*/}
+                                  {/*        style={{marginLeft: "30px"}}*/}
+                                  {/*        onClick={()=>this.handleDetail(item)}*/}
+                                  {/*>详情</Button>*/}
                                   <span style={{fontWeight: "bolder", marginLeft: "10px"}}>
-                                      {this.getTime(item.time)}
+                                      {this.getTimeForm(item.time)}
                                   </span>
-                                  <span style={{color: "#1DA57A", marginLeft: "20px", width: "50px"}}>
+                                  <span style={{color: "#1DA57A", marginLeft: "20px", width: "60px"}}>
                                       {item.manager}
                                   </span>
-                                  <span>
-                                      对“{item.stockname}”的库存信息进行了{item.operation}
-                                  </span>
-                                  <Button type="link"
-                                          style={{marginLeft: "30px"}}
-                                          onClick={()=>this.handleDetail(item)}
+                                  <span>对</span>
+                                  <span style={{margin: "0 20px", width: "80px"}}>“<span style={{color: "#1DA57A"}}>{item.stockname}</span>”</span>
+                                  <span>的库存信息进行了</span>
+                                  <span style={{color: '#1DA57A'}}>{item.operation}</span>
+                                  <Button
+                                      type="primary"
+                                      size="small"
+                                      style={{marginLeft: "30px"}}
+                                      onClick={()=>this.handleDetail(item)}
                                   >详情</Button>
                               </List.Item>
                           }
                           bordered
                     />
-                    <StocklogView visible={this.state.visible}
-                              info={this.state.logInfo}
-                              onCancel={this.onOk}
-                              onOk={this.onOk}
+                    <StocklogView
+                        visible={this.state.visible}
+                        info={this.state.logInfo}
+                        onCancel={this.onOk}
+                        onOk={this.onOk}
                     />
                 </Card>
             </div>

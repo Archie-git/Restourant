@@ -33,9 +33,9 @@ const AddInventory = Form.create({ name: 'inventory-add-form' })(
                     data.amount = data.amount.toFixed(2);
                     const response = await reqInventoryAdd(data);
                     if(response.status === 0){
-                        message.success("新增成功,即将返回盘点列表");
+                        message.success("新增盘点记录成功,即将返回盘点列表页面");
                         this.timerID = setTimeout(()=>{
-                            this.props.history.push('/inventory')
+                            this.props.history.push('/stock/inventory')
                         }, 1500);
                     }
                 }
@@ -61,7 +61,7 @@ const AddInventory = Form.create({ name: 'inventory-add-form' })(
                 <div>
                     <TopNav nav={['库存管理', '库存盘点', '新建盘点单']}/>
                     <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>新建盘点单</span>}
-                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/inventory')}}>返回</Button>}
+                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/stock/inventory')}}>返回</Button>}
                           style={{width: "100%", border: "none"}}
                     >
                         <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>

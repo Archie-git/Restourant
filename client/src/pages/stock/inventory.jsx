@@ -11,7 +11,10 @@ const Inventory = Form.create({name: 'search-inventory-form'})(
             this.state = {
                 isLoading: true,
                 data: [],
-                tableData: []
+                tableData: [],
+                createrFilters: [],
+                dateRange: [],
+                searchValue : ''
             }
         }
         UNSAFE_componentWillMount = async () => {
@@ -44,17 +47,16 @@ const Inventory = Form.create({name: 'search-inventory-form'})(
                 this.timerID = setTimeout(() => {
                     this.setState({
                         isLoading: false,
-                        data: data,
+                        data: data.reverse(),
                         tableData: data,
                         createrFilters: createrFilters,
-                        dateRange: []
+                        dateRange: [NaN, NaN]
                     })
                 }, 300)
             }
         };
         handleDeal = (record) => {
             let data = {id: record.id, state : 1-record.state};
-            console.log(data);
             Modal.confirm({
                 title: "警告",
                 content: "确定要将单号\"PD"+record.id+"\"设置为已处理吗",
@@ -81,12 +83,12 @@ const Inventory = Form.create({name: 'search-inventory-form'})(
                 onOk: async () => {
                     const response = await reqInventoryDelete(record.id);
                     if(response.status === 0){
-                        let data=[];
+                        let tableData=[];
                         this.state.data.forEach(item => {
-                            item.id===record.id ? data.push() : data.push(item)
+                            if(item.id !== record.id)  tableData.push(item)
                         });
                         this.setState({
-                            data: data
+                            tableData: tableData
                         })
                     }
                 },
@@ -95,55 +97,69 @@ const Inventory = Form.create({name: 'search-inventory-form'})(
             });
         };
         handleView = (record) => {
-            this.props.history.push({pathname: '/inventory-view', state: {data: record}})
+            this.props.history.push({pathname: '/stock/inventory/view', state: {data: record}})
         };
-        handleDatePickerChange = (renge, rangeString) => {
-            this.setState({dateRange: rangeString})
+        handleRangePickerChange = (dates, dateStrings) => {
+            let start = new Date(dateStrings[0]).getTime();
+            let end = new Date(dateStrings[1]).getTime();
+            let dateRange = [];
+            dateRange.push(start);
+            dateRange.push(end);
+            let tableData = isNaN(start) || isNaN(end) ? this.state.data : this.state.data.filter(item => {
+                return item.createtime >= start && item.createtime <= end
+            });
+            if(!!this.state.searchValue){
+                tableData = tableData.filter(item => {
+                    return String(item.id) === this.state.searchValue
+                });
+            }
+            this.setState({isLoading: true});
+            this.timerID = setTimeout(()=>{
+                this.setState({
+                    isLoading: false,
+                    tableData: tableData,
+                    dateRange: dateRange
+                })
+            },300)
         };
         handleSearch = async (value) => {
-            if(!value && !this.state.dateRange[0]){
-                const response = await reqInventoryList();
-                this.refreshTable(response)
-            }else if(!value){
-                let start = new Date(this.state.dateRange[0]).getTime();
-                let end = new Date(this.state.dateRange[1]).getTime();
-                let data = this.state.data.filter(item => {
-                    return item.time>=start && item.time<=end
+            console.log(this.state.dateRange);
+            console.log(isNaN(this.state.dateRange[0]));
+            console.log(isNaN(this.state.dateRange[1]));
+            if(isNaN(this.state.dateRange[0] && isNaN(this.state.dateRange[1]))){
+                if(!value){
+                    const response = await reqInventoryList();
+                    this.refreshTable(response)
+                }else{
+                    let tableData = this.state.data.filter(item => {
+                        return String(item.id) === value
+                    });
+                    this.setState({isLoading: true});
+                    this.timerID = setTimeout(() => {
+                        this.setState({
+                            isLoading: false,
+                            tableData: tableData,
+                            searchValue: value
+                        })
+                    }, 300)
+                }
+            }else{
+                let tableData = this.state.data.filter(item => {
+                    return !value ?
+                        item.createtime >= this.state.dateRange[0] && item.createtime <= this.state.dateRange[1] :
+                        value === String(item.id) && item.createtime >= this.state.dateRange[0] && item.createtime <= this.state.dateRange[1]
                 });
                 this.setState({isLoading: true});
-                this.timerID = setTimeout(()=>{
+                this.timerID = setTimeout(() => {
                     this.setState({
                         isLoading: false,
-                        tableData: data
+                        tableData: tableData,
+                        searchValue: value
                     })
                 }, 300)
-            }else if(!this.state.dateRange[0]){
-                let data = this.state.data.filter(item => {
-                    return Number(value)===item.id
-                });
-                this.setState({isLoading: true});
-                this.timerID = setTimeout(()=>{
-                    this.setState({
-                        isLoading: false,
-                        tableData: data
-                    })
-                },300)
-            }else{
-                let start = new Date(this.state.dateRange[0]).getTime();
-                let end = new Date(this.state.dateRange[1]).getTime();
-                let data = this.state.data.filter(item => {
-                    return Number(value)===item.id && item.time>=start && item.time<=end
-                });
-                this.setState({isLoading: true});
-                this.timerID = setTimeout(()=>{
-                    this.setState({
-                        isLoading: false,
-                        tableData: data
-                    })
-                },300)
             }
         };
-        getTime = (time) => {
+        getTimeForm = (time) => {
             time = new Date(time);
             let month = time.getMonth()+1;
             month = month>=10 ? month : "0"+month;
@@ -169,7 +185,7 @@ const Inventory = Form.create({name: 'search-inventory-form'})(
                     title: '盘点时间',
                     dataIndex: 'createtime',
                     key: 'time',
-                    render: (text) => <span><Icon type="clock-circle" />  {this.getTime(text)}</span>,
+                    render: (text) => <span><Icon type="clock-circle" />  {this.getTimeForm(text)}</span>,
                     sorter: (a, b) => a.time-b.time
                 },
                 {
@@ -228,17 +244,18 @@ const Inventory = Form.create({name: 'search-inventory-form'})(
                     <div className="stock-header" style={{margin: "20px"}}>
                         <Button type="primary"
                                 style={{marginRight: "40px"}}
-                                onClick={()=>{this.props.history.push('/inventory-add')}}>新建盘点单
+                                onClick={()=>{this.props.history.push('/stock/inventory/add')}}>
+                            <Icon type="plus"/>新建盘点单
                         </Button>
                         <Input.Search
-                            placeholder="输入盘点单号"
+                            placeholder="搜索盘点单号"
                             style={{width: "160px", float: "right", marginLeft: "15px"}}
                             onSearch={(value) => this.handleSearch(value)}
                             enterButton
                         />
                         <DatePicker.RangePicker
-                            style={{width: "230px", float: "right"}}
-                            onChange={this.handleDatePickerChange}
+                            style={{width: "250px", float: "right"}}
+                            onChange={this.handleRangePickerChange}
                         />
                     </div>
                     {

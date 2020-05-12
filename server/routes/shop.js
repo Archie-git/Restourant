@@ -14,7 +14,6 @@ router.get('/info', function(req, res) {
 //更新商店信息
 router.post('/update', (req, res) => {
     const sql = model.getUpdateSQL('shop', req.body);
-    console.log(sql);
     model.querySQL(sql).then(() => {
         res.send({status: 0, msg: "更新成功"})
     }, err => {

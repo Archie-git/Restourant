@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Divider, Switch, message, Input, Button, Modal} from 'antd';
+import {Table, Divider, Switch, message, Input, Button, Modal, Icon} from 'antd';
 import Loading from '../../components/loading';
 import TopNav from '../../components/top-nav'
 import {reqCategoryList, updateCategoryList, reqCategorySearch, reqCategoryDelete} from '../../api';
@@ -22,6 +22,19 @@ class Category extends React.Component{
             if(response.status===0){
                 let data = response.data.map((item, index) => {
                     item.index = index;
+                    switch (item.level) {
+                        case 0: item.levelText = '一级'; break;
+                        case 1: item.levelText = '二级'; break;
+                        case 2: item.levelText = '三级'; break;
+                        case 3: item.levelText = '四级'; break;
+                        case 4: item.levelText = '五级'; break;
+                        case 5: item.levelText = '六级'; break;
+                        case 6: item.levelText = '七级'; break;
+                        case 7: item.levelText = '八级'; break;
+                        case 8: item.levelText = '九级'; break;
+                        case 9: item.levelText = '十级'; break;
+                        default: break
+                    }
                     return item
                 });
                 this.setState({isLoading: false, data: data})
@@ -71,15 +84,15 @@ class Category extends React.Component{
             onCancel: () => {}
         });
     };
-    handleAdd = () => {this.props.history.push('/category-add')};
+    handleAdd = () => {this.props.history.push('/product/category/add')};
     handleEdit = (record) => {
         this.props.history.push({
-            pathname: '/category-edit',
+            pathname: '/product/category/edit',
             state: {data: record}
         })
     };
     handleView = (record) => {
-        this.props.history.push({pathname: '/category-view', state: {data: record}})
+        this.props.history.push({pathname: '/product/category/view', state: {data: record}})
     };
     render(){
         const columns = [
@@ -95,26 +108,9 @@ class Category extends React.Component{
                 render: (text, record) => <Button type="link" onClick={()=>this.handleView(record)}>{text}</Button>
             },
             {
-                title: '级别',
-                dataIndex: 'level',
-                key: 'level',
-                render: text => {
-                    let level="";
-                    switch(text){
-                        case 0 : level="一级";break;
-                        case 1 : level="二级";break;
-                        case 2 : level="三级";break;
-                        case 3 : level="四级";break;
-                        case 4 : level="五级";break;
-                        case 5 : level="六级";break;
-                        case 6 : level="七级";break;
-                        case 7 : level="八级";break;
-                        case 8 : level="九级";break;
-                        default: level="十级"
-                    }
-                    // return <Button type="link" onClick={this.testfunc}>{level}</Button>
-                    return <span>{level}</span>;
-                },
+                title: '排序',
+                dataIndex: 'levelText',
+                key: 'levelText',
                 sorter: (a, b) => a.level-b.level
             },
             {
@@ -150,10 +146,10 @@ class Category extends React.Component{
             <div className="category-container">
                 <TopNav nav={['商品管理', '商品分类']}/>
                 <div style={{margin: "20px 22px 0 20px"}}>
-                    <Button type="primary" onClick={this.handleAdd}>新增品类</Button>
+                    <Button type="primary" onClick={this.handleAdd}><Icon type="plus"/>新增品类</Button>
                     <Input.Search
                         style={{width: "200px", float: "Right"}}
-                        placeholder="查询品类信息"
+                        placeholder="查询品类名称"
                         onSearch={(value) => this.handleSearch(value)}
                         enterButton
                     />

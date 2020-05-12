@@ -30,38 +30,21 @@ const EditCategory = Form.create({ name: 'category-add' })(
             this.props.form.validateFields( async (err, values) => {
                 if(!err){
                     let data = this.props.location.state.data;
-                    for(let key in values){
-                        if(values.hasOwnProperty(key)){
-                            data[key] = values[key]
-                        }
-                    }
-                    data.isnav = data.isnav ? 1 : 0;
-                    data.level = Number(data.level);
+                    data.name = values.name;
+                    data.level = values.level;
+                    data.isnav = values.isnav === true ? 1 : 0;
+                    data.note = values.note;
                     delete data.index;
+                    delete data.levelText;
                     const response = await updateCategoryList(data);
                     if(response.status === 0){
-                        message.success("更新成功,即将返回品类列表", 2);
+                        message.success("更新品类信息成功,即将返回品类列表页面", 2);
                         this.timerID = setTimeout(()=>{
-                            this.props.history.push('/category')
+                            this.props.history.push('/product/category')
                         }, 2000);
                     }
                 }
             });
-        };
-        getLevel = (level) => {
-            let temp = "";
-            switch(level){
-                case 0 : temp="一级";break;
-                case 1 : temp="二级";break;
-                case 2 : temp="三级";break;
-                case 3 : temp="四级";break;
-                case 4 : temp="五级";break;
-                case 5 : temp="六级";break;
-                case 6 : temp="七级";break;
-                case 7 : temp="八级";break;
-                default: temp="八级"
-            }
-            return temp
         };
         render() {
             const formItemLayout = {
@@ -73,7 +56,7 @@ const EditCategory = Form.create({ name: 'category-add' })(
                 <div>
                     <TopNav nav={['商品管理', '商品分类', '编辑品类']}/>
                     <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>编辑商品品类</span>}
-                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/category')}}>返回</Button>}
+                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/product/category')}}>返回</Button>}
                           style={{width: "100%", border: "none"}}
                     >
                         <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
@@ -89,14 +72,16 @@ const EditCategory = Form.create({ name: 'category-add' })(
                                     initialValue: this.state.data.level
                                 })(
                                     <Select>
-                                        <Select.Option key={0}>一级</Select.Option>
-                                        <Select.Option key={1}>二级</Select.Option>
-                                        <Select.Option key={2}>三级</Select.Option>
-                                        <Select.Option key={3}>四级</Select.Option>
-                                        <Select.Option key={4}>五级</Select.Option>
-                                        <Select.Option key={5}>六级</Select.Option>
-                                        <Select.Option key={6}>七级</Select.Option>
-                                        <Select.Option key={7}>八级</Select.Option>
+                                        <Select.Option key={0} value={0}>一级</Select.Option>
+                                        <Select.Option key={1} value={1}>二级</Select.Option>
+                                        <Select.Option key={2} value={2}>三级</Select.Option>
+                                        <Select.Option key={3} value={3}>四级</Select.Option>
+                                        <Select.Option key={4} value={4}>五级</Select.Option>
+                                        <Select.Option key={5} value={5}>六级</Select.Option>
+                                        <Select.Option key={6} value={6}>七级</Select.Option>
+                                        <Select.Option key={7} value={7}>八级</Select.Option>
+                                        <Select.Option key={8} value={8}>九级</Select.Option>
+                                        <Select.Option key={9} value={9}>十级</Select.Option>
                                     </Select>
                                 )}
                             </Form.Item>

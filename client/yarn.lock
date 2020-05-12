@@ -25,6 +25,22 @@
     "@ant-design/colors" "^3.1.0"
     babel-runtime "^6.26.0"
 
+"@ant-design/icons-svg@^4.0.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@ant-design/icons-svg/download/@ant-design/icons-svg-4.1.0.tgz#480b025f4b20ef7fe8f47d4a4846e4fee84ea06c"
+  integrity sha1-SAsCX0sg73/o9H1KSEbk/uhOoGw=
+
+"@ant-design/icons@latest":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@ant-design/icons/download/@ant-design/icons-4.1.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ant-design%2Ficons%2Fdownload%2F%40ant-design%2Ficons-4.1.0.tgz#444edcc3822d5b43b2b038d6f893cd7f7dfcc48d"
+  integrity sha1-RE7cw4ItW0OysDjW+JPNf338xI0=
+  dependencies:
+    "@ant-design/colors" "^3.1.0"
+    "@ant-design/icons-svg" "^4.0.0"
+    classnames "^2.2.6"
+    insert-css "^2.0.0"
+    rc-util "^4.9.0"
+
 "@ant-design/icons@~2.1.1":
   version "2.1.1"
   resolved "https://registry.npm.taobao.org/@ant-design/icons/download/@ant-design/icons-2.1.1.tgz#7b9c08dffd4f5d41db667d9dbe5e0107d0bd9a4a"
@@ -3774,6 +3790,14 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
+echarts-for-react@^2.0.15-beta.1:
+  version "2.0.15-beta.1"
+  resolved "https://registry.npm.taobao.org/echarts-for-react/download/echarts-for-react-2.0.15-beta.1.tgz#1afa21ee0f08f9023eff0b5ab3351f2fe0f708b6"
+  integrity sha1-Gvoh7g8I+QI+/wtaszUfL+D3CLY=
+  dependencies:
+    fast-deep-equal "^2.0.1"
+    size-sensor "^0.2.0"
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
@@ -5363,6 +5387,11 @@ inquirer@^7.0.0:
     string-width "^4.1.0"
     strip-ansi "^5.1.0"
     through "^2.3.6"
+
+insert-css@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npm.taobao.org/insert-css/download/insert-css-2.0.0.tgz#eb5d1097b7542f4c79ea3060d3aee07d053880f4"
+  integrity sha1-610Ql7dUL0x56jBg067gfQU4gPQ=
 
 internal-ip@^4.3.0:
   version "4.3.0"
@@ -9183,6 +9212,17 @@ rc-util@^4.0.4, rc-util@^4.1.1, rc-util@^4.13.0, rc-util@^4.15.3, rc-util@^4.15.
     react-lifecycles-compat "^3.0.4"
     shallowequal "^1.1.0"
 
+rc-util@^4.9.0:
+  version "4.20.5"
+  resolved "https://registry.npm.taobao.org/rc-util/download/rc-util-4.20.5.tgz#f7c77569e971ae6a8ad56f899cadd22275398325"
+  integrity sha1-98d1aelxrmqK1W+JnK3SInU5gyU=
+  dependencies:
+    add-dom-event-listener "^1.1.0"
+    prop-types "^15.5.10"
+    react-is "^16.12.0"
+    react-lifecycles-compat "^3.0.4"
+    shallowequal "^1.1.0"
+
 rc@^1.2.7:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
@@ -9256,6 +9296,11 @@ react-error-overlay@^6.0.4:
   version "6.0.4"
   resolved "https://registry.npm.taobao.org/react-error-overlay/download/react-error-overlay-6.0.4.tgz#0d165d6d27488e660bc08e57bdabaad741366f7a"
   integrity sha1-DRZdbSdIjmYLwI5Xvauq10E2b3o=
+
+react-is@^16.12.0:
+  version "16.13.1"
+  resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
+  integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
 react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.12.0"
@@ -10088,6 +10133,11 @@ sisteransi@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.4.tgz#386713f1ef688c7c0304dc4c0632898941cad2e3"
   integrity sha512-/ekMoM4NJ59ivGSfKapeG+FWtrmWvA1p6FBZwXrqojw90vJu8lBmrTxCMuBCydKtkaUe2zt4PlxeTKpjwMbyig==
+
+size-sensor@^0.2.0:
+  version "0.2.6"
+  resolved "https://registry.npm.taobao.org/size-sensor/download/size-sensor-0.2.6.tgz#6fe43afd570786f097171834002a97fe0b19a3da"
+  integrity sha1-b+Q6/VcHhvCXFxg0ACqX/gsZo9o=
 
 slash@^1.0.0:
   version "1.0.0"

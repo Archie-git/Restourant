@@ -15,6 +15,7 @@ router.get('/list', (req, res) => {
 //更新品类表中的数据
 router.post('/update', (req, res) => {
     let sql=model.getUpdateSQL('category', req.body);
+    console.log(sql)
     model.querySQL(sql).then(ret => {
         res.send({status: 0, msg: "更新成功"})
     }, err => {
@@ -26,11 +27,7 @@ router.post('/update', (req, res) => {
 router.get('/search', (req, res) => {
     let sql = "SELECT * FROM category WHERE name=\""+req.query.name+"\"";
     model.querySQL(sql).then(ret => {
-        if(ret.length === 1){
-            res.send({status: 0, data: ret})
-        }else{
-            res.send({status: 1, msg: "搜索失败"})
-        }
+        res.send({status: 0, data: ret})
     }, err => {
         res.send({status: 1, msg: err})
     })
@@ -38,9 +35,14 @@ router.get('/search', (req, res) => {
 
 //删除品类列表中的某条记录
 router.get('/delete', (req,res) => {
-    let sql = "DELETE FROM category WHERE id="+req.query.id;
-    model.querySQL(sql).then(() => {
-        res.send({status: 0, msg: "删除成功"})
+    let sql1 = "UPDATE product SET category=999 and onsale=0 WHERE category="+req.query.id;
+    model.querySQL(sql1).then(() => {
+        let sql2 = "DELETE FROM category WHERE id="+req.query.id;
+        model.querySQL(sql2).then(() => {
+            res.send({status: 0, msg: "删除成功"})
+        }, err => {
+            res.send({status: 1, msg: err})
+        })
     }, err => {
         res.send({status: 1, msg: err})
     })
@@ -55,17 +57,6 @@ router.post('/add', (req, res) => {
    }, err => {
        res.send({status: 1, msg: err})
    })
-});
-
-//编辑某一条品类记录
-router.post('/edit', (req, res) => {
-    let sql = model.getUpdateSQL('category', req.body);
-    console.log(sql);
-    model.querySQL(sql).then(() => {
-        res.send({ status: 0, msg: "更新成功" })
-    }, err => {
-        res.send({ status: 1, msg: err })
-    })
 });
 
 module.exports = router;

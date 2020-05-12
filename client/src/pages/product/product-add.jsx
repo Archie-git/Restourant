@@ -4,7 +4,6 @@ import TopNav from '../../components/top-nav';
 import PictureWall from '../../components/picture-wall/picture-wall';
 import { addProductList, reqCategoryList } from '../../api';
 
-
 class AddProduct extends React.Component {
     constructor(props){
         super(props);
@@ -99,6 +98,7 @@ class AddProduct extends React.Component {
                 values.onsale = values.state.indexOf('onsale')===-1 ? 0 : 1;
                 values.isnew = values.state.indexOf('isnew')===-1 ? 0 : 1;
                 values.recommend = values.state.indexOf('recommend')===-1 ? 0 : 1;
+                values.deleted = 0;
                 delete values.state;
                 const response = await addProductList(values);
                 if(response.status === 0){

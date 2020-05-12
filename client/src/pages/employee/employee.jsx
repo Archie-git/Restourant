@@ -45,8 +45,8 @@ class Employee extends React.Component{
             })
         }
     };
-    handleSearch = async (nameOrWorkid) => {
-        const response = nameOrWorkid==="" ? await reqEmployeeList() : await reqEmployeeSearch(nameOrWorkid);
+    handleSearch = async (value) => {
+        const response = value === "" ? await reqEmployeeList() : await reqEmployeeSearch(value);
         this.refreshTable(response)
     };
     handleDelete = (record) => {
@@ -69,31 +69,33 @@ class Employee extends React.Component{
         })
     };
     handleAdd = () => {
-        this.props.history.push("/employee-add")
+        this.props.history.push("/employee/add")
     };
     handleView = (record) => {
-        this.props.history.push({pathname: '/employee-view', state: {data: record}})
+        console.log(record);
+        this.props.history.push({pathname: '/employee/view', state: {data: record}})
     };
     handleEdit = (record) => {
-        this.props.history.push({pathname: '/employee-edit', state: {data: record}})
+        this.props.history.push({pathname: '/employee/edit', state: {data: record}})
     };
     render(){
         const columns = [
             {
                 title: '工号',
                 key: 'workid',
-                dataIndex: 'workid'
+                dataIndex: 'workid',
+                render: (text, record) => <Button type="link" onClick={()=>this.handleView(record)}>{text}</Button>
             },
             {
-                title: '姓名/性别',
+                title: '姓名',
                 key: 'name',
-                dataIndex: 'name',
-                render: (text, record) => (
-                    <Button type="link" onClick={()=>this.handleView(record)}>
-                        {text}
-                        {record.gender===0 ? <Icon type="woman"/> : <Icon type="man"/>}
-                    </Button>
-                ),
+                dataIndex: 'name'
+            },
+            {
+                title: '性别',
+                key: 'gender',
+                dataIndex: 'gender',
+                render: (text) => <span>{text === 0 ? '女' : '男'}</span>,
                 filters: [{text: '男', value: 1},{text: '女', value: 0}],
                 onFilter: (value, record) => value===record.gender
             },
@@ -137,7 +139,7 @@ class Employee extends React.Component{
                 title: '月薪',
                 key: 'salary',
                 dataIndex: 'salary',
-                render: (text) => <span>￥{text}</span>,
+                render: (text) => <span>￥{text.toFixed(2)}</span>,
                 sorter: (a, b) => a.salary-b.salary
             },
             {
@@ -156,10 +158,10 @@ class Employee extends React.Component{
             <div>
                 <TopNav nav={['人事管理', '员工列表']} />
                 <div style={{margin: "20px 22px 0 20px"}}>
-                    <Button type="primary" onClick={this.handleAdd}>新增员工</Button>
+                    <Button type="primary" onClick={this.handleAdd}><Icon type="plus"/>新增员工</Button>
                     <Input.Search
                         style={{width: "200px", float: "Right"}}
-                        placeholder="查询会员信息"
+                        placeholder="查询工号/姓名"
                         onSearch={(value) => this.handleSearch(value)}
                         enterButton
                     />

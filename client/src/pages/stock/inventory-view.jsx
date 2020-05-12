@@ -27,7 +27,7 @@ class ViewInventory extends React.Component{
             <div>
                 <TopNav nav={['库存管理', '库存盘点', '盘点详情']} />
                 <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>查看盘点详情</span>}
-                      extra={<Button type="primary" onClick={()=>{this.props.history.push('/inventory')}}>返回</Button>}
+                      extra={<Button type="primary" onClick={()=>{this.props.history.push('/stock/inventory')}}>返回</Button>}
                       style={{width: "100%", border: "none"}}
                 >
                     <Form {...formItemLayout} style={{marginTop: "40px", textIndent: "20px"}} onSubmit={this.handleSubmit}>
@@ -51,11 +51,11 @@ class ViewInventory extends React.Component{
                         </Form.Item>
                         <Form.Item label="状态">
                             <span className="ant-form-text" style={{marginLeft: "20px", textIndent: 0}}>
-                                {data.state===0 ? <Tag color='green'>已处理</Tag> : <Tag color='red'>未处理</Tag>}
+                                {data.state===0 ? <Tag color='green'>未处理</Tag> : <Tag color='red'>已处理</Tag>}
                             </span>
                         </Form.Item>
                         <Form.Item label="备注">
-                            <span className="ant-form-text">{data.note}</span>
+                            <span className="ant-form-text">{ data.note ? data.note : '无'}</span>
                         </Form.Item>
                         <Form.Item label="详情">
                             <span className="ant-form-text">{data.detail}</span>

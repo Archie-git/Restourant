@@ -63,7 +63,7 @@ const AddRole = Form.create({ name: 'role-add' })(
         }
         validateName = (rule, value, callback) =>{
             if(!value){
-                callback("请输入品类名称")
+                callback("请输入角色名称")
             }else if(value.length>10){
                 callback("请输入少于10个字符")
             }else{
@@ -79,14 +79,15 @@ const AddRole = Form.create({ name: 'role-add' })(
                         item.display===1 ? arr.push(item.title) : arr.push();
                     });
                     let data=values;
-                    data.createtime = new Date().getTime();
+                    data.createtime = new Date(data.createtime).getTime();
                     data.creater = memoryUtils.user.id;
                     data.permission = arr.join('-');
+                    data.deleted = 0;
                     const response = await reqRoleAdd(data);
                     if(response.status === 0){
                         message.success("新增角色成功, 即将返回角色管理列表");
                         this.timerID = setTimeout(()=>{
-                            this.props.history.push('/role')
+                            this.props.history.push('/employee/role')
                         }, 2000);
                     }
                 }
@@ -109,10 +110,15 @@ const AddRole = Form.create({ name: 'role-add' })(
             }
             this.setState({data: data})
         };
-        getTime = () => {
-            let temp = new Date();
-            let month = temp.getMonth()+1;
-            return temp.getFullYear()+"-"+month+"-"+temp.getDate()+" "+temp.getHours()+":"+temp.getMinutes()
+        getTimeForm = () => {
+            let time = new Date();
+            let month = time.getMonth()+1;
+            month = month>=10 ? month : "0"+month;
+            let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+            let hour = time.getHours()>=10 ? time.getHours() : "0"+time.getHours();
+            let minute = time.getMinutes()>=10 ? time.getMinutes() : "0"+time.getMinutes();
+            let second = time.getSeconds()>=10 ? time.getSeconds() : "0"+time.getSeconds();
+            return time.getFullYear()+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
         };
         render() {
             const formItemLayout = {
@@ -124,14 +130,14 @@ const AddRole = Form.create({ name: 'role-add' })(
                 <div>
                     <TopNav nav={['人事管理', '角色管理', '新增角色']}/>
                     <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>新增角色信息</span>}
-                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/role')}}>返回</Button>}
+                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/employee/role')}}>返回</Button>}
                           style={{width: "100%", border: "none"}}
                     >
                         <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
                             <Form.Item label="创建时间：">
                                 {form.getFieldDecorator('createtime', {
                                     rules: [{required: true}],
-                                    initialValue: this.getTime()
+                                    initialValue: this.getTimeForm()
                                 })(<Input disabled/>)}
                             </Form.Item>
                             <Form.Item label="创建人：">

@@ -46,7 +46,7 @@ class ViewOrder extends React.Component{
                             <span className="ant-form-text">{this.state.data.customer.name}</span>
                         </Form.Item>
                         <Form.Item label="桌号">
-                            <span className="ant-form-text">{this.state.data.seat}号桌</span>
+                            <span className="ant-form-text">{this.state.data.seat}号</span>
                         </Form.Item>
                         <Form.Item label="状态">
                             <span className="ant-form-text" style={{textIndent: 0, marginLeft: "20px"}}>
@@ -76,16 +76,16 @@ class ViewOrder extends React.Component{
                             <span className="ant-form-text">{this.getTime(this.state.data.createtime)}</span>
                         </Form.Item>
                         <Form.Item label="订单总金额">
-                            <span className="ant-form-text">￥{this.state.data.amount}</span>
+                            <span className="ant-form-text">￥{this.state.data.amount.toFixed(2)}</span>
                         </Form.Item>
                         <Form.Item label="实付金额">
-                            <span className="ant-form-text">￥{this.state.data.payment}</span>
+                            <span className="ant-form-text">￥{this.state.data.payment.toFixed(2)}</span>
                         </Form.Item>
                         <Form.Item label="所获积分">
                             <span className="ant-form-text">{this.state.data.integral}</span>
                         </Form.Item>
                         <Form.Item label="备注">
-                            <span className="ant-form-text">{this.state.data.note}</span>
+                            <span className="ant-form-text">{this.state.data.note ? this.state.data.note : '无'}</span>
                         </Form.Item>
                         <Form.Item label="评价等级">
                             <span className="ant-form-text">

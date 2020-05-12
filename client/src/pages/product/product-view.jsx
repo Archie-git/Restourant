@@ -39,21 +39,25 @@ class ViewProduct extends React.Component{
                             <span className="ant-form-text">{this.state.data.name}</span>
                         </Form.Item>
                         <Form.Item label="所属分类" hasFeedback>
-                            <span className="ant-form-text">{this.state.data.category_name}</span>
+                            <span className="ant-form-text">{this.state.data.category === 999 ? "未设置分类" : this.state.data.categoryName}</span>
                         </Form.Item>
                         <Form.Item label="售价">
-                            <span className="ant-form-text">{this.state.data.price}</span>
+                            <span className="ant-form-text">￥ {this.state.data.price.toFixed(2)}</span>
                         </Form.Item>
                         <Form.Item label="计量单位" hasFeedback>
                             <span className="ant-form-text">{this.state.data.unit}</span>
                         </Form.Item>
-                        <Form.Item label="商品状态">
+                        {
+                            this.state.data.category === 999 ? null : (
+                                <Form.Item label="商品状态">
                             <span className="ant-form-text" style={{marginLeft: "-20px"}}>
                                 {this.state.data.onsale ? stateYes("上架") : stateNo("上架")}
                                 {this.state.data.onsale ? stateYes("新品") : stateNo("新品")}
                                 {this.state.data.onsale ? stateYes("推荐") : stateNo("推荐")}
                             </span>
-                        </Form.Item>
+                                </Form.Item>
+                            )
+                        }
                         <Form.Item label="赠送积分" hasFeedback>
                             <span className="ant-form-text">{this.state.data.integral}</span>
                         </Form.Item>
@@ -86,13 +90,13 @@ class ViewProduct extends React.Component{
                                 {
                                     this.state.data.pictures==="" ? <span>无</span> :
                                         this.state.data.pictures.split(",").map((item, index)=> {
-                                            return (<img key={index} src={'http://localhost:3001/upload/'+item} alt="商品图片"/>)
+                                            return (<img key={index} src={'/upload/'+item} alt="商品图片"/>)
                                         })
                                 }
                             </span>
                         </Form.Item>
                         <Form.Item label="优惠信息备注">
-                            <span className="ant-form-text">{this.state.data.note}</span>
+                            <span className="ant-form-text">{this.state.data.note ? this.state.data.note : '无'}</span>
                         </Form.Item>
                     </Form>
                 </Card>

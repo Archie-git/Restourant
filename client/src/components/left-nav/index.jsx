@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.less';
 import Logo from '../../assets/images/logo.png';
-import {Link,withRouter} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {Menu,Icon} from 'antd';
 // import menuList from '../../config/menuConfig';
 import memoryUtils from "../../util/memoryUtils";
@@ -13,11 +13,11 @@ class LeftNav extends React.Component{
         super(props);
         this.state={
             menu: [],
-            openKeys: [this.props.location.pathname]
+            selectedKeys: [],
+            openKeys: []
         }
     }
     UNSAFE_componentWillMount = () => {
-    
         let menu = [
             {
                 key: "/home",
@@ -37,7 +37,7 @@ class LeftNav extends React.Component{
                         display: 0
                     },
                     {
-                        key: "/order-stage",
+                        key: "/order/stage",
                         title: "前台管理",
                         display: 0
                     }
@@ -50,7 +50,7 @@ class LeftNav extends React.Component{
                 display: 0,
                 children: [
                     {
-                        key: "/category",
+                        key: "/product/category",
                         title: "商品分类",
                         display: 0
                     },
@@ -60,7 +60,7 @@ class LeftNav extends React.Component{
                         display: 0
                     },
                     {
-                        key: "/product-add",
+                        key: "/product/add",
                         title: "添加商品",
                         display: 0
                     }
@@ -78,25 +78,25 @@ class LeftNav extends React.Component{
                         display: 0
                     },
                     {
-                        key: "/inventory",
+                        key: "/stock/inventory",
                         title: "库存盘点",
                         display: 0
                     }
                 ]
             },
             {
-                key: "/customer",
+                key: "/member",
                 title: "会员管理",
                 icon: "crown",
                 display: 0,
                 children: [
                     {
-                        key: "/customer",
+                        key: "/member",
                         title: "会员列表",
                         display: 0
                     },
                     {
-                        key: "/customer-add",
+                        key: "/member/add",
                         title: "新增会员",
                         display: 0
                     }
@@ -114,26 +114,13 @@ class LeftNav extends React.Component{
                         display: 0
                     },
                     {
-                        key: "/user",
+                        key: "/employee/user",
                         title: "用户列表",
                         display: 0
                     },
                     {
-                        key: "/role",
+                        key: "/employee/role",
                         title: "角色管理",
-                        display: 0
-                    }
-                ]
-            },
-            {
-                key: "/finance",
-                title: "财务管理",
-                icon: "area-chart",
-                display: 0,
-                children: [
-                    {
-                        key: "/finance",
-                        title: "财务报表",
                         display: 0
                     }
                 ]
@@ -189,17 +176,17 @@ class LeftNav extends React.Component{
                     menu[5].display = 1;
                     menu[5].children[2].display = 1;
                     break;
-                case '财务报表':
-                    menu[6].display = 1;
-                    menu[6].children[0].display = 1;
-                    break;
                 default:
                     break;
             }
         });
-        this.setState({menu: menu})
+        this.setState({
+            menu: menu,
+            selectedKeys: this.getSelectedKeys(this.props.location.pathname),
+            openKeys: this.getOpenKeys(this.props.location.pathname)
+        })
     };
-    rootSubmenuKeys = ['/order', '/product','/category','/stock', '/customer','/employee','/finance'];
+    rootSubmenuKeys = ['/home', '/order', '/product','/category','/stock', '/member','/employee'];
     onOpenChange = openKeys => {
         const latestOpenKey = openKeys.find(key => this.state.openKeys.indexOf(key) === -1);
         if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
@@ -213,8 +200,81 @@ class LeftNav extends React.Component{
     closeSubmenuAll = () =>{
         this.setState({openKeys:[]});
     };
+    getSelectedKeys = (pathname) => {
+        // let selectedKey = '';
+        // switch(pathname){
+        //     case '/order/stage': selectedKey = '/order/stage'; break;
+        //     case '/product/category': selectedKey = '/product/category'; break;
+        //     case '/product/add': selectedKey = '/product/add'; break;
+        //     case '/stock/inventory': selectedKey = '/stock/inventory'; break;
+        //     case '/member/add': selectedKey = '/member/add'; break;
+        //     case '/employee/user': selectedKey = '/employee/user'; break;
+        //     case '/employee/role': selectedKey = '/employee/role'; break;
+        //     default: selectedKey = '/'+pathname.split('/')[1];
+        // }
+        // return [selectedKey];
+        
+        let selectedKey = '';
+        switch (pathname) {
+            // 首页
+            case '/home':
+            case '/home/view':
+            case '/home/edit': selectedKey = '/home'; break;
+            // 订单管理
+            case '/order':
+            case '/order/view': selectedKey = '/order'; break;
+            case '/order/stage':
+            case '/order/stage/view': selectedKey = '/order/stage'; break;
+            // 商品管理
+            case '/product':
+            case '/product/view':
+            case '/product/edit': selectedKey = '/product'; break;
+            case '/product/add': selectedKey = '/product/add'; break;
+            case '/product/category':
+            case '/product/category/view':
+            case '/product/category/add':
+            case '/product/category/edit': selectedKey = '/product/category'; break;
+            //库存管理
+            case '/stock':
+            case '/stock/view':
+            case '/stock/add':
+            case '/stock/edit':
+            case '/stock/log': selectedKey = '/stock'; break;
+            case '/stock/inventory':
+            case '/stock/inventory/view':
+            case '/stock/inventory/add': selectedKey = '/stock/inventory'; break;
+            //会员管理
+            case '/member':
+            case '/member/view':
+            case '/member/edit': selectedKey = '/member'; break;
+            case '/member/add': selectedKey = '/member/add'; break;
+            //人事管理
+            case '/employee':
+            case '/employee/view':
+            case '/employee/add':
+            case '/employee/edit': selectedKey = '/employee'; break;
+            case '/employee/user':
+            case '/employee/user/add':
+            case '/employee/user/edit': selectedKey = '/employee/user'; break;
+            case '/employee/role':
+            case '/employee/role/add':
+            case '/employee/role/edit': selectedKey = '/employee/role'; break;
+            default: break;
+        }
+        return [selectedKey]
+    };
+    getOpenKeys = (pathname) => {
+        let openKey = '';
+        switch(pathname){
+            case '/product/category': openKey = '/product'; break;
+            case '/stock/inventory': openKey = '/stock'; break;
+            case '/employee/role': openKey = '/employee'; break;
+            case '/employee/user': openKey = '/employee'; break;
+            default: openKey = '/'+pathname.split('/')[1];
+        }
+        return [openKey];
+    };
     render(){
-        const path=this.props.location.pathname;
         return (
             <div className="left-nav">
                 <Link to="/">
@@ -224,7 +284,7 @@ class LeftNav extends React.Component{
                     </div>
                 </Link>
                 <Menu
-                    selectedKeys={[path]}
+                    selectedKeys={this.getSelectedKeys(this.props.location.pathname)}
                     mode="inline"
                     openKeys={this.state.openKeys}
                     onOpenChange={this.onOpenChange}
@@ -235,7 +295,10 @@ class LeftNav extends React.Component{
                         this.state.menu.map((item) => {
                             if(!item.children){
                                 return (
-                                    <Menu.Item key={item.key} style={{display: item.display===0 ? "none" : "block"}}>
+                                    <Menu.Item
+                                        key={item.key}
+                                        style={{display: item.display===0 ? "none" : "block"}}
+                                    >
                                         <Link to={item.key}><Icon type={item.icon}/>{item.title}</Link>
                                     </Menu.Item>
                                 )
@@ -249,7 +312,10 @@ class LeftNav extends React.Component{
                                         {
                                             item.children.map(item => {
                                                 return (
-                                                    <Menu.Item key={item.key} style={{display: item.display===0 ? "none" : "block"}}>
+                                                    <Menu.Item
+                                                        key={item.key}
+                                                        style={{display: item.display===0 ? "none" : "block"}}
+                                                    >
                                                         <Link to={item.key}>{item.title}</Link>
                                                     </Menu.Item>
                                                 )
