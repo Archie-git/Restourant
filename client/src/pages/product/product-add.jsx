@@ -4,7 +4,6 @@ import TopNav from '../../components/top-nav';
 import PictureWall from '../../components/picture-wall/picture-wall';
 import { addProductList, reqCategoryList } from '../../api';
 
-
 class AddProduct extends React.Component {
     constructor(props){
         super(props);
@@ -99,6 +98,7 @@ class AddProduct extends React.Component {
                 values.onsale = values.state.indexOf('onsale')===-1 ? 0 : 1;
                 values.isnew = values.state.indexOf('isnew')===-1 ? 0 : 1;
                 values.recommend = values.state.indexOf('recommend')===-1 ? 0 : 1;
+                values.deleted = 0;
                 delete values.state;
                 const response = await addProductList(values);
                 if(response.status === 0){
@@ -181,15 +181,20 @@ class AddProduct extends React.Component {
                                 rules: [{required: true, message: "请输入积分值", validate: this.validateIntegral}]
                             })(<Input placeholder="请输入积分值"/>)}
                         </Form.Item>
-                        <Form.Item label="详细页标题">
+                        <Form.Item label="简介">
                             { form.getFieldDecorator('introduce', {
                                 rule: [{validate: this.validateIntroduceTitle}]
-                            })(<Input.TextArea rows={2} placeholder="请输入详细页标题"/>)}
+                            })(<Input.TextArea rows={2} placeholder="请输入商品简介"/>)}
                         </Form.Item>
-                        <Form.Item label="详细页描述">
+                        <Form.Item label="优惠提示">
+                            { form.getFieldDecorator('tip', {
+                                rule: [{validate: this.validateIntroduceTitle}]
+                            })(<Input.TextArea rows={2} placeholder="请输入优惠提示"/>)}
+                        </Form.Item>
+                        <Form.Item label="商品描述">
                             { form.getFieldDecorator('description', {
                                 rule: [{validate: this.validateIntroduceContent}]
-                            })(<Input.TextArea rows={4} placeholder="请输入详细页描述"/>)}
+                            })(<Input.TextArea rows={4} placeholder="请输入商品描述"/>)}
                         </Form.Item>
                         <Form.Item label="黄金会员折扣：">
                             {form.getFieldDecorator('discount_gold', { initialValue: 10 })(

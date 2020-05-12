@@ -45,7 +45,7 @@ const EditUser = Form.create({ name: 'user-edit' })(
                     if(response.status === 0){
                         message.success("更新成功,即将返回用户列表");
                         this.timerID = setTimeout(()=>{
-                            this.props.history.push('/user')
+                            this.props.history.push('/employee/user')
                         }, 1500);
                     }
                 }

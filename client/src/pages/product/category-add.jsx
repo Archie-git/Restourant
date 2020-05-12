@@ -21,11 +21,12 @@ const AddCategory = Form.create({ name: 'category-add' })(
                     let data=values;
                     data.level = Number(data.level);
                     data.isnav = data.isnav ? 1 : 0;
+                    data.son = 0;
                     const response = await addCategoryList(data);
                     if(response.status === 0){
                         message.success("新增成功,即将返回品类列表", 2);
                         this.timerID = setTimeout(()=>{
-                            this.props.history.push('/category')
+                            this.props.history.push('/product/category')
                         }, 2000);
                     }
                 }
@@ -41,7 +42,7 @@ const AddCategory = Form.create({ name: 'category-add' })(
                 <div>
                     <TopNav nav={['商品管理', '商品分类', '新增品类']}/>
                     <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>新增商品品类</span>}
-                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/category')}}>返回</Button>}
+                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/product/category')}}>返回</Button>}
                           style={{width: "100%", border: "none"}}
                     >
                         <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
@@ -63,6 +64,8 @@ const AddCategory = Form.create({ name: 'category-add' })(
                                         <Select.Option key={5}>第六级</Select.Option>
                                         <Select.Option key={6}>第七级</Select.Option>
                                         <Select.Option key={7}>第八级</Select.Option>
+                                        <Select.Option key={9}>第九级</Select.Option>
+                                        <Select.Option key={10}>第十级</Select.Option>
                                     </Select>
                                 )}
                             </Form.Item>

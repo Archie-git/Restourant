@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from "../../components/top-nav";
-import {Button, Card, DatePicker, Form, Icon, Input, InputNumber, Radio, Steps} from "antd";
+import {Button, Card, DatePicker, Form, Input, InputNumber, message, Radio, Steps} from "antd";
 import { updateEmployeeList } from "../../api";
 import Select from "antd/es/select";
 import PicturesWall from "../../components/picture-wall/picture-wall";
@@ -18,7 +18,7 @@ const EditEmployee = Form.create({name: 'edit-employee-form'})(
             }
         }
         handleNext = () => {
-            let field = ['name','id','gender','age','nation','birthday','origin','marriage','institution','degree','graduatetime'];
+            let field = ['name','identity','gender','age','nation','birthday','origin','marriage','institution','degree','graduatetime'];
             this.props.form.validateFields(field,(err,values) => {
                 if(!err){
                     let data = this.state.data;
@@ -52,8 +52,8 @@ const EditEmployee = Form.create({name: 'edit-employee-form'})(
                         }
                     }
                     data.birthday = new Date(data.birthday).getTime();
-                    data.graduatetime = new Date(data.birthday).getTime();
-                    data.entrytime = new Date(data.birthday).getTime();
+                    data.graduatetime = new Date(data.graduatetime).getTime();
+                    data.entrytime = new Date(data.entrytime).getTime();
                     let updateData = {};
                     updateData.workid = data.workid;
                     for(let key in data){
@@ -66,7 +66,8 @@ const EditEmployee = Form.create({name: 'edit-employee-form'})(
                         this.setState({
                             data: data,
                             current: current+1
-                        })
+                        });
+                        message.success("编辑员工信息成功！");
                     }
                 }
             })
@@ -97,14 +98,10 @@ const EditEmployee = Form.create({name: 'edit-employee-form'})(
                             <span className="ant-form-text">{this.state.data.name}</span>
                         </Form.Item>
                         <Form.Item label="身份证号">
-                            <span className="ant-form-text">{this.state.data.id}</span>
+                            <span className="ant-form-text">{this.state.data.identity}</span>
                         </Form.Item>
                         <Form.Item label="性别">
-                        <span className="ant-form-text" style={{textIndent: "10px"}}>
-                            {
-                                this.state.data.gender===0 ? <span><Icon type="woman" /> 女</span> : <span><Icon type="man" /> 男</span>
-                            }
-                        </span>
+                            <span className="ant-form-text">{this.state.data.gender===0 ? '女' : '男'}</span>
                         </Form.Item>
                         <Form.Item label="年龄">
                             <span className="ant-form-text">{this.state.data.age}岁</span>
@@ -161,13 +158,13 @@ const EditEmployee = Form.create({name: 'edit-employee-form'})(
                             <span className="ant-form-text">{this.state.data.salary} 元</span>
                         </Form.Item>
                         <Form.Item label="备注">
-                            <span className="ant-form-text">{this.state.data.note}</span>
+                            <span className="ant-form-text">{ this.state.data.note ? this.state.data.note : '无'}</span>
                         </Form.Item>
                         <Form.Item label="照片">
                             <span style={{width: "320px", marginLeft: "20px"}}>
                                 {
                                     !this.state.data.profile ? <span>无</span> :
-                                        <img src={this.state.data.profile}
+                                        <img src={'/upload/'+this.state.data.profile}
                                              alt="员工照片"
                                              style={{
                                                  width: "100px",
@@ -198,9 +195,9 @@ const EditEmployee = Form.create({name: 'edit-employee-form'})(
                             </Form.Item>
                             <Form.Item label="身份证号">
                                 {
-                                    this.props.form.getFieldDecorator('id', {
+                                    this.props.form.getFieldDecorator('identity', {
                                         rules: [{required: true}],
-                                        initialValue: data.id
+                                        initialValue: data.identity
                                     })(<Input placeholder="请输入身份证号码"/>)
                                 }
                             </Form.Item>

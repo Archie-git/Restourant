@@ -40,11 +40,12 @@ const EditRole = Form.create({ name: 'role-add' })(
                     let data=values;
                     data.permission = arr.join('-');
                     data.creater = this.props.location.state.data.creater;
+                    data.createtime = new Date(data.createtime).getTime();
                     const response = await reqRoleUpdate(data);
                     if(response.status === 0){
-                        message.success("新增角色成功, 即将返回角色管理列表");
+                        message.success("编辑角色成功, 即将返回角色管理页面");
                         this.timerID = setTimeout(()=>{
-                            this.props.history.push('/role')
+                            this.props.history.push('/employee/role')
                         }, 2000);
                     }
                 }
@@ -67,10 +68,15 @@ const EditRole = Form.create({ name: 'role-add' })(
             }
             this.setState({data: data})
         };
-        getTime = () => {
-            let temp = new Date();
-            let month = temp.getMonth()+1;
-            return temp.getFullYear()+"-"+month+"-"+temp.getDate()+" "+temp.getHours()+":"+temp.getMinutes()
+        getTimeForm = (time) => {
+            time = new Date(time);
+            let month = time.getMonth()+1;
+            month = month>=10 ? month : "0"+month;
+            let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+            let hour = time.getHours()>=10 ? time.getHours() : "0"+time.getHours();
+            let minute = time.getMinutes()>=10 ? time.getMinutes() : "0"+time.getMinutes();
+            let second = time.getSeconds()>=10 ? time.getSeconds() : "0"+time.getSeconds();
+            return time.getFullYear()+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
         };
         getFatherChecked = (arr) => {
             let checked = true;
@@ -89,8 +95,8 @@ const EditRole = Form.create({ name: 'role-add' })(
             return (
                 <div>
                     <TopNav nav={['人事管理', '角色管理', '编辑角色']}/>
-                    <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>新增角色信息</span>}
-                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/role')}}>返回</Button>}
+                    <Card title={<span style={{ color: "#1DA57A", fontWeight: "bolder", fontSize: "20px"}}>编辑角色信息</span>}
+                          extra={<Button type="primary" onClick={()=>{this.props.history.push('/employee/role')}}>返回</Button>}
                           style={{width: "100%", border: "none"}}
                     >
                         <Form {...formItemLayout} style={{marginTop: "40px"}} onSubmit={this.handleSubmit}>
@@ -102,13 +108,13 @@ const EditRole = Form.create({ name: 'role-add' })(
                             <Form.Item label="创建时间：">
                                 {form.getFieldDecorator('createtime', {
                                     rules: [{required: true}],
-                                    initialValue: data.createtime
+                                    initialValue: this.getTimeForm(data.createtime)
                                 })(<Input disabled/>)}
                             </Form.Item>
                             <Form.Item label="创建人：">
                                 {form.getFieldDecorator('creater', {
                                     rules: [{required: true}],
-                                    initialValue: data.creatername
+                                    initialValue: data.createrName
                                 })(<Input disabled/>)}
                             </Form.Item>
                             <Form.Item label="角色名：">
@@ -209,18 +215,6 @@ const EditRole = Form.create({ name: 'role-add' })(
                                         checked={this.state.data[11].display===1}
                                         style={{marginBottom: "10px"}}
                                     >角色管理</Checkbox><br/>
-                                </div>
-                                {/*财务管理*/}
-                                <Checkbox
-                                    onChange={(e)=>this.handleChange(e, [12])}
-                                    defaultChecked={this.getFatherChecked([12])}
-                                >财务管理</Checkbox>
-                                <div style={{marginLeft: "30px"}}>
-                                    <Checkbox
-                                        onChange={(e)=>this.handleChange(e, 12)}
-                                        checked={this.state.data[12].display===1}
-                                        style={{marginBottom: "10px"}}
-                                    >财务报表</Checkbox><br/>
                                 </div>
                             </div>
                             <Form.Item label="备注：">

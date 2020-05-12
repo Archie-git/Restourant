@@ -12,6 +12,7 @@ class ViewProduct extends React.Component{
     }
     UNSAFE_componentWillMount = async () => {
         let data = this.props.location.state.data;
+        console.log(data);
         this.setState({
             data: data
         })
@@ -38,28 +39,35 @@ class ViewProduct extends React.Component{
                             <span className="ant-form-text">{this.state.data.name}</span>
                         </Form.Item>
                         <Form.Item label="所属分类" hasFeedback>
-                            <span className="ant-form-text">{this.state.data.category_name}</span>
+                            <span className="ant-form-text">{this.state.data.category === 999 ? "未设置分类" : this.state.data.categoryName}</span>
                         </Form.Item>
                         <Form.Item label="售价">
-                            <span className="ant-form-text">{this.state.data.price}</span>
+                            <span className="ant-form-text">￥ {this.state.data.price.toFixed(2)}</span>
                         </Form.Item>
                         <Form.Item label="计量单位" hasFeedback>
                             <span className="ant-form-text">{this.state.data.unit}</span>
                         </Form.Item>
-                        <Form.Item label="商品状态">
+                        {
+                            this.state.data.category === 999 ? null : (
+                                <Form.Item label="商品状态">
                             <span className="ant-form-text" style={{marginLeft: "-20px"}}>
                                 {this.state.data.onsale ? stateYes("上架") : stateNo("上架")}
                                 {this.state.data.onsale ? stateYes("新品") : stateNo("新品")}
                                 {this.state.data.onsale ? stateYes("推荐") : stateNo("推荐")}
                             </span>
-                        </Form.Item>
+                                </Form.Item>
+                            )
+                        }
                         <Form.Item label="赠送积分" hasFeedback>
                             <span className="ant-form-text">{this.state.data.integral}</span>
                         </Form.Item>
-                        <Form.Item label="详细页标题">
+                        <Form.Item label="简介">
                             <span className="ant-form-text">{this.state.data.introduce}</span>
                         </Form.Item>
-                        <Form.Item label="详细页描述">
+                        <Form.Item label="优惠提示">
+                            <span className="ant-form-text">{this.state.data.tip}</span>
+                        </Form.Item>
+                        <Form.Item label="商品描述">
                             <span className="ant-form-text">{this.state.data.description}</span>
                         </Form.Item>
                         <Form.Item label="黄金会员折扣">
@@ -82,13 +90,13 @@ class ViewProduct extends React.Component{
                                 {
                                     this.state.data.pictures==="" ? <span>无</span> :
                                         this.state.data.pictures.split(",").map((item, index)=> {
-                                            return (<img key={index} src={item} alt="商品图片"/>)
+                                            return (<img key={index} src={'/upload/'+item} alt="商品图片"/>)
                                         })
                                 }
                             </span>
                         </Form.Item>
                         <Form.Item label="优惠信息备注">
-                            <span className="ant-form-text">{this.state.data.note}</span>
+                            <span className="ant-form-text">{this.state.data.note ? this.state.data.note : '无'}</span>
                         </Form.Item>
                     </Form>
                 </Card>

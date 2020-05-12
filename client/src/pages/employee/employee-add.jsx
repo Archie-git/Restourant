@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, Form, Input, Radio, InputNumber, Steps, DatePicker, Icon} from 'antd';
+import {Button, Card, Form, Input, Radio, InputNumber, Steps, DatePicker, message} from 'antd';
 import TopNav from "../../components/top-nav";
 import Select from "antd/es/select";
 import PicturesWall from "../../components/picture-wall/picture-wall";
@@ -17,7 +17,7 @@ const AddEmployee = Form.create({name: 'add-employee-form'})(
             }
         }
         handleNext = () => {
-            let field = ['name','id','gender','age','nation','birthday','origin','marriage','institution','degree','graduatetime'];
+            let field = ['name','identity','gender','age','nation','birthday','origin','marriage','institution','degree','graduatetime'];
             this.props.form.validateFields(field,(err,values) => {
                 if(!err){
                     let data = this.state.data;
@@ -51,14 +51,15 @@ const AddEmployee = Form.create({name: 'add-employee-form'})(
                         }
                     }
                     data.birthday = new Date(data.birthday).getTime();
-                    data.graduatetime = new Date(data.birthday).getTime();
-                    data.entrytime = new Date(data.birthday).getTime();
+                    data.graduatetime = new Date(data.graduatetime).getTime();
+                    data.entrytime = new Date(data.entrytime).getTime();
                     const response = await addEmployeeList(data);
                     if(response.status === 0){
                         this.setState({
                             data: data,
                             current: current+1
-                        })
+                        });
+                        message.success("新增员工信息成功！");
                     }
                 }
             })
@@ -69,11 +70,14 @@ const AddEmployee = Form.create({name: 'add-employee-form'})(
         getDateTime = (birthday) => {
             let time = new Date(birthday);
             let month = time.getMonth()+1;
-            return time.getFullYear()+'-'+month+'-'+time.getDate();
+            let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+            month = month>=10 ? month : "0"+month;
+            return time.getFullYear()+'-'+month+'-'+date;
         };
         getMonthTime = (date) => {
             let time = new Date(date);
             let month = time.getMonth()+1;
+            month = month>=10 ? month : "0"+month;
             return time.getFullYear()+'-'+month;
         };
         render(){
@@ -88,14 +92,10 @@ const AddEmployee = Form.create({name: 'add-employee-form'})(
                             <span className="ant-form-text">{this.state.data.name}</span>
                         </Form.Item>
                         <Form.Item label="身份证号">
-                            <span className="ant-form-text">{this.state.data.id}</span>
+                            <span className="ant-form-text">{this.state.data.identity}</span>
                         </Form.Item>
                         <Form.Item label="性别">
-                        <span className="ant-form-text" style={{textIndent: "10px"}}>
-                            {
-                                this.state.data.gender===0 ? <span><Icon type="woman" /> 女</span> : <span><Icon type="man" /> 男</span>
-                            }
-                        </span>
+                            <span className="ant-form-text">{this.state.data.gender===0 ? '女' : '男'}</span>
                         </Form.Item>
                         <Form.Item label="年龄">
                             <span className="ant-form-text">{this.state.data.age}岁</span>
@@ -158,7 +158,7 @@ const AddEmployee = Form.create({name: 'add-employee-form'})(
                             <span style={{width: "320px", marginLeft: "20px"}}>
                                 {
                                     !this.state.data.profile ? <span>无</span> :
-                                        <img src={this.state.data.profile}
+                                        <img src={'/upload/' + this.state.data.profile}
                                              alt="员工照片"
                                              style={{
                                                  width: "100px",
@@ -188,7 +188,7 @@ const AddEmployee = Form.create({name: 'add-employee-form'})(
                             </Form.Item>
                             <Form.Item label="身份证号">
                                 {
-                                    this.props.form.getFieldDecorator('id', {
+                                    this.props.form.getFieldDecorator('identity', {
                                         rules: [{required: true}]
                                     })(<Input placeholder="请输入身份证号码"/>)
                                 }

@@ -41,7 +41,7 @@ const AddStock = Form.create({name: 'add-stock-form'})(
                         delete log.name;
                         let response2 = await addStocklogList(log);
                         if(response2.status === 0){
-                            message.success("更新成功,即将返回商品列表", 2);
+                            message.success("新增库存信息成功，即将返回库存列表页面", 2);
                             this.timerID = setTimeout(()=>{
                                 this.props.history.push('/stock')
                             }, 2000);
@@ -142,7 +142,7 @@ const AddStock = Form.create({name: 'add-stock-form'})(
                                 <Input.Group compact>
                                     <Form.Item>
                                         {
-                                            this.props.form.getFieldDecorator('excess', {
+                                            this.props.form.getFieldDecorator('warning', {
                                                 rules: [{required: true}]
                                             })(<InputNumber placeholder="下限"/> )
                                         }
@@ -150,7 +150,7 @@ const AddStock = Form.create({name: 'add-stock-form'})(
                                     <span style={{margin: "8px 20px 0 20px"}}>~</span>
                                     <Form.Item>
                                         {
-                                            this.props.form.getFieldDecorator('warning', {
+                                            this.props.form.getFieldDecorator('excess', {
                                                 rules: [{required: true}]
                                             })(<InputNumber placeholder="上限"/> )
                                         }

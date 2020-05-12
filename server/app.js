@@ -4,6 +4,7 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let bodyParser=require('body-parser');
 let logger = require('morgan');
+const fs = require('fs');
 
 let indexRouter = require('./routes/index');
 let userRouter = require('./routes/user');
@@ -17,6 +18,7 @@ let inventoryRouter = require('./routes/inventory');
 let orderRouter = require('./routes/order');
 let roleRouter = require('./routes/role');
 let ruleRouter = require('./routes/rule');
+let shopRouter = require('./routes/shop');
 
 let app = express();
 
@@ -46,6 +48,22 @@ app.use('/inventory', inventoryRouter);
 app.use('/order', orderRouter);
 app.use('/role', roleRouter);
 app.use('/rule', ruleRouter);
+app.use('/shop', shopRouter);
+
+// 解决Browserrouter刷新404
+app.use((req, res) => {
+    fs.readFile(__dirname + '/public/index.html', (err, data)=>{
+        if(err) {
+            console.log(err);
+            res.send('后台错误')
+        }else{
+            res.writeHead(200, {
+                'Content-Type': 'text/html; charset=utf-8',
+            });
+            res.end(data)
+        }
+    })
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -62,5 +80,10 @@ app.use(function(err, req, res,) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.get('*', function (request, response){
+    response.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+});
+
 
 module.exports = app;

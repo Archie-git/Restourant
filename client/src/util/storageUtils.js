@@ -9,7 +9,7 @@ export default{
         // return JSON.parse(localStorage.getItem(USER_KEY) || '{}')
         return store.get(USER_KEY) || {}
     },
-    removeUser(USER_KEY){
+    removeUser(){
         // localStorage.removeItem(USER_KEY)R_KEY
         store.remove(USER_KEY)
     }

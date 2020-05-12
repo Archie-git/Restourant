@@ -29,25 +29,40 @@ const EditStock = Form.create({name: 'edit-stock-form'})(
             e.preventDefault();
             this.props.form.validateFields( async (err, values) => {
                 if(!err){
-                    let data = {};
-                    data.id = this.props.location.state.data.id;
+                    let data1 = {};
+                    let data2 = JSON.parse(JSON.stringify(this.props.location.state.data));
+                    data1.id = data2.id;
                     for(let key in values){
                         if(values.hasOwnProperty(key)){
-                            data[key] = values[key]
+                            data1[key] = values[key]
                         }
                     }
-                    let log = {...data};
-                    log.stockid = log.id;
-                    log.stockname = log.name;
-                    log.time = new Date().getTime();
-                    log.operation = "编辑";
-                    log.manager = memoryUtils.user.username;
-                    delete log.id;
-                    delete log.name;
-                    let response1 = await updateStockList(data);
-                    let response2 = await addStocklogList(log);
-                    if(response1.status===0 && response2.status===0){
-                        message.success("更新成功,即将返回商品列表", 2);
+                    data2.pictures = data2.pictures.join(',');
+                    let tag = 0;
+                    for(let key in data1){
+                        if(data1[key] !== data2[key]) tag = 1
+                    }
+                    console.log(tag);
+                    let response1 = await updateStockList(data1);
+                    //当库存信息未发生改变时，不更新日志
+                    if(response1.status === 0 && tag === 1){
+                        let log = {...data1};
+                        log.stockid = log.id;
+                        log.stockname = log.name;
+                        log.time = new Date().getTime();
+                        log.operation = "修改";
+                        log.manager = memoryUtils.user.username;
+                        delete log.id;
+                        delete log.name;
+                        let response2 = await addStocklogList(log);
+                        if(response2.status === 0){
+                            message.success("更新库存信息成功,即将返回库存列表页面");
+                            this.timerID = setTimeout(()=>{
+                                this.props.history.push('/stock')
+                            }, 2000);
+                        }
+                    }else{
+                        message.success("更新库存信息成功,即将返回库存列表页面");
                         this.timerID = setTimeout(()=>{
                             this.props.history.push('/stock')
                         }, 2000);
@@ -154,7 +169,7 @@ const EditStock = Form.create({name: 'edit-stock-form'})(
                                 <Input.Group compact>
                                     <Form.Item>
                                         {
-                                            this.props.form.getFieldDecorator('excess', {
+                                            this.props.form.getFieldDecorator('warning', {
                                                 initialValue: initialData.warning,
                                                 rules: [{required: true}]
                                             })(<InputNumber placeholder="下限"/> )
@@ -163,7 +178,7 @@ const EditStock = Form.create({name: 'edit-stock-form'})(
                                     <span style={{margin: "8px 20px 0 20px"}}>~</span>
                                     <Form.Item>
                                         {
-                                            this.props.form.getFieldDecorator('warning', {
+                                            this.props.form.getFieldDecorator('excess', {
                                                 initialValue: initialData.excess,
                                                 rules: [{required: true}]
                                             })(<InputNumber placeholder="上限"/> )

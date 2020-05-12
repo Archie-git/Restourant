@@ -15,9 +15,9 @@ class PicturesWall extends React.Component {
             urlArr.forEach((item, index) => {
                 fileList.push({
                     uid: -1-index,
-                    name: item.split('/upload')[1],
+                    name: item,
                     status: 'done',
-                    url: item
+                    url: '/upload/'+item
                 })
             });
             this.setState({fileList: fileList})
@@ -48,19 +48,10 @@ class PicturesWall extends React.Component {
             file.name = response.data.name;
             file.url = response.data.url;
         } else if(file.status === 'removed'){
-            let response = await reqImgDelete(file.name);
-            if(response.status === 0){
-                let fileIndex = 0;
-                fileList.forEach((item, index) => {
-                    if(item.name === file.name){
-                        fileIndex = index
-                    }
-                });
-                fileList.splice(fileIndex, 1);
-            }
+            await reqImgDelete(file.name);
         }
         let urls = fileList.map(item => {
-           return item.url;
+            return typeof(item.url) === 'string' ? item.url.split('upload/')[1] : item.url
         });
         this.props.onChange(urls.join(','));
         this.setState({ fileList })

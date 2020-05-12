@@ -30,10 +30,10 @@ class TopNav extends React.Component{
     //         case "新建盘点单": nav="/inventory-add";break;
     //         case "盘点详情": nav="/inventory-view";break;
     //         //会员管理
-    //         case "会员列表": nav="/customer";break;
-    //         case "编辑会员": nav="/customer-edit";break;
-    //         case "新增会员": nav="/customer-add";break;
-    //         case "会员详情": nav="/customer-view";break;
+    //         case "会员列表": nav="/member";break;
+    //         case "编辑会员": nav="/member-edit";break;
+    //         case "新增会员": nav="/member-add";break;
+    //         case "会员详情": nav="/member-view";break;
     //         //人事管理
     //         case "员工列表": nav="/employee";break;
     //         case "新增员工": nav="/employee-add";break;
@@ -72,13 +72,12 @@ class TopNav extends React.Component{
                         //         <span style={{margin: "0 10px", color: "#98a9c4"}}>/</span>
                         //     </span>
                         // )
-                        return index===0 ? (
+                        return index===0 && index===this.props.nav.length ? (
                             <span key={index}>
                                 <span style={{fontWeight: "bold", cursor: "default"}}>{item}</span>
                                 <span style={{
                                     margin: "0 10px",
                                     color: "#98a9c4",
-                                    display: item==="首页" ? "none" : "inline-block"
                                 }}>/</span>
                             </span>
                         ) : index+1===this.props.nav.length ? (

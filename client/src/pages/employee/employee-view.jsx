@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Card, Button, Icon } from "antd";
+import { Form, Card, Button } from "antd";
 import TopNav from "../../components/top-nav";
 
 class ViewEmployee extends React.Component{
@@ -15,11 +15,14 @@ class ViewEmployee extends React.Component{
     getDateTime = (birthday) => {
         let time = new Date(birthday);
         let month = time.getMonth()+1;
-        return time.getFullYear()+'-'+month+'-'+time.getDate();
+        let date = time.getDate()>=10 ? time.getDate() : "0"+time.getDate();
+        month = month>=10 ? month : "0"+month;
+        return time.getFullYear()+'-'+month+'-'+date;
     };
     getMonthTime = (date) => {
         let time = new Date(date);
         let month = time.getMonth()+1;
+        month = month>=10 ? month : "0"+month;
         return time.getFullYear()+'-'+month;
     };
     render(){
@@ -35,14 +38,10 @@ class ViewEmployee extends React.Component{
                         <span className="ant-form-text">{data.name}</span>
                     </Form.Item>
                     <Form.Item label="身份证号">
-                        <span className="ant-form-text">{data.id}</span>
+                        <span className="ant-form-text">{data.identity}</span>
                     </Form.Item>
                     <Form.Item label="性别">
-                        <span className="ant-form-text" style={{textIndent: "10px"}}>
-                            {
-                                data.gender===0 ? <span><Icon type="woman" /> 女</span> : <span><Icon type="man" /> 男</span>
-                            }
-                        </span>
+                        <span className="ant-form-text">{data.gender===0 ? '女' : '男'}</span>
                     </Form.Item>
                     <Form.Item label="年龄">
                         <span className="ant-form-text">{data.age}岁</span>
@@ -94,10 +93,10 @@ class ViewEmployee extends React.Component{
                         <span className="ant-form-text">{data.address}</span>
                     </Form.Item>
                     <Form.Item label="月薪">
-                        <span className="ant-form-text">{data.salary} 元</span>
+                        <span className="ant-form-text">{data.salary.toFixed(2)} 元</span>
                     </Form.Item>
                     <Form.Item label="备注">
-                        <span className="ant-form-text">{data.note}</span>
+                        <span className="ant-form-text">{ data.note ? data.note : '无'}</span>
                     </Form.Item>
                     <Form.Item label="照片">
                             <span style={{width: "320px", marginLeft: "20px"}}>
@@ -105,7 +104,7 @@ class ViewEmployee extends React.Component{
                                     data.profile==="" ? <span>无</span> :
                                         data.profile.split(",").map((item, index)=> {
                                             return (<img key={index}
-                                                         src={item}
+                                                         src={'/upload/'+item}
                                                          alt="员工照片"
                                                          style={{width: "100px",
                                                              height: "100px",

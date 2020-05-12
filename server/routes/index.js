@@ -24,6 +24,12 @@ router.post('/login',(req,res) => {
         res.send({status: 1, msg: err});
     })
 });
+//小程序获取openid
+router.get('/openid', (req, res) => {
+    console.log(req.query);
+    let url = 'https://api.weixin.qq.com/sns/jscode2session?appid=wx3fd4b9536147115f&secret=e49510d55089741203d3685093d4f628&js_code='+res.query.code;
+    console.log(url);
+})
 
 
 

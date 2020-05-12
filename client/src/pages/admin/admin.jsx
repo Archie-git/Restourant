@@ -5,6 +5,8 @@ import {Layout} from 'antd';
 import Header from '../../components/header';
 import LeftNav from '../../components/left-nav';
 import Home from '../../pages/home/home';
+import EditHome from '../../pages/home/home-edit';
+import ViewHome from '../../pages/home/home-view';
 import Category from '../product/category';
 import AddCategory from '../product/category-add';
 import EditCategory from '../product/category-edit';
@@ -15,11 +17,11 @@ import EditProduct from '../product/product-edit';
 import ViewProduct from '../product/product-view';
 import Order from '../../pages/order/order';
 import ViewOrder from '../../pages/order/order-view';
-import OrderStage from '../order/frontdesk';
-import Customer from '../../pages/customer/customer';
-import AddCustomer from '../../pages/customer/customer-add';
-import EditCustomer from '../../pages/customer/customer-edit';
-import ViewCustomer from '../../pages/customer/customer-view';
+import Stage from '../order/stage';
+import Member from '../member/member';
+import AddMember from '../member/member-add';
+import EditMember from '../member/member-edit';
+import ViewMember from '../member/member-view';
 import Employee from '../../pages/employee/employee';
 import AddEmployee from '../../pages/employee/employee-add';
 import ViewEmployee from '../../pages/employee/employee-view';
@@ -38,7 +40,6 @@ import EditStock from '../../pages/stock/stock-edit';
 import Inventory from '../stock/inventory';
 import ViewInventory from "../stock/inventory-view";
 import AddInventory from '../stock/inventory-add';
-import Finance from '../../pages/finance/finance';
 
 
 const {Sider,Content,Footer}=Layout;
@@ -58,42 +59,56 @@ class Admin extends React.Component{
                         <Header />
                         <Content style={{margin: "0 20px", paddingBottom: "100px", backgroundColor: "white", minHeight: "500px"}}>
                             <Switch>
-                                <Route path='/home' component={Home} />
-                                <Route path='/category' component={Category} />
-                                <Route path='/category-add' component={AddCategory} />
-                                <Route path='/category-edit' component={EditCategory} />
-                                <Route path='/category-view' component={ViewCategory} />
-                                <Route path='/product' component={Product} />
-                                <Route path='/product-add' component={AddProduct} />
-                                <Route path='/product-edit' component={EditProduct} />
-                                <Route path='/product-view' component={ViewProduct} />
-                                <Route path='/order' component={Order} />
-                                <Route path='/stock' component={Stock} />
-                                <Route path='/stock-add' component={AddStock} />
-                                <Route path='/stock-view' component={ViewStock} />
-                                <Route path='/stock-log' component={StockLog} />
-                                <Route path='/stock-edit' component={EditStock} />
-                                <Route path='/inventory' component={Inventory} />
-                                <Route path='/inventory-view' component={ViewInventory} />
-                                <Route path='/inventory-add' component={AddInventory} />
-                                <Route path='/customer' component={Customer} />
-                                <Route path='/customer-add' component={AddCustomer} />
-                                <Route path='/customer-edit' component={EditCustomer} />
-                                <Route path='/customer-view' component={ViewCustomer} />
-                                <Route path='/employee' component={Employee} />
-                                <Route path='/employee-add' component={AddEmployee} />
-                                <Route path='/employee-view' component={ViewEmployee} />
-                                <Route path='/employee-edit' component={EditEmployee} />
-                                <Route path='/user' component={User} />
-                                <Route path='/user-add' component={AddUser} />
-                                <Route path='/user-edit' component={EditUser} />
-                                <Route path='/role' component={Role} />
-                                <Route path='/role-add' component={AddRole} />
-                                <Route path='/role-edit' component={EditRole} />
-                                <Route path='/order' component={Order} />
-                                <Route path='/order-view' component={ViewOrder} />
-                                <Route path='/order-stage' component={OrderStage} />
-                                <Route path='/finance' component={Finance} />
+                                {/*首页*/}
+                                <Route exact path='/home' component={Home} />
+                                <Route path='/home/view' component={ViewHome} />
+                                <Route path='/home/edit' component={EditHome} />
+                                
+                                {/*订单管理*/}
+                                <Route exact path='/order' component={Order} />
+                                <Route path='/order/view' component={ViewOrder} />
+                                <Route exact path='/order/stage' component={Stage} />
+                                <Route path='/order/stage/view' component={ViewOrder} />
+                                
+                                {/*商品管理*/}
+                                <Route exact path='/product' component={Product} />
+                                <Route path='/product/add' component={AddProduct} />
+                                <Route path='/product/edit' component={EditProduct} />
+                                <Route path='/product/view' component={ViewProduct} />
+                                <Route exact path='/product/category' component={Category} />
+                                <Route path='/product/category/add' component={AddCategory} />
+                                <Route path='/product/category/edit' component={EditCategory} />
+                                <Route path='/product/category/view' component={ViewCategory} />
+                                
+                                {/*库存管理*/}
+                                <Route exact path='/stock' component={Stock} />
+                                <Route path='/stock/add' component={AddStock} />
+                                <Route path='/stock/view' component={ViewStock} />
+                                <Route path='/stock/log' component={StockLog} />
+                                <Route path='/stock/edit' component={EditStock} />
+                                <Route exact path='/stock/inventory' component={Inventory} />
+                                <Route path='/stock/inventory/view' component={ViewInventory} />
+                                <Route path='/stock/inventory/add' component={AddInventory} />
+                                
+                                {/*会员管理*/}
+                                <Route exact path='/member' component={Member} />
+                                <Route path='/member/add' component={AddMember} />
+                                <Route path='/member/edit' component={EditMember} />
+                                <Route path='/member/view' component={ViewMember} />
+                                
+                                {/*人事管理*/}
+                                <Route exact path='/employee' component={Employee} />
+                                <Route path='/employee/add' component={AddEmployee} />
+                                <Route path='/employee/view' component={ViewEmployee} />
+                                <Route path='/employee/edit' component={EditEmployee} />
+                                <Route exact path='/employee/user' component={User} />
+                                <Route path='/employee/user/add' component={AddUser} />
+                                <Route path='/employee/user/edit' component={EditUser} />
+                                <Route exact path='/employee/role' component={Role} />
+                                <Route path='/employee/role/add' component={AddRole} />
+                                <Route path='/employee/role/edit' component={EditRole} />
+                                
+                                {/*重定向*/}
                                 <Redirect to='/home' />
                             </Switch>
                         </Content>
