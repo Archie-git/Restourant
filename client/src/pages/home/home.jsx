@@ -39,6 +39,7 @@ class Home extends React.Component{
                 weekData: weekData,
                 data: response1.data
             });
+            console.log(weekData)
         }
     };
     handleDetail = () => {
@@ -88,10 +89,11 @@ class Home extends React.Component{
     };
     getPercentForm = (num) => {
         if(num > 1){
-            return num-1
+            num = (num-1)*100
         }else{
-            return 1-num
+            num = (1-num)*100
         }
+        return num.toFixed(0)
     };
     render() {
         return (
@@ -117,8 +119,8 @@ class Home extends React.Component{
                         <div style={{borderBottom: "1px solid lightgray", padding: "20px", fontWeight: "bold"}}>今日营收情况</div>
                         <div style={{padding: "20px 20px 5px"}}>
                             <div style={{fontWeight: "bolder"}}>订单数量：{this.state.weekData.quantityToday} 单</div>
-                            <div style={{fontSize: "12px", display: this.state.weekData.quantityPercent === "Infinity" || "NaN" ? "none" : "block"}}>
-                                <span>日同比{this.getPercentForm(this.state.weekData.quantityPercent)}%</span>
+                            <div style={{fontSize: "12px", display: this.state.weekData.quantityPercent === "Infinity" || this.state.weekData.quantityPercent === "NaN" ? "none" : "block"}}>
+                                <span>日同比 {this.getPercentForm(this.state.weekData.quantityPercent)}%</span>
                                 {
                                     this.state.weekData.quantityPercent > 1 ? (
                                         <Icon type="arrow-up" style={{color: "green"}}/>
@@ -130,8 +132,8 @@ class Home extends React.Component{
                         </div>
                         <div style={{padding: "10px 20px 20px"}}>
                             <div style={{fontWeight: "bolder"}}>营收总额：{this.state.weekData.amountToday} 元</div>
-                            <div style={{fontSize: "12px", display: this.state.weekData.amountPercent === "Infinity" || "NaN" ? "none" : "block"}}>
-                                <span>日同比{this.getPercentForm(this.state.weekData.amountPercent)}%</span>
+                            <div style={{fontSize: "12px", display: this.state.weekData.amountPercent === "Infinity" || this.state.weekData.amountPercent === "NaN" ? "none" : "block"}}>
+                                <span>日同比 {this.getPercentForm(this.state.weekData.amountPercent)}%</span>
                                 {
                                     this.state.weekData.amountPercent > 1 ? (
                                         <Icon type="arrow-up" style={{color: "green"}}/>
