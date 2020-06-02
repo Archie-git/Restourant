@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from "../../components/top-nav";
-import {Input, Table, Button, Icon, Tag, Divider, Modal,  Select, DatePicker} from "antd";
+import {Input, Table, Button, Icon, Tag, Modal,  Select, DatePicker} from "antd";
 import Loading from "../../components/loading";
 import {
     reqOrderSearch,
@@ -89,7 +89,7 @@ class Order extends React.Component{
             onOk: async ()=>{
                 let data = {
                     id: record.id,
-                    state: 3
+                    state: 2
                 };
                 let response = await reqOrderUpdate(data);
                 if(response.status === 0){
@@ -111,7 +111,7 @@ class Order extends React.Component{
             onOk: async ()=>{
                 let data = {
                     id: record.id,
-                    state: 4
+                    state: 3
                 };
                 let response = await reqOrderUpdate(data);
                 if(response.status === 0){
@@ -275,7 +275,7 @@ class Order extends React.Component{
                 title: '桌号',
                 dataIndex: 'seat',
                 key: 'seat',
-                render: (text) => <span>{text}号桌</span>,
+                render: (text) => <span>{text}</span>,
                 sorter: (a, b) => a.seat - b.seat
             },
             {
@@ -310,7 +310,7 @@ class Order extends React.Component{
                 title: '支付金额',
                 dataIndex: 'amount',
                 key: 'amount',
-                render: (text) => <span>￥{text}</span>,
+                render: (text) => <span>￥{text.toFixed(2)}</span>,
                 sorter: (a, b) => a.amount - b.amount
             },
             {
@@ -352,8 +352,7 @@ class Order extends React.Component{
                         }
                     </div>
                 ) : text === 1 ? <Tag color="red">请求取消</Tag> :
-                    text === 2 ? '已取消' :
-                        '已完成',
+                    text === 2 ? '已取消' : '已完成',
                 filters: [
                     {text: "已付款", value: 0},
                     {text: "请求取消", value: 1},
@@ -367,12 +366,10 @@ class Order extends React.Component{
                 key: 'operation',
                 render: (record) => record.state === 0 ? (
                     <span>
-                        <Divider type="vertical"/>
                         <Button size="small" type="primary" onClick={()=>this.handleComplete(record)}>完成</Button>
                     </span>
                 ) : record.state === 1 ? (
                     <span>
-                        <Divider type="vertical"/>
                         <Button size="small" type="danger" onClick={()=>this.handleCancel(record)}>取消</Button>
                     </span>
                 ) :  '/'

@@ -57,9 +57,9 @@ const EditHome = Form.create({ name: 'category-add' })(
                     delete data.closetime;
                     const response = await updateShopInfo(data);
                     if(response.status === 0){
-                        message.success("更新成功,即将返回品类列表", 2);
+                        message.success("设置成功，即将返回门店信息页面");
                         this.timerID = setTimeout(()=>{
-                            this.props.history.push('/home/view')
+                            this.props.history.push({pathname: '/home/view', state: {data: data}})
                         }, 2000);
                     }
                 }

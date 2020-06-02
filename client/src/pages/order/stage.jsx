@@ -86,7 +86,7 @@ class Stage extends React.Component{
             onOk: async ()=>{
                 let data = {
                     id: record.id,
-                    state: 3
+                    state: 2
                 };
                 let response = await reqOrderUpdate(data);
                 if(response.status === 0){
@@ -107,7 +107,7 @@ class Stage extends React.Component{
             onOk: async ()=>{
                 let data = {
                     id: record.id,
-                    state: 4
+                    state: 3
                 };
                 let response = await reqOrderUpdate(data);
                 if(response.status === 0){
@@ -164,7 +164,7 @@ class Stage extends React.Component{
                 title: '桌号',
                 dataIndex: 'seat',
                 key: 'seat',
-                render: (text) => <span>{text}号桌</span>,
+                render: (text) => <span>{text}</span>,
                 sorter: (a, b) => a.seat - b.seat
             },
             {
@@ -199,7 +199,7 @@ class Stage extends React.Component{
                 title: '支付金额',
                 dataIndex: 'amount',
                 key: 'amount',
-                render: (text) => <span>￥{text}</span>,
+                render: (text) => <span>￥{text.toFixed(2)}</span>,
                 sorter: (a, b) => a.amount - b.amount
             },
             {

@@ -13,7 +13,7 @@ router.get('/list', (req, res) => {
 });
 //获取已上架的商品列表
 router.get('/list-onsale', (req, res) => {
-    let sql = "SELECT * FROM product WHERE onsale=1";
+    let sql = "SELECT * FROM product WHERE onsale=1 and deleted=0";
     model.querySQL(sql).then((ret) => {
         res.send({status: 0, data: ret})
     }, err => {
