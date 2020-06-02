@@ -35,8 +35,6 @@ class Home extends React.Component{
             let weekData = response2.data;
             weekData.date = week;
             //获取月份和月数据
-            
-            
             this.setState({
                 weekData: weekData,
                 data: response1.data
@@ -64,11 +62,6 @@ class Home extends React.Component{
                 bottom: '3%',
                 containLabel: true
             },
-            // toolbox: {
-            //     feature: {
-            //         saveAsImage: {}
-            //     }
-            // },
             xAxis: {
                 type: 'category',
                 boundaryGap: true,
@@ -82,7 +75,6 @@ class Home extends React.Component{
                     name: '数量',
                     type: 'line',
                     stack: '总量',
-                    // data: [120, 132, 101, 134, 90, 230, 210]
                     data: this.state.weekData.quantity
                 },
                 {
@@ -125,7 +117,7 @@ class Home extends React.Component{
                         <div style={{borderBottom: "1px solid lightgray", padding: "20px", fontWeight: "bold"}}>今日营收情况</div>
                         <div style={{padding: "20px 20px 5px"}}>
                             <div style={{fontWeight: "bolder"}}>订单数量：{this.state.weekData.quantityToday} 单</div>
-                            <div style={{fontSize: "12px", display: this.state.weekData.quantityPercent === "Infinity" ? "none" : "block"}}>
+                            <div style={{fontSize: "12px", display: this.state.weekData.quantityPercent === "Infinity" || "NaN" ? "none" : "block"}}>
                                 <span>日同比{this.getPercentForm(this.state.weekData.quantityPercent)}%</span>
                                 {
                                     this.state.weekData.quantityPercent > 1 ? (
@@ -138,7 +130,7 @@ class Home extends React.Component{
                         </div>
                         <div style={{padding: "10px 20px 20px"}}>
                             <div style={{fontWeight: "bolder"}}>营收总额：{this.state.weekData.amountToday} 元</div>
-                            <div style={{fontSize: "12px", display: this.state.weekData.amountPercent === "Infinity" ? "none" : "block"}}>
+                            <div style={{fontSize: "12px", display: this.state.weekData.amountPercent === "Infinity" || "NaN" ? "none" : "block"}}>
                                 <span>日同比{this.getPercentForm(this.state.weekData.amountPercent)}%</span>
                                 {
                                     this.state.weekData.amountPercent > 1 ? (
