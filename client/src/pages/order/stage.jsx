@@ -1,6 +1,6 @@
 import React from 'react';
 import TopNav from "../../components/top-nav";
-import {Input, Table, Button, Icon, Tag, Divider, Modal} from "antd";
+import {Input, Table, Button, Icon, Tag, Modal} from "antd";
 import Loading from "../../components/loading";
 import {
     reqOrderSearch,
@@ -256,12 +256,10 @@ class Stage extends React.Component{
                 key: 'operation',
                 render: (record) => record.state === 0 ? (
                     <span>
-                        <Divider type="vertical"/>
                         <Button size="small" type="primary" onClick={()=>this.handleComplete(record)}>完成</Button>
                     </span>
                 ) : record.state === 1 ? (
                     <span>
-                        <Divider type="vertical"/>
                         <Button size="small" type="danger" onClick={()=>this.handleCancel(record)}>取消</Button>
                     </span>
                 ) :  '/'
