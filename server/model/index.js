@@ -2,6 +2,7 @@ let mysql=require('mysql');
 let md5=require('md5');
 let dbConfig=require('../config/dbConfig');
 
+
 let pool=mysql.createPool(dbConfig.mysql);
 
 //查询数据库
