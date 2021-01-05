@@ -39,7 +39,7 @@
     ]
   },
   "devDependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "echarts": "^4.7.0",
     "echarts-for-react": "^2.0.15-beta.1",
     "jquery": "^3.4.1",
